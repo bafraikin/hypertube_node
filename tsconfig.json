@@ -1,10 +1,14 @@
 {
   "compilerOptions": {
+		"baseUrl": "./src" ,
     "target": "es6",
     "module": "commonjs",
     "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "outDir": "./dist",
     "strict": true,
+
     "esModuleInterop": true
   },
   "include": [

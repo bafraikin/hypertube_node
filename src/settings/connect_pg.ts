@@ -1,0 +1,31 @@
+import "reflect-metadata"
+import { createConnection, Connection, Repository } from "typeorm"
+import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions'
+import User from 'app/models/user'
+import {yellow, red} from 'chalk'
+export let connection: Connection
+
+
+const typeOrmConfig: PostgresConnectionOptions = {
+	type: "postgres",
+	host: "localhost",
+	port: 5432,
+	username: "typeormtest",
+	password: "password",
+	database: "typeormtest",
+	synchronize: true,
+	logging: ["query", "error", "schema", "migration"],
+	entities: [User]
+};
+
+export async function connectWithPg() {
+	connection =  await createConnection(typeOrmConfig);
+	return connection
+}
+
+export function closeDBConnection () {
+	connection && connection.isConnected && connection.close()
+}
+
+
+

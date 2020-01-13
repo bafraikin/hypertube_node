@@ -1,7 +1,7 @@
 {
-  "name": "docker-compose-node-postgres",
+  "name": "hypertube",
   "version": "1.0.0",
-  "description": "How to setup Node.js and Postgres with Docker",
+  "description": "stream torrent with node js",
   "main": "index.js",
   "scripts": {
     "dev": "concurrently -k \"npm run build:watch\" \"npm run start:dev\"",
@@ -11,23 +11,22 @@
     "build:watch": "tsc -w",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MichalZalecki/docker-compose-node-postgres.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/MichalZalecki/docker-compose-node-postgres/issues"
-  },
-  "homepage": "https://github.com/MichalZalecki/docker-compose-node-postgres#readme",
   "dependencies": {
+    "@types/cors": "^2.8.6",
     "@types/express": "^4.17.2",
     "@types/node": "^11.15.4",
+    "@types/passport": "^1.0.2",
     "@types/pg": "^7.14.1",
+    "bcrypt": "^3.0.7",
+    "body-parser": "^1.19.0",
+    "chalk": "^3.0.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
     "pg": "^7.17.1",
+    "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.22",
     "typescript": "^3.7.4"
   },
