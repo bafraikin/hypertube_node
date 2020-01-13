@@ -1,6 +1,11 @@
 FROM node:12-alpine
 EXPOSE 3000 9229
 
+
+RUN apk add zsh curl git
+RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+
 WORKDIR /home/app
 
 COPY package.json /home/app/
