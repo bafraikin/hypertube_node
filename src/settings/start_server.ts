@@ -8,6 +8,5 @@ export default async function startServer ({isDev = false, isTest = false}, dbCo
 	const connection = await connectWithPg();
 	const app = await getServer(connection, isDev)
 
-	const env = (isDev && 'development') || (isTest && 'test') || 'production'
 	return app
 }

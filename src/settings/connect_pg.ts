@@ -10,9 +10,9 @@ const typeOrmConfig: PostgresConnectionOptions = {
 	type: "postgres",
 	host: "localhost",
 	port: 5432,
-	username: "typeormtest",
-	password: "password",
-	database: "typeormtest",
+	username: "postgres",
+	password: "postgres",
+	database: "hypertube",
 	synchronize: true,
 	logging: ["query", "error", "schema", "migration"],
 	entities: [User]

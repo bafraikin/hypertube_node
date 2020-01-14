@@ -15,6 +15,6 @@ RUN npm ci
 
 COPY . /home/app
 
-#RUN npm run build
+RUN npm run build
 
-#CMD ./scripts/start.sh
+CMD ./scripts/start.sh

@@ -4,8 +4,8 @@ import setupPassport from './passport'
 import * as bodyParser from 'body-parser'
 import {Connection} from 'typeorm'
 import {red} from 'chalk'
+import setRoute from './route'
 const cors = require('cors')
-
 const flash = require('connect-flash')
 
 export default async function getServer (connection: Connection, isDev = false) {
@@ -22,7 +22,8 @@ export default async function getServer (connection: Connection, isDev = false) 
 
 	server.use(bodyParser.json());
 	server.use(flash())
-	server = await setupPassport(server, connection)
+	server = setRoute(connection, server);
+	server = await setupPassport(server, connection);
 
 	return server
 }
