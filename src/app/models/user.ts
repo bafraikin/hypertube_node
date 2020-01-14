@@ -1,5 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, Unique} from "typeorm"
-import * as bcrypt from 'bcrypt'
+const bcrypt = require('bcrypt');
 
 @Entity()
 @Unique(["email"])
