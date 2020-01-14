@@ -23,9 +23,9 @@ export default async function setupPassport(server: Express, connection: Connect
                 const passwordIsCorrect = await user.validatePassword(password)
 
                 if (passwordIsCorrect) {
-                    setTimeout(() => done(null, user.toJSON()), Math.floor(Math.random() * 20))
+										done(null, user.toJSON())
                 } else {
-                    setTimeout(() => done(null, false, { message: 'Incorrect password' }), Math.floor(Math.random() * 20))
+                    done(null, false, { message: 'Incorrect password' })
                 }
             }
         }));
@@ -35,7 +35,7 @@ export default async function setupPassport(server: Express, connection: Connect
     });
 
     passport.deserializeUser(async function(id: number, done) {
-        const user = await userRepo.findOneById(id)
+        const user = await userRepo.findOne(id)
         if (user) {
             done(null, user)
         } else {

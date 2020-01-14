@@ -1,21 +1,32 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, Unique} from "typeorm"
+import * as bcrypt from 'bcrypt'
 
 @Entity()
+@Unique(["email"])
 export default class User {
 
-    @PrimaryGeneratedColumn()
-    id!: number;
+	@PrimaryGeneratedColumn()
+	id!: number;
 
-    @Column()
-    firstName!: string;
+	@Column()
+	email!: string;
+	@Column()
+	password!: string;
 
-    @Column()
-    email!: string;
+	setPassword(pw: string) {
+		this.password = pw
+	}
 
-    @Column()
-    lastName!: string;
+	async validatePassword(plainTextPassword: string) {
+		return await bcrypt.compare(plainTextPassword, this.password + '')
+	}
 
-    @Column()
-    age!: number;
+
+	toJSON() {
+		return {
+			id: this.id,
+			email: this.email
+		}
+	}
 
 }
