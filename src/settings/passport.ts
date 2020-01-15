@@ -12,10 +12,10 @@ export default async function setupPassport(server: Express, connection: Connect
 
     passport.use('local', new LocalStrategy(
         async function(email: string, password: string, done: Function) {
-            const searchUser = new User()
-            const user = await userRepo.findOne({ email })
+					/*
+						 find user
 
-            searchUser.email = email
+						 */
 
             if (!user) {
                 done(null, false, { message: 'Could not find that user' })
