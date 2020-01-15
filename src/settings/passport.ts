@@ -1,5 +1,5 @@
 
-import * as passport from 'passport';
+import passport from 'passport';
 import { Express, Response, Request } from 'express'
 import User from '../app/models/user'
 import { Connection } from 'typeorm'

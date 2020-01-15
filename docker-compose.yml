@@ -20,3 +20,7 @@ services:
       POSTGRES_INITDB_WALDIR: /var/lib/postgresql/data
     volumes:
     - ./tmp/db:/var/lib/postgresql/data
+
+volumes:
+    back:
+    postgres:

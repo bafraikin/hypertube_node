@@ -26,6 +26,5 @@ credentials: false
 	server.use(bodyParser.json());
 	server = setRoute(connection, server);
 	server = await setupPassport(server, connection);
-
 	return server
 }
