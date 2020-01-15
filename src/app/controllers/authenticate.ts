@@ -1,5 +1,6 @@
 
 import { User } from '../../app/models/user'
+import {Request, Response} from 'express'
 
 
 export default class authenticateController {
@@ -28,5 +29,19 @@ export default class authenticateController {
 
 	static serialize(user: User, done: Function) {
 		done(null, user.id);
+	}
+
+	static authenticateObject():{} {
+		return { 
+			successRedirect: '/',
+			failureRedirect: '/login',
+			failureFlash: true,
+			successFlash: 'Welcome!' 
+		}
+	}
+
+	static logout(req: Request, res: Response) {
+		req.logout();
+		res.redirect('/');
 	}
 }  
