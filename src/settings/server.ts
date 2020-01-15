@@ -25,6 +25,6 @@ credentials: false
 	server.use(cookieParser('Armand'));
 	server.use(bodyParser.json());
 	server = setRoute(connection, server);
-	server = await setupPassport(server, connection);
+	server = await setupPassport(server);
 	return server
 }
