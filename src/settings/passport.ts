@@ -1,22 +1,16 @@
-
 import passport from 'passport';
 import { Express, Response, Request } from 'express'
-import User from '../app/models/user'
-import { Connection } from 'typeorm'
+import {User} from '../app/models/user'
+import { Connection, getConnection } from 'typeorm'
 
 let LocalStrategy = require('passport-local').Strategy;
 
 
 export default async function setupPassport(server: Express, connection: Connection) {
-    const userRepo = connection.getRepository(User)
 
     passport.use('local', new LocalStrategy(
         async function(email: string, password: string, done: Function) {
-					/*
-						 find user
-
-						 */
-
+				const user: User | undefined = await User.findOne({email});
             if (!user) {
                 done(null, false, { message: 'Could not find that user' })
             } else {
@@ -28,14 +22,14 @@ export default async function setupPassport(server: Express, connection: Connect
                     done(null, false, { message: 'Incorrect password' })
                 }
             }
-        }));
+        }))
 
     passport.serializeUser(function(user: User, done: Function) {
         done(null, user.id);
     });
 
     passport.deserializeUser(async function(id: number, done) {
-        const user = await userRepo.findOne(id)
+				const user: User = (await User.findOne({id}) as User);
         if (user) {
             done(null, user)
         } else {
