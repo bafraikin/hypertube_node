@@ -15,8 +15,8 @@ setup_docker () {
 	rm ~/goinfre
 
 	#Make sure that goinfre is good
-	mkdir -p /Volumes/Storage/goinfre/bafraiki
-	ln -s /Volumes/Storage/goinfre/bafraiki ~/goinfre
+	mkdir -p /Volumes/Storage/goinfre/$(whoami)
+	ln -s /Volumes/Storage/goinfre/$(whoami) ~/goinfre
 	mkdir ~/goinfre/helper
 
 	#recreate dir that we delete in goinfre earlier and create symlink
