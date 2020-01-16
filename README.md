@@ -31,3 +31,6 @@ setup_docker () {
 ```
 
 ![alt text](https://i.pinimg.com/originals/a4/db/17/a4db1751b10fff03d2eaf915a9cd2de9.gif  "YEAAAH")
+
+
+#I joinned the project
