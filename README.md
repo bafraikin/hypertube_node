@@ -1,9 +1,9 @@
 
 
 
-#Setup docker to make it work in school
+# Setup docker to make it work in school
 
-###Launch it just after installing Docker through MSC
+### Launch it just after installing Docker through MSC
 
 ```
 setup_docker () {
