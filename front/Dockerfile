@@ -10,7 +10,7 @@ FROM node:12-alpine
 
 WORKDIR /front
 #RUN apt-get install -y yarn zsh vim
-RUN apk add yarn zsh vim curl
+RUN apk add yarn zsh vim curl git
 
 
 
