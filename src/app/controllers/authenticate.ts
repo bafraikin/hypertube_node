@@ -8,14 +8,14 @@ export default class authenticateController {
 	static async authStrategy(email: string, password: string, done: Function) {
 		const user: User | undefined = await User.findOne({email});
 		if (!user)
-			done(null, false, { message: "This email doesn't exist" }) as any
+			done(null, false, { message: "This email doesn't exist" })
 		else {
 			const passwordIsCorrect = await user.validatePassword(password)
 
 			if (passwordIsCorrect)
 				done(null, user.toJSON())
 			else
-				done(null, false, { message: 'Wrong password' }) as any
+				done(null, false, { message: 'Wrong password' })
 		}
 	}
 

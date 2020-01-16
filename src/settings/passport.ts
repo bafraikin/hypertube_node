@@ -5,7 +5,7 @@ let LocalStrategy = require('passport-local').Strategy;
 
 export default async function setupPassport(server: Express) {
 
-    passport.use('local', new LocalStrategy(authenticateController.authStrategy))
+    passport.use('local', new LocalStrategy({usernameField: 'email', passwordField: 'password'}, authenticateController.authStrategy))
     passport.serializeUser(authenticateController.serialize);
     passport.deserializeUser(authenticateController.deserialize);
 
