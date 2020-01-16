@@ -11,10 +11,23 @@ export class User extends BaseEntity {
 	email!: string;
 
 	@Column()
+	name!: string;
+
+	@Column()
+	surname!: string;
+
+	@Column()
+	pseudo!: string;
+
+	@Column()
 	password!: string;
 
-	setPassword(pw: string) {
+	@Column()
+	imageUrl!: string;
+
+	async setPassword(pw: string) {
 		this.password = pw
+		await this.save()
 	}
 
 	async validatePassword(plainTextPassword: string) {
