@@ -8,4 +8,4 @@ RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/inst
 COPY package.json /front
 COPY yarn.lock /front
 RUN yarn install
-#CMD ["yarn", "start"]
+CMD ["yarn", "serve"]
