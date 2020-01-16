@@ -1,22 +1,33 @@
-# Docker Compose for Node.js and PostgreSQL
 
-For the sake of making it more real-world, setup has also a build step (here with **TypeScript**).
 
-## [Read more](https://michalzalecki.com/docker-compose-for-nodejs-and-postresql/)
 
-I've put together an article which explains most of the code from this repo: [Docker Compose for NodeJS and PostreSQL](https://michalzalecki.com/docker-compose-for-nodejs-and-postresql/)
+# Setup docker to make it work in school
 
-## Run
+### Launch it just after installing Docker through MSC
 
-    docker-compose up --build
+```
+setup_docker () {
+	#delete every old setting of docker that take too much space
+	rm -rf ~/Library/Containers/com.docker.docker
+	rm -rf ~/.docker
+	rm -rf ~/docker ~/agent
+	rm -rf ~/goinfre/docker ~/goinfre/agent ~/goinfre/helper
+	rm ~/goinfre
 
-## Test
+	#Make sure that goinfre is good
+	mkdir -p /Volumes/Storage/goinfre/bafraiki
+	ln -s /Volumes/Storage/goinfre/bafraiki ~/goinfre
+	mkdir ~/goinfre/helper
 
-```sh
-curl http://localhost:3000/ping
-# {"environment":"development","database":"up"}
+	#recreate dir that we delete in goinfre earlier and create symlink
+	mkdir -p ~/goinfre/docker ~/goinfre/agent 
+	mv ~/Library/Containers/com.docker.helper/* ~/Library/Containers/com.docker.helper/.* ~/goinfre/helper
+	rm -rf ~/Library/Containers/com.docker.helper
+	ln -s ~/goinfre/helper ~/Library/Containers/com.docker.helper
+	ln -s ~/goinfre/agent ~/Library/Containers/com.docker.docker
+	ln -s ~/goinfre/docker ~/.docker
+	open /Applications/Docker.app
+}
 ```
 
-## WARNING
-
-Don't keep `.env` file in the repo. It's here as it makes demo example simpler.
+![alt text](https://i.pinimg.com/originals/a4/db/17/a4db1751b10fff03d2eaf915a9cd2de9.gif  "YEAAAH")

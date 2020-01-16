@@ -8,8 +8,19 @@ services:
     ports:
       - "3000:3000"
       - "9229:9229"
+    volumes:
+      - .:/home/app/
+      - /home/app/node_modules
 
   postgres:
     image: postgres:11.2-alpine
     environment:
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: hypertube
+      POSTGRES_INITDB_WALDIR: /var/lib/postgresql/data
+    volumes:
+    - ./tmp/db:/var/lib/postgresql/data
+
+volumes:
+    back:
+    postgres:
