@@ -3,6 +3,7 @@ services:
   front:
     build: .
     volumes:
-      - .:/usr/app
+      - .:/front
+      - /front/node_modules
     ports:
       - "8080:8080"

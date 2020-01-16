@@ -9,8 +9,8 @@ services:
       - "3000:3000"
       - "9229:9229"
     volumes:
-      - .:/home/app/
-      - /home/app/node_modules
+      - .:/back
+      - /back/node_modules
 
   postgres:
     image: postgres:11.2-alpine
