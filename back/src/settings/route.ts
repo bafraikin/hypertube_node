@@ -4,7 +4,7 @@ import {Express } from 'express'
 import authenticate from '../app/controllers/authenticate'
 import {Request, Response} from "express";
 
-const imdb = require('imdb-node-api');
+import imdb from "imdb-node-api";
 
 export default function setRoute(connection: Connection, app: Express) {
 
