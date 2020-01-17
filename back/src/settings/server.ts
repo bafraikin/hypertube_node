@@ -12,10 +12,27 @@ export default async function getServer (connection: Connection, isDev = false) 
 	let server = express();
 
 	/*
-		 server.use(cors({
+	   server.use(cors({
 origin: 'localhost:8080', 
 credentials: false
 }))*/
+	var whitelist = ['http://localhost:8080', 'http://example2.com']
+	var corsOptions = {
+		origin: function (origin: origin,any: callback) {
+			if (whitelist.indexOf(origin) !== -1 || !origin) {
+				callback(null, true)
+			} else {
+				callback(new Error('Not allowed by CORS'))
+			}
+		}
+	}
+	server.use(cors(corsOptions));
+
+
+
+
+
+
 
 	server.use(bodyParser.urlencoded({
 		extended: true

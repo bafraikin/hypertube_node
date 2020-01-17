@@ -1,8 +1,12 @@
 <template>
   <div id="app">
+	<h1>Le code c'est top</h1>
+
+	
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/about">About</router-link> |
+      <router-link to="/film-list">Film hypertube</router-link>
     </div>
     <router-view/>
   </div>
