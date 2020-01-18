@@ -11,11 +11,11 @@ import cookieParser from 'cookie-parser'
 export default async function getServer (connection: Connection, isDev = false) {
 	let server = express();
 
-	/*
-		 server.use(cors({
-origin: 'localhost:8080', 
-credentials: false
-}))*/
+server.use(function(req, res, next) {
+  	res.header("Access-Control-Allow-Origin", "http://localhost:8080");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 	server.use(bodyParser.urlencoded({
 		extended: true
