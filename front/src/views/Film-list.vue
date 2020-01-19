@@ -12,13 +12,11 @@
 						<th>Title</th>
 						<th>Torrent link</th>
 					</tr>
-
 					<tr v-for="movie in films">
 						<td v-for="information in movie">
 							{{information}}
 						</td>
 					</tr>
-
 				</table>
 			</div>
 	</div>
@@ -55,6 +53,7 @@ export default {
 						this.testApi = response.data.data.movies;
 						for (const property in response.data.data.movies) {
 							var arrayMovie = [];
+							console.log(response.data.data.movies[property]);
 							arrayMovie.push(response.data.data.movies[property].title);
 							arrayMovie.push(response.data.data.movies[property].torrents[0].url);
 							arrayMovies.push(arrayMovie);

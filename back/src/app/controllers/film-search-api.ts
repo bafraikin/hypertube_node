@@ -1,6 +1,8 @@
 import {Request, Response} from 'express';
 const axios = require('axios');
 
+var torrentStream = require('torrent-stream');
+
 export default class testAPIController {
 	static testAPI(req: Request, res: Response) {
 		axios

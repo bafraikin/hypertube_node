@@ -26,6 +26,7 @@
     "passport-local": "^1.0.0",
     "pg": "^7.17.1",
     "reflect-metadata": "^0.1.13",
+    "torrent-stream": "^1.2.0",
     "typeorm": "^0.2.22",
     "typescript": "^3.7.4"
   },
