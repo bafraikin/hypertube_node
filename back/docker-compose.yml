@@ -11,6 +11,7 @@ services:
     volumes:
       - .:/back
       - /back/node_modules
+      - /tmp:/back/films
 
   postgres:
     image: postgres:11.2-alpine

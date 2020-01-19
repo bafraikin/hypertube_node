@@ -1,17 +1,31 @@
 import {Request, Response} from 'express';
+import { Movie } from '../../app/models/movies'
 const axios = require('axios');
 
-var torrentStream = require('torrent-stream');
 
 export default class moviesController {
-	static download(req: Request, res: Response) {
-		console.log("On est ici");
-		console.log(req.body.url);
-		console.log(req.body.hash);
-		//on regarde si le film existe
+
+	static create() {
+		const movie = new Movie();
+	}
+
+
+		// *** on regarde si le film existe
 		//on regarde le statut du film : noExist / downloaded / downloadOnGoing
 		//if no Exist on le telecharge
 		//on renvoi la liste des films avec leur statut
+	static download(req: Request, res: Response) {
+		console.log("On est ici");
+		var url = req.body.url;
+		var hash = req.body.hash;
+		var movie = Movie.getMovie(url, hash);
+		if (movie == "noExist"){
+			var moviee = new Movie();
+			moviee.hash = hash;
+			moviee.url = url;
+			moviee.launchDownload();
+		}
+		res.send("ok");
 	}
 
 	static testAPI(req: Request, res: Response) {
@@ -41,7 +55,7 @@ export default class moviesController {
 		.get(url)
 		.then((response: any) => {
 			if (response.status == 200){
-				console.log(response.data)
+				//console.log(response.data)
 				//console.log(typeof (response.data));
 				res.send(response.data);
 			}

@@ -25,9 +25,7 @@ export default {
 					hash: hash,
 				})
 				.then(response => {
-					if (response.status == 200){
-						console.log("ok");
-					}
+					console.log("On telecharge buddy");
 				})
 		}
 	},
