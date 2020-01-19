@@ -31,12 +31,14 @@ export class Movie extends BaseEntity {
 	}
 
 	static getMovie(url: string, hash: string) {
+		//if file exist
+		//return downloaded
+		//else
 		return "noExist";
 	}
 
-
 	static getMovies(url: string, hash: string) {
-		return "un petit movie";
+		return "Toy_story_baby";
 	}
 
 	launchDownload(){

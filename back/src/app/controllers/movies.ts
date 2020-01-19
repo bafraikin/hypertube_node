@@ -24,8 +24,12 @@ export default class moviesController {
 			moviee.hash = hash;
 			moviee.url = url;
 			moviee.launchDownload();
+			res.send("non_dispo");
 		}
-		res.send("ok");
+		else{
+			var movies = Movie.getMovies();
+			res.send("dispo");
+		}
 	}
 
 	static testAPI(req: Request, res: Response) {
