@@ -1,6 +1,7 @@
 
 import user from './user'
 import authenticate from './authenticate'
+import movies from './movies'
 
 
-export {user,authenticate}
+export {user,authenticate, movies}

@@ -13,8 +13,11 @@
 						<th>Torrent link</th>
 					</tr>
 					<tr v-for="movie in films">
-						<td v-for="information in movie">
-							{{information}}
+						<td>{{ movie.title }}</td>
+						<td>
+							<!-- <a v-bind:href="'/download/' + encodeURI(movie.torrents[0].url) + '/' + encodeURI(movie.torrents[0].hash)" > -->
+								<i v-on:click="download(movie.torrents[0].url, movie.torrents[0].hash)" >Download</i>
+							<!-- </a> -->
 						</td>
 					</tr>
 				</table>
@@ -42,6 +45,11 @@ export default {
 			this.searchForMovies(this.researchText);
 			this.researchTextSubmit = this.researchText;
 		},
+		download(url, hash){
+			var url = encodeURI(url);
+			var hash = encodeURI(hash);
+			this.$router.push({ name: "film-download", params:{url: url, hash: hash}});
+		},
 		searchForMovies(stringToSeach){
 			axios
 				.post('http://localhost:3000/film-search-api-query-string', {
@@ -52,11 +60,8 @@ export default {
 						var arrayMovies = [];
 						this.testApi = response.data.data.movies;
 						for (const property in response.data.data.movies) {
-							var arrayMovie = [];
-							console.log(response.data.data.movies[property]);
-							arrayMovie.push(response.data.data.movies[property].title);
-							arrayMovie.push(response.data.data.movies[property].torrents[0].url);
-							arrayMovies.push(arrayMovie);
+							var movie = response.data.data.movies[property];
+							arrayMovies.push(movie);
 						}
 						this.films = arrayMovies;
 					}
