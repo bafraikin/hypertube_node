@@ -14,13 +14,10 @@ app.get('/test', (req: Request, res: Response) => {return res.send({coucou: 'sal
 	app.post('/login', passport.authenticate('local', controller.authenticate.authenticateObject()));
 	app.get('/logout', controller.authenticate.logout);
 
-
-
-	app.get('/film-search-api', controller.movies.testAPI);
-	app.post('/film-search-api-query-string', controller.movies.testApiQueryString);
-	app.post('/download', controller.movies.download);
-
-
+	app.post('/film-search-api-query-string', controller.movies.ytsApiQueryString);
+	app.post('/download', controller.movies.postDownload);
+	app.get('/download', controller.movies.getDownload);
+	app.get('/download/delete', controller.movies.deleteAllMovies);
 	return app;
 }
 

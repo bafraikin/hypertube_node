@@ -28,6 +28,11 @@ const routes = [
 		name: 'film-download',
 		component: () => import('../views/Film-download.vue')
 	},
+	{
+		path: '/download/',
+		name: 'film-download-seconde',
+		component: () => import('../views/Film-download.vue')
+	},
 ]
 
 const router = new VueRouter({

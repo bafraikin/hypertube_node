@@ -23,28 +23,26 @@ export class Movie extends BaseEntity {
 	@Column()
 	magnetLink!: string;
 
+	@Column()
+	downloadStatus!: string;
+
 	toJSON() {
 		return {
 			id: this.id,
-			title: this.title
+			title: this.title,
+			downloadStatus: this.downloadStatus,
 		}
 	}
 
-	static getMovie(url: string, hash: string) {
+	static getMovie() {
 		//if file exist
 		//return downloaded
 		//else
 		return "noExist";
 	}
 
-	static getMovies(url: string, hash: string) {
+	static getMovies() {
 		return "Toy_story_baby";
-	}
-
-	launchDownload(){
-		console.log("je lance le telechargement");
-		this.buildMagnetLink();
-		this.downloadMovie();
 	}
 
 	buildMagnetLink(){
@@ -73,13 +71,17 @@ export class Movie extends BaseEntity {
 		this.magnetLink = magnetLink;
 	}
 
-	downloadMovie(){
+	async downloadMovie(){
+		this.downloadStatus = "downloadOnGoing";
+		this.save();
 		var engine = torrentStream(this.magnetLink, {path: '/back/films'});
 		engine.on('download', (index: any) => {
 			//console.log("On a download", index);
 		})
 		engine.on('idle', () =>{
 			console.log("on a tout finis");
+			this.downloadStatus = "downloadFinish";
+			this.save();
 		})
 		engine.on('ready', function() {
 			engine.files.forEach(function(file: any) {
@@ -100,7 +102,7 @@ export class Movie extends BaseEntity {
 						//console.log("received " + chunk.length + " bytes of data");
 						progress += chunk.length;
 						//console.log("Le progress ==> " + progress);
-						//console.log("Le pourcentage du total ==>",  (progress * 100 / file.length) + "%");
+						console.log("Le pourcentage du total ==>",  (progress * 100 / file.length) + "%");
 					})
 					stream.on('end', () => {
 						console.log("Download completed");

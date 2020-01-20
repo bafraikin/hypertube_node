@@ -4,7 +4,7 @@
       <router-link to="/">Home</router-link> |
       <!-- <router-link to="/about">About</router-link> | -->
       <router-link to="/film-list">Film research</router-link>  |
-      <router-link to="/download/no/no">Film downloaded</router-link>  |
+      <router-link to="/download/">Film downloaded</router-link>  |
     </div>
     <router-view/>
   </div>

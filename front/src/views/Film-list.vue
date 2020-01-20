@@ -15,9 +15,7 @@
 					<tr v-for="movie in films">
 						<td>{{ movie.title }}</td>
 						<td>
-							<!-- <a v-bind:href="'/download/' + encodeURI(movie.torrents[0].url) + '/' + encodeURI(movie.torrents[0].hash)" > -->
-								<i v-on:click="download(movie.torrents[0].url, movie.torrents[0].hash)" >Download</i>
-							<!-- </a> -->
+								<i v-on:click="download(movie.torrents[0].url, movie.torrents[0].hash, movie.title)" >Download</i>
 						</td>
 					</tr>
 				</table>
@@ -45,10 +43,11 @@ export default {
 			this.searchForMovies(this.researchText);
 			this.researchTextSubmit = this.researchText;
 		},
-		download(url, hash){
+		download(url, hash, title){
 			var url = encodeURI(url);
 			var hash = encodeURI(hash);
-			this.$router.push({ name: "film-download", params:{url: url, hash: hash}});
+			console.log("le title dans front film list", title);
+			this.$router.push({ name: "film-download", params:{url: url, hash: hash, title, title}});
 		},
 		searchForMovies(stringToSeach){
 			axios
@@ -58,6 +57,8 @@ export default {
 				.then(response => {
 					if (response.status == 200){
 						var arrayMovies = [];
+						console.log("lala");
+						console.log(typeof(arrayMovies));
 						this.testApi = response.data.data.movies;
 						for (const property in response.data.data.movies) {
 							var movie = response.data.data.movies[property];
@@ -69,6 +70,7 @@ export default {
 		}
 	},
 	mounted(){
+		console.log("hello");
 	}
 }
 </script>
