@@ -24,7 +24,7 @@ const routes = [
 		component: () => import('../views/Film-list.vue')
 	},
 	{
-		path: '/download/:url/:hash',
+		path: '/download/',
 		name: 'film-download',
 		component: () => import('../views/Film-download.vue')
 	},

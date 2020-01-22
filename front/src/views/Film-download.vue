@@ -1,22 +1,25 @@
 <template>
-	<div id="lala">
-		<h1>hello a tous</h1>
-		<table>
-			<tr>
-				<th>Title</th>
-				<th>Torrent link</th>
-				<th>Status</th>
-			</tr>
-			<div v-if="showFilms" >
+	<div id="lala"  class="ui main container"    >
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.css" type="text/css" charset="utf-8">
+		<h1>List of downloaded movies</h1>
+		<div v-if="showFilms" >
+			<table  class="ui celled table">
+				<thead>
+				<tr>
+					<th>Title</th>
+					<th>Status</th>
+				</tr>
+				</thead>
+				<tbody>
 				<tr v-for="movie in films">
 					<td>{{ movie.title }}</td>
-					<td>{{ movie.downloadStatus }}</td>
 					<td v-if="movie.downloadStatus == 'notStarted'">Download not started</td>
 					<td v-if="movie.downloadStatus == 'downloadOnGoing'">Wait for more download data</td>
 					<td  v-on:click="play(movie)"  v-if="movie.downloadStatus == 'downloadFinish'">Play the movie</td>
 				</tr>
-			</div>
-		</table>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </template>
 
@@ -56,13 +59,15 @@ export default {
 					this.handleResponse(response);
 				})
 		},
-		downloadMovies(url, hash, title){
+		downloadMovies(movie, torrent){
 			console.log("On telecharge buddy");
+			console.log(movie.imdb_code);
 			axios
 				.post('http://localhost:3000/download', {
-					url: url,
-					hash: hash,
-					title: title,
+					url: torrent.url,
+					hash: torrent.hash,
+					imdbCode: movie.imdb_code,
+					movie: movie,
 				})
 				.then(response => {
 					this.handleResponse(response);
@@ -71,8 +76,12 @@ export default {
 	},
 	mounted(){
 		console.log("hello");
-		if (this.$route.params.url != undefined && this.$route.params.hash != undefined && this.$route.params.title != undefined){
-			this.downloadMovies(this.$route.params.url, this.$route.params.hash, this.$route.params.title);
+		//if (this.$route.params.url != undefined && this.$route.params.hash != undefined && this.$route.params.title != undefined){
+		if (this.$route.params.movie){
+			var movie = this.$route.params.movie;
+			var torrent = this.$route.params.torrent
+			console.log("on veut telecharger un film", movie);
+			this.downloadMovies(movie, torrent);
 		}
 		else {
 			this.getMovies();

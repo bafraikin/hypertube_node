@@ -26,6 +26,9 @@ export class Movie extends BaseEntity {
 	@Column()
 	downloadStatus!: string;
 
+	@Column()
+	imdbCode!: string;
+
 	toJSON() {
 		return {
 			id: this.id,

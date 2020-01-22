@@ -27,12 +27,15 @@ export default class moviesController {
 	static async postDownload(req: Request, res: Response) {
 		var url = req.body.url;
 		var hash = req.body.hash;
-		var title = req.body.title;
-		if (req.body.url != undefined && req.body.hash != undefined && req.body.title != undefined){
-			const movieSearch = await Movie.findOne({ hash: hash, url: url});
+		var imdbCode = req.body.imdbCode;
+		var movieInfo = req.body.movie;
+		console.log(movieInfo);
+		if (req.body.url != undefined && req.body.hash != undefined && req.body.imdbCode != undefined){
+			const movieSearch = await Movie.findOne({ hash: hash, url: url, imdbCode: imdbCode});
 			if (movieSearch == undefined){
 				var movie = new Movie;
-				movie.title = title;
+				movie.title = movieInfo.title;
+				movie.imdbCode = imdbCode;
 				movie.hash = hash;
 				movie.imageUrl = "la super image url du film";
 				movie.url = url;
