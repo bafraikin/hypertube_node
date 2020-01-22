@@ -10,7 +10,6 @@ services:
       - "9229:9229"
     volumes:
       - .:/back
-      - /back/node_modules
       - /tmp:/back/films
 
   postgres:
