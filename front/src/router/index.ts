@@ -33,6 +33,11 @@ const routes = [
 		name: 'film-download-seconde',
 		component: () => import('../views/Film-download.vue')
 	},
+	{
+		path: '/film-paly/',
+		name: 'player-film',
+		component: () => import('../views/Film-play.vue')
+	},
 ]
 
 const router = new VueRouter({
