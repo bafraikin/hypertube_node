@@ -31,7 +31,7 @@ export default {
 	mounted(){
 		this.film = this.$route.params.movie;
 		if (this.film != undefined){
-			this.filmPath = "http://localhost:3000/" + this.film.imdbCode + "-" + this.film.title;
+			this.filmPath = "http://localhost:3000/player/" + this.film.imdbCode + "-" + this.film.title;
 			this.showFilm = true;
 		}
 	}
