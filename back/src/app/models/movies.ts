@@ -34,6 +34,7 @@ export class Movie extends BaseEntity {
 			id: this.id,
 			title: this.title,
 			downloadStatus: this.downloadStatus,
+			imdbCode: this.imdbCode,
 		}
 	}
 

@@ -38,6 +38,8 @@ export default {
 	},
 	methods:{
 		play(movie){
+				console.log("aggggggggggggggggggggggg");
+				console.log(movie);
 			this.$router.push({ name: "player-film", params:{movie: movie}});
 		},
 		handleResponse(response){
@@ -45,6 +47,8 @@ export default {
 			if (response.status == 200){
 				var copyResponse = response.data;
 				this.films = copyResponse;
+				console.log("lglglglgl");
+				console.log(this.films);
 				this.showFilms = true;
 			}
 			else{
