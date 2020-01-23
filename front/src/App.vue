@@ -5,6 +5,8 @@
 
       <!-- <router-link to="/about">About</router-link> | -->
       <router-link to="/film-info/">Film info (need id_imdb)</router-link>  |
+      <router-link to="/film-list">Film research</router-link>  |
+      <router-link to="/download/">Film downloaded</router-link>  |
     </div>
     <router-view/>
   </div>
