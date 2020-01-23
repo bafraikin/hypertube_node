@@ -38,7 +38,7 @@ export default {
 	},
 	methods:{
 		play(movie){
-			this.$router.push({ name: "player-film", params:{title: movie.title}});
+			this.$router.push({ name: "player-film", params:{movie: movie}});
 		},
 		handleResponse(response){
 			console.log(response);
