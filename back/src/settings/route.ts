@@ -15,10 +15,9 @@ app.get('/test', (req: Request, res: Response) => {return res.send({coucou: 'sal
 	app.get('/logout', controller.authenticate.logout);
 
 	app.post('/film-search-api-query-string', controller.movies.ytsApiQueryString);
-	app.post('/download', controller.movies.postDownload);
-	app.get('/download', controller.movies.getDownload);
+	app.post('/download', controller.movies.getDownload);
 	app.get('/download/delete', controller.movies.deleteAllMovies);
-	app.get('/player/:title', controller.movies.player);
+	app.get('/player', controller.movies.player);
 	return app;
 }
 

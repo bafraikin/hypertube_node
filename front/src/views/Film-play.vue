@@ -1,4 +1,3 @@
-
 <template>
 	<div id="lala">
 		<div v-if="showFilm">
@@ -30,11 +29,9 @@ export default {
 		},
 	},
 	mounted(){
-		console.log("hello");
 		this.film = this.$route.params.movie;
 		if (this.film != undefined){
 			this.filmPath = "http://localhost:3000/" + this.film.imdbCode + "-" + this.film.title;
-			console.log(this.filmPath);
 			this.showFilm = true;
 		}
 	}
