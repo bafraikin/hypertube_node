@@ -33,7 +33,7 @@ export default {
 		console.log("hello");
 		this.film = this.$route.params.movie;
 		if (this.film != undefined){
-			this.filmPath = "http://localhost:3000/back/films/" + this.film.imdbCode + "-" + this.film.title;
+			this.filmPath = "http://localhost:3000/" + this.film.imdbCode + "-" + this.film.title;
 			console.log(this.filmPath);
 			this.showFilm = true;
 		}
