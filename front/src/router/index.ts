@@ -22,7 +22,7 @@ const routes = [
 		path: '/film-info',
 		name: 'film-info',
 		component: () => import('../views/Film-info.vue')
-	}
+	} 
 ]
 
 const router = new VueRouter({
