@@ -1,5 +1,13 @@
 <template>
 <div id="lalou" >
+
+<div>
+    <form v-on:submit="submitForm" action="#" method="post">
+        <input type="text" v-model="idMovie" placeholder="Imdb ID">
+        <input type="submit" name="submit" value="Submit">
+    </form>
+</div>
+
 <div id="lali" v-if="idMovie != null && tab_info != null">
     <h1>{{ tab_info.Title }}</h1>
     <img :src="tab_info.Poster">
@@ -12,6 +20,7 @@
     <p><b>Country</b> : {{ tab_info.Country }}</p>
     <p><b>Resume</b> : {{ tab_info.Plot }}</p>
 </div>
+
 </div>
 </template>
 
@@ -28,17 +37,18 @@ export default {
 		}
 	},
 	methods:{
+        submitForm(e){
+            e.preventDefault();
+            this.getInfo(this.idMovie);
+        },
 	    getInfo(id){
-            console.log(id);
             axios
             .post('http://localhost:3000/film-info', {
                 idNumber: id
             })
             .then((response) => {
                 if(response.status == 200){
-                    console.log("lala", response);
                     this.tab_info = response.data;
-                    console.log("blabla");
                     console.log(this.tab_info);
                 }
                 else{
@@ -49,49 +59,6 @@ export default {
 	},
 	mounted(){
 		console.log("hello");
-		if (this.$route.query.id != undefined){
-            console.log(this.$route.query.id);
-            this.idMovie = this.$route.query.id;
-            this.getInfo(this.idMovie);
-        }
-        else{
-            console.log('pb mounted');
-        } 
 	}
 }
-
-//     methods:{
-//         putInfo(){
-//             this.getInfo(this.idMovie);
-//         },
-        // getInfo(id){
-        //     console.log(id);
-        //     axios
-        //     .post('http://localhost:3000/film-info', {
-        //         idNumber: id
-        //     })
-        //     .then((response) => {
-        //         if(response.status == 200){
-        //             console.log("lala", response);
-        //             this.tab_info = response.data;
-        //             console.log("blabla");
-        //             console.log(this.tab_info);
-        //         }
-        //         else{
-        //             console.log('pb');
-        //         }
-        //     })
-        // }
-//     },
-//     mounted(){
-        // if (this.$route.query.id != undefined){
-        //     console.log(this.$route.query.id);
-        //     this.idMovie = this.$route.query.id;
-        //     this.putInfo();
-        // }
-        // else{
-        //     console.log('pb mounted');
-        // } 
-//     }
-// }
  </script>
