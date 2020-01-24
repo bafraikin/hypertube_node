@@ -29,12 +29,17 @@ export class Movie extends BaseEntity {
 	@Column()
 	imdbCode!: string;
 
+
+	@Column()
+	pourcentage!: number;
+
 	toJSON() {
 		return {
 			id: this.id,
 			title: this.title,
 			downloadStatus: this.downloadStatus,
 			imdbCode: this.imdbCode,
+			pourcentage: this.pourcentage,
 		}
 	}
 
@@ -106,8 +111,9 @@ export class Movie extends BaseEntity {
 					stream.on('data', (chunk: any) => {
 						//console.log("received " + chunk.length + " bytes of data");
 						progress += chunk.length;
-						//console.log("Le progress ==> " + progress);
-						console.log("Le pourcentage du total ==>",  (progress * 100 / file.length) + "%");
+						// this.pourcentage = Math.round((progress * 100 / file.length));
+						// this.save();
+						// console.log("Le pourcentage du total ==>", this.pourcentage  + "%");
 					})
 					stream.on('end', () => {
 						console.log("Download completed");

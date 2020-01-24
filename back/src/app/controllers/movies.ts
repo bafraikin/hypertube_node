@@ -41,7 +41,8 @@ export default class moviesController {
 				movie.imageUrl = "la super image url du film";
 				movie.url = url;
 				movie.buildMagnetLink();
-				movie.downloadStatus = "notStarted"
+				movie.downloadStatus = "notStarted";
+				movie.pourcentage = 0;
 				await movie.save();
 			}
 			else{
@@ -87,20 +88,35 @@ export default class moviesController {
 			? parseInt(parts[1], 10)
 			: fileSize-1
 			const chunksize = (end-start)+1
-			const file = fs.createReadStream(path, {start, end})
+
+			console.log("le start ==>", start);
+			console.log("le end ==>", end);
+			console.log("le file size", fileSize);
+			const stream = fs.createReadStream(path, {start, end})
+
+
+			stream.on('open', function () {
+				const head = {
+					'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+					'Accept-Ranges': 'bytes',
+					'Content-Length': chunksize,
+					'Content-Type': 'video/mp4',
+				}
+				res.writeHead(206, head);
+				stream.pipe(res);
+			});
+
+			stream.on('error', function () {
+				console.log("------------------------------");
+				console.log("Error in stream");
+				res.status(416).send("error in stream");
+			})
 
 
 
 
 
-			const head = {
-				'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-				'Accept-Ranges': 'bytes',
-				'Content-Length': chunksize,
-				'Content-Type': 'video/mp4',
-			}
-			res.writeHead(206, head);
-			file.pipe(res);
+
 		} else {
 			console.log("pas de range **********************");
 			const head = {
