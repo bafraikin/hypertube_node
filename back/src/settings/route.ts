@@ -18,6 +18,6 @@ app.get('/test', (req: Request, res: Response) => {return res.send({coucou: 'sal
 	app.post('/film-search-api-query-string', controller.movies.ytsApiQueryString);
 	app.post('/download', controller.movies.getDownload);
 	app.get('/download/delete', controller.movies.deleteAllMovies);
-	app.get('/player', controller.movies.player);
+	app.get('/player/:file', controller.movies.player);
 	return app;
 }

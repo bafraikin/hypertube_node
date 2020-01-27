@@ -29,12 +29,17 @@ export class Movie extends BaseEntity {
 	@Column()
 	imdbCode!: string;
 
+
+	@Column()
+	pourcentage!: number;
+
 	toJSON() {
 		return {
 			id: this.id,
 			title: this.title,
 			downloadStatus: this.downloadStatus,
 			imdbCode: this.imdbCode,
+			pourcentage: this.pourcentage,
 		}
 	}
 
@@ -76,8 +81,6 @@ export class Movie extends BaseEntity {
 	}
 
 	async downloadMovie(){
-		console.log("11*************************");
-		console.log(this);
 		this.downloadStatus = "downloadOnGoing";
 		this.save();
 		var engine = torrentStream(this.magnetLink, {path: '/back/films'});
@@ -90,11 +93,7 @@ export class Movie extends BaseEntity {
 			this.save();
 		})
 		engine.on('ready', () => {
-		console.log("22*************************");
-		console.log(this);
 		engine.files.forEach( (file: any) => {
-		console.log("33*************************");
-		console.log(this);
 				var regex = /mp4/;
 				var isMovie = regex.test(file.name);
 				if (isMovie){
@@ -106,16 +105,15 @@ export class Movie extends BaseEntity {
 						start: 0,
 						end: file.length
 					}
-		console.log("44*************************");
-		console.log(this);
 					var filePath = '/back/films/' + this.imdbCode + '-' + this.title;
 					var write = fs.createWriteStream(filePath);
 					var stream = file.createReadStream(opt);
 					stream.on('data', (chunk: any) => {
 						//console.log("received " + chunk.length + " bytes of data");
 						progress += chunk.length;
-						//console.log("Le progress ==> " + progress);
-						console.log("Le pourcentage du total ==>",  (progress * 100 / file.length) + "%");
+						// this.pourcentage = Math.round((progress * 100 / file.length));
+						// this.save();
+						// console.log("Le pourcentage du total ==>", this.pourcentage  + "%");
 					})
 					stream.on('end', () => {
 						console.log("Download completed");

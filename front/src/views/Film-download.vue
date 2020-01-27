@@ -8,14 +8,21 @@
 					<tr>
 						<th>Title</th>
 						<th>Status</th>
+						<th>Pourcentage</th>
+						<th>Play</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr v-for="movie in films">
 						<td>{{ movie.title }}</td>
+
+						<td>{{ movie.pourcentage }}</td>
+
 						<td v-if="movie.downloadStatus == 'notStarted'">Download not started</td>
-						<td v-if="movie.downloadStatus == 'downloadOnGoing'">Wait for more download data</td>
-						<td  v-on:click="play(movie)"  v-if="movie.downloadStatus == 'downloadFinish'">Play the movie</td>
+						<td v-if="movie.downloadStatus == 'downloadOnGoing'">Download on going</td>
+						<td v-if="movie.downloadStatus == 'downloadFinish'">Download finish</td>
+
+						<td  v-on:click="play(movie)">Play</td>
 					</tr>
 				</tbody>
 			</table>
@@ -65,10 +72,6 @@ export default {
 				var url = undefined;
 				var hash = undefined;
 			}
-			console.log(url);
-			console.log(hash);
-			console.log(imdbCode);
-			console.log(movie);
 			axios
 				.post('http://localhost:3000/download', {
 					url: url,
