@@ -1,4 +1,3 @@
-
 import { User } from '../../app/models/user'
 import {Request, Response} from 'express'
 import { validationResult } from 'express-validator'
