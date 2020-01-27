@@ -18,18 +18,19 @@ export default class moviesController {
 		res.send("movies delete")
 	}
 
-	static async getDownload(req: Request, res: Response){
+	static async listDownload(req: Request, res: Response){
 		var allMovies = await Movie.find();
 		var hereMovie = JSON.stringify(allMovies)
 		res.send(hereMovie);
 	}
 
-	static async postDownload(req: Request, res: Response) {
+	static async getDownload(req: Request, res: Response) {
 		var url = req.body.url;
 		var hash = req.body.hash;
 		var imdbCode = req.body.imdbCode;
 		var movieInfo = req.body.movie;
-		console.log(movieInfo);
+		console.log(req.body);
+		console.log(req.query);
 		if (req.body.url != undefined && req.body.hash != undefined && req.body.imdbCode != undefined){
 			const movieSearch = await Movie.findOne({ hash: hash, url: url, imdbCode: imdbCode});
 			if (movieSearch == undefined){
@@ -41,7 +42,6 @@ export default class moviesController {
 				movie.url = url;
 				movie.buildMagnetLink();
 				movie.downloadStatus = "notStarted"
-				console.log("On save");
 				await movie.save();
 			}
 			else{
@@ -51,17 +51,13 @@ export default class moviesController {
 				movie.downloadMovie();
 			}
 		}
-		console.log("On get");
-		moviesController.getDownload(req, res);
+		moviesController.listDownload(req, res);
 	}
 
 	static ytsApiQueryString(req: Request, res: Response) {
 		var stringResearch = req.body.queryString;
 		stringResearch = encodeURI(stringResearch);
-		console.log("on recherche");
-		console.log(stringResearch);
 		var url = 'http://yts.tl/api/v2/list_movies.json?query_term='+ stringResearch;
-		console.log(url);
 		axios
 		.get(url)
 		.then((response: any) => {

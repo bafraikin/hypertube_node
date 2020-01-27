@@ -39,7 +39,7 @@ const routes = [
 		component: () => import('../views/Film-download.vue')
 	},
 	{
-		path: '/film-paly/',
+		path: '/film-player/',
 		name: 'player-film',
 		component: () => import('../views/Film-play.vue')
 	},

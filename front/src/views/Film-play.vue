@@ -1,10 +1,11 @@
-
 <template>
 	<div id="lala">
-		<h1>{{ film }}</h1>
-		<video id="videoPlayer" controls>
-			<source src="http://localhost:3000/player/title" type="video/mp4">
-		</video>
+		<div v-if="showFilm">
+			<h1>{{ film.title }}</h1>
+			<video id="videoPlayer" controls>
+				<source v-bind:src="filmPath" type="video/mp4">
+			</video>
+		</div>
 	</div>
 </template>
 
@@ -17,6 +18,7 @@ export default {
 		return {
 			film: null,
 			showFilm: false,
+			filmPath: null,
 		}
 	},
 	methods:{
@@ -27,8 +29,11 @@ export default {
 		},
 	},
 	mounted(){
-		console.log("hello");
-		this.film = this.$route.params.title;
+		this.film = this.$route.params.movie;
+		if (this.film != undefined){
+			this.filmPath = "http://localhost:3000/" + this.film.imdbCode + "-" + this.film.title;
+			this.showFilm = true;
+		}
 	}
 }
 </script>
