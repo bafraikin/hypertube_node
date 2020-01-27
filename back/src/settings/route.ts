@@ -4,6 +4,7 @@ import {Express } from 'express'
 import * as controller from '../app/controllers/index'
 import {Request, Response} from "express";
 import { check} from 'express-validator'
+const fs = require('fs');
 
 export default function setRoute(connection: Connection, app: Express) {
 
@@ -19,6 +20,9 @@ app.get('/test', (req: Request, res: Response) => {return res.send({coucou: 'sal
 	app.get('/download', controller.movies.getDownload);
 	app.get('/download/delete', controller.movies.deleteAllMovies);
 	app.get('/player/:title', controller.movies.player);
+
+	// app.get('/sub', (req: Request, res: Response) => {(fs.readFile("sub/copy.vtt", "utf-8", ((error: any, data: any) => {if(error){console.log('Error:- ' + error);} res.send(data);})))});
+
 	return app;
 }
 

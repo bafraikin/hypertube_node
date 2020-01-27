@@ -21,6 +21,8 @@ export default async function getServer (connection: Connection, isDev = false) 
 		extended: true
 	}))
 
+	server.use(express.static('sub'));
+
 	server.use(cookieParser('Armand'));
 	server.use(bodyParser.json());
 	server = setRoute(connection, server);
