@@ -8,7 +8,7 @@
     </form>
 </div>
 
-<div id="lali" v-if="idMovie != null && tab_info != null">
+<div id="lali" v-if="idMovie != null && tab_info != null && filmExist != false && filmResearch == true">
     <h1>{{ tab_info.Title }}</h1>
     <img :src="tab_info.Poster">
     <p><b>Director</b> : {{ tab_info.Director }}</p>
@@ -19,6 +19,10 @@
     <p><b>Runtime</b> : {{ tab_info.Runtime }}</p>
     <p><b>Country</b> : {{ tab_info.Country }}</p>
     <p><b>Resume</b> : {{ tab_info.Plot }}</p>
+</div>
+
+<div v-if="filmExist == false && filmResearch == true">
+    <p>Film not found</p>
 </div>
 
 </div>
@@ -34,12 +38,15 @@ export default {
 		return {
 			idMovie: null,
             tab_info: null,
+            filmExist: false,
+            filmResearch: false
 		}
 	},
 	methods:{
         submitForm(e){
             e.preventDefault();
             this.getInfo(this.idMovie);
+            this.filmResearch = true;
         },
 	    getInfo(id){
             axios
@@ -48,12 +55,18 @@ export default {
             })
             .then((response) => {
                 if(response.status == 200){
+                    if(response.data.Error == undefined){
+                        this.filmExist = true;
+                    }
+                    else{
+                        this.filmExist = false;
+                    }
                     this.tab_info = response.data;
                     console.log(this.tab_info);
                 }
-                else{
-                    console.log('pb');
-                }
+            })
+            .catch((error) => {
+                console.log(error.response);
             })
         }
 	},
