@@ -7,6 +7,7 @@ import {red} from 'chalk'
 import setRoute from './route'
 const cors = require('cors');
 import cookieParser from 'cookie-parser'
+// let useragent = require('express-useragent');
 
 export default async function getServer (connection: Connection, isDev = false) {
 	let server = express();
@@ -18,7 +19,6 @@ export default async function getServer (connection: Connection, isDev = false) 
 	});
 
 	server.use(express.static('films'));
-
 
 
 	server.use(bodyParser.urlencoded({
