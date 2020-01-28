@@ -19,6 +19,11 @@ const routes = [
 		component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
 	},
 	{
+		path: '/film-info',
+		name: 'film-info',
+		component: () => import('../views/Film-info.vue')
+	},
+	{
 		path: '/film-list',
 		name: 'film-list',
 		component: () => import('../views/Film-list.vue')
@@ -34,7 +39,7 @@ const routes = [
 		component: () => import('../views/Film-download.vue')
 	},
 	{
-		path: '/film-paly/',
+		path: '/film-player/',
 		name: 'player-film',
 		component: () => import('../views/Film-play.vue')
 	},

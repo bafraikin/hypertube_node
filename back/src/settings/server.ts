@@ -17,6 +17,10 @@ export default async function getServer (connection: Connection, isDev = false) 
 		next();
 	});
 
+	server.use(express.static('films'));
+
+
+
 	server.use(bodyParser.urlencoded({
 		extended: true
 	}))

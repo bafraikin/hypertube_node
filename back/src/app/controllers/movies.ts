@@ -18,18 +18,19 @@ export default class moviesController {
 		res.send("movies delete")
 	}
 
-	static async getDownload(req: Request, res: Response){
+	static async listDownload(req: Request, res: Response){
 		var allMovies = await Movie.find();
 		var hereMovie = JSON.stringify(allMovies)
 		res.send(hereMovie);
 	}
 
-	static async postDownload(req: Request, res: Response) {
+	static async getDownload(req: Request, res: Response) {
 		var url = req.body.url;
 		var hash = req.body.hash;
 		var imdbCode = req.body.imdbCode;
 		var movieInfo = req.body.movie;
-		console.log(movieInfo);
+		console.log(req.body);
+		console.log(req.query);
 		if (req.body.url != undefined && req.body.hash != undefined && req.body.imdbCode != undefined){
 			const movieSearch = await Movie.findOne({ hash: hash, url: url, imdbCode: imdbCode});
 			if (movieSearch == undefined){
@@ -40,8 +41,8 @@ export default class moviesController {
 				movie.imageUrl = "la super image url du film";
 				movie.url = url;
 				movie.buildMagnetLink();
-				movie.downloadStatus = "notStarted"
-				console.log("On save");
+				movie.downloadStatus = "notStarted";
+				movie.pourcentage = 0;
 				await movie.save();
 			}
 			else{
@@ -51,17 +52,13 @@ export default class moviesController {
 				movie.downloadMovie();
 			}
 		}
-		console.log("On get");
-		moviesController.getDownload(req, res);
+		moviesController.listDownload(req, res);
 	}
 
 	static ytsApiQueryString(req: Request, res: Response) {
 		var stringResearch = req.body.queryString;
 		stringResearch = encodeURI(stringResearch);
-		console.log("on recherche");
-		console.log(stringResearch);
 		var url = 'http://yts.tl/api/v2/list_movies.json?query_term='+ stringResearch;
-		console.log(url);
 		axios
 		.get(url)
 		.then((response: any) => {
@@ -76,26 +73,50 @@ export default class moviesController {
 	}
 
 	static player(req: Request, res: Response) {
-		const path = '/back/films/copy.mp4'
-		const stat = fs.statSync(path)
-		const fileSize = stat.size
-		const range = req.headers.range
+		// const path = '/back/films/copy.mp4'
+		const path = "./films/" + req.params.file;
+
+		console.log("********le path************");
+		console.log(path);
+		const stat = fs.statSync(path);
+		const fileSize = stat.size;
+		const range = req.headers.range;
 		if (range) {
-			const parts = range.replace(/bytes=/, "").split("-")
-			const start = parseInt(parts[0], 10)
+			const parts = range.replace(/bytes=/, "").split("-");
+			const start = parseInt(parts[0], 10);
 			const end = parts[1]
 			? parseInt(parts[1], 10)
 			: fileSize-1
 			const chunksize = (end-start)+1
-			const file = fs.createReadStream(path, {start, end})
-			const head = {
-				'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-				'Accept-Ranges': 'bytes',
-				'Content-Length': chunksize,
-				'Content-Type': 'video/mp4',
-			}
-			res.writeHead(206, head);
-			file.pipe(res);
+
+			console.log("le start ==>", start);
+			console.log("le end ==>", end);
+			console.log("le file size", fileSize);
+			const stream = fs.createReadStream(path, {start, end})
+
+
+			stream.on('open', function () {
+				const head = {
+					'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+					'Accept-Ranges': 'bytes',
+					'Content-Length': chunksize,
+					'Content-Type': 'video/mp4',
+				}
+				res.writeHead(206, head);
+				stream.pipe(res);
+			});
+
+			stream.on('error', function () {
+				console.log("------------------------------");
+				console.log("Error in stream");
+				res.status(416).send("error in stream");
+			})
+
+
+
+
+
+
 		} else {
 			console.log("pas de range **********************");
 			const head = {

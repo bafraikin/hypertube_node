@@ -5,18 +5,25 @@
 		<div v-if="showFilms" >
 			<table  class="ui celled table">
 				<thead>
-				<tr>
-					<th>Title</th>
-					<th>Status</th>
-				</tr>
+					<tr>
+						<th>Title</th>
+						<th>Status</th>
+						<th>Pourcentage</th>
+						<th>Play</th>
+					</tr>
 				</thead>
 				<tbody>
-				<tr v-for="movie in films">
-					<td>{{ movie.title }}</td>
-					<td v-if="movie.downloadStatus == 'notStarted'">Download not started</td>
-					<td v-if="movie.downloadStatus == 'downloadOnGoing'">Wait for more download data</td>
-					<td  v-on:click="play(movie)"  v-if="movie.downloadStatus == 'downloadFinish'">Play the movie</td>
-				</tr>
+					<tr v-for="movie in films">
+						<td>{{ movie.title }}</td>
+
+						<td>{{ movie.pourcentage }}</td>
+
+						<td v-if="movie.downloadStatus == 'notStarted'">Download not started</td>
+						<td v-if="movie.downloadStatus == 'downloadOnGoing'">Download on going</td>
+						<td v-if="movie.downloadStatus == 'downloadFinish'">Download finish</td>
+
+						<td  v-on:click="play(movie)">Play</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
@@ -38,10 +45,9 @@ export default {
 	},
 	methods:{
 		play(movie){
-			this.$router.push({ name: "player-film", params:{title: movie.title}});
+			this.$router.push({ name: "player-film", params:{movie: movie}});
 		},
 		handleResponse(response){
-			console.log(response);
 			if (response.status == 200){
 				var copyResponse = response.data;
 				this.films = copyResponse;
@@ -51,22 +57,26 @@ export default {
 				console.log("error in API");
 			}
 		},
-		getMovies(){
-			console.log("On get buddy");
-			axios
-				.get('http://localhost:3000/download')
-				.then(response => {
-					this.handleResponse(response);
-				})
-		},
 		downloadMovies(movie, torrent){
-			console.log("On telecharge buddy");
-			console.log(movie.imdb_code);
+			if (movie != undefined){
+				var imdbCode = movie.imdb_code;
+			}
+			else{
+				var imdbCode = undefined;
+			}
+			if (torrent != undefined){
+				var url = torrent.url;
+				var hash = torrent.hash;
+			}
+			else {
+				var url = undefined;
+				var hash = undefined;
+			}
 			axios
 				.post('http://localhost:3000/download', {
-					url: torrent.url,
-					hash: torrent.hash,
-					imdbCode: movie.imdb_code,
+					url: url,
+					hash: hash,
+					imdbCode: imdbCode,
 					movie: movie,
 				})
 				.then(response => {
@@ -75,17 +85,9 @@ export default {
 		},
 	},
 	mounted(){
-		console.log("hello");
-		//if (this.$route.params.url != undefined && this.$route.params.hash != undefined && this.$route.params.title != undefined){
-		if (this.$route.params.movie){
-			var movie = this.$route.params.movie;
-			var torrent = this.$route.params.torrent
-			console.log("on veut telecharger un film", movie);
-			this.downloadMovies(movie, torrent);
-		}
-		else {
-			this.getMovies();
-		}
+		var movie = this.$route.params.movie;
+		var torrent = this.$route.params.torrent
+		this.downloadMovies(movie, torrent);
 	}
 }
 </script>

@@ -1,18 +1,23 @@
-
 <template>
 	<div id="lala">
-		<h1>{{ film }}</h1>
-		<video id="videoPlayer" controls crossorigin="true">
-			<source src="http://localhost:3000/player/title" type="video/mp4">
-			<track label="English" kind="subtitles" srclang="en" src="http://localhost:3000/copy.vtt" default>
-			<track label="French" kind="subtitles" srclang="fr" src="http://localhost:3000/tlk.vtt">
-			<track label="Italian" kind="subtitles" srclang="it" src="http://localhost:3000/tlk-it.vtt">
-		</video>
 
+		<div v-if="showFilm">
+			<h1>{{ film.title }}</h1>
+			<video  ref="myVid"  id="videoPlayer"  	@progress="playerPgrogress($event)" 
+													@changed="playerStateChanged($event)"
+													@error="errorVideo($event)"
+													@durationchange="durationchange($event)"
+													@stalled="stalled($event)"
+						controls crossorigin="true">
+				<source v-bind:src="filmPath" type="video/mp4"   >
+				<track label="English" kind="subtitles" srclang="en" src="http://localhost:3000/copy.vtt" default>
+			</video>
+		</div>
 	</div>
 </template>
 
 <script>
+
 import axios from 'axios';
 
 export default {
@@ -21,7 +26,7 @@ export default {
 		return {
 			film: null,
 			showFilm: false,
-			soustitre: null
+			filmPath: null,
 		}
 	},
 	methods:{
@@ -39,11 +44,33 @@ export default {
 		},
 		getMovies(){
 		},
+		playerPgrogress(event){
+			console.log("player progress");
+			//console.log(event);
+		},
+		playerStateChanged(event){
+			console.log("player state change");
+			//console.log(event);
+		},
+		errorVideo(event){
+			console.log("player error");
+			//console.log("Error " + vid.error.code + "; details: " + vid.error.message);
+			//alert("Error! Something went wrong");
+		},
+		durationchange(event){
+			console.log("duration change");
+		},
+		stalled(event){
+			console.log(event);
+		},
 	},
 	mounted(){
-		console.log("hello");
-		this.film = this.$route.params.title;
-		// this.getSub();
+		this.film = this.$route.params.movie;
+		if (this.film != undefined){
+			this.filmPath = "http://localhost:3000/player/" + this.film.imdbCode + "-" + this.film.title;
+			this.showFilm = true;
+		}
+		console.log("bijour");
 	}
 }
 </script>
