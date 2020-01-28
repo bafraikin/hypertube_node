@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
+		"rootDirs": [
+			"./src"
+		],
     "target": "esnext",
+		"traceResolution": true,
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
