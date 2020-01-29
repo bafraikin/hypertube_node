@@ -4,8 +4,7 @@
       attach="#app"
       v-model="dialog"
       max-width="700"
-      dark
-    >
+      dark>
       <template v-slot:activator="{ on }">
         <v-btn@click.stop="dialog = true">
           sign up
@@ -32,7 +31,7 @@
   export default {
     data() {
       return {
-        dialog: false
+        dialog: false,
       }
     },
     components: {

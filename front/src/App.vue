@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <layout>
+    <component :is="layout">
       <router-view/>
-    </layout>
+    </component>
   </div>
 </template>
 
@@ -30,15 +30,12 @@
 </style>
 
 <script>
-  import	layout from './components/layouts/layout.vue'
-
   export default {
-
-  components: {
-
-  layout
+  computed: {
+  layout() {
+  return (this.$route.meta.layout)
+    }
   }
-
 }
 
 
