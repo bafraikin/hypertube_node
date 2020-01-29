@@ -3,9 +3,8 @@
 		<v-toolbar-title>Hypertubulaire</v-toolbar-title>
 
 		<v-spacer></v-spacer>
-		<buttonsignup></buttonsignup>
-		<buttonsignin></buttonsignin>
-		<!-- // -->
+		<sign-up></sign-up>
+		<sign-in></sign-in>
 			<div data-app='true'> 
 				<v-menu>
 					<template v-slot:activator="{ on }">
@@ -29,19 +28,18 @@
 </template>
 
 <script>
-import buttonSignUp from './modal_signup'
-import buttonSignIn from './modal_signin'
-//  import eventBus from './bus_event.js'
+import signup from './modal_signup'
+import signin from './modal_signin'
 
 export default {
-	data() {
-		return {
-			arr: ['a', 'c']
-		}
-	},
-	components: {
-		buttonsignup: buttonSignUp,
-		buttonsignin: buttonSignIn,
-	} 
+    data() {
+      	return {
+        	arr: ['a', 'c']
+      	}
+    },
+    components: {
+      	"sign-up": signup,
+      	"sign-in": signin,
+  	} 
 }
 </script>
