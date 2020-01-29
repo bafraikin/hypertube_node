@@ -1,5 +1,7 @@
 import {Request, Response} from 'express';
+import { fstat } from 'fs';
 const axios = require('axios');
+const fs = require('fs');
 
 export default class moviesController{
     static getSub(req: Request, res: Response){
@@ -15,5 +17,19 @@ export default class moviesController{
         .catch((error: any) => {
             console.log(error.response);
         })
+    }
+
+    static hashFile(req: Request, res:Response){
+        console.log("TEEESSTTTTT");
+        console.log(req.body.videoPath);
+        let filePath: String = req.body.videoPath;
+        let stats: any = fs.statSync(filePath);
+        let sizeFile = stats.size;
+        res.send(sizeFile);
+        // fs.readFile(req.body.videoPath, (err: any, data: any) => {
+        //     if (err) throw err;
+        //     console.log(data);
+        //     res.send(data);
+        // });
     }
 }

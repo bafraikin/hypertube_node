@@ -30,15 +30,6 @@ export default {
 		}
 	},
 	methods:{
-		// getSub(){
-		// 	console.log("On get subtitle");
-		// 	axios
-		// 		.get('http://localhost:3000/sub')
-		// 		.then(response => {
-		// 			console.log(response);
-		// 			this.soustitre = response.data;
-		// 		})
-		// },
 		play(){
 			this.$router.push({ name: "film-play", params:{title: title}});
 		},

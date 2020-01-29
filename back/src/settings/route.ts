@@ -20,7 +20,7 @@ app.get('/test', (req: Request, res: Response) => {return res.send({coucou: 'sal
 	app.post('/download', controller.movies.getDownload);
 	app.get('/download/delete', controller.movies.deleteAllMovies);
 	app.get('/player/:file', controller.movies.player);
-	app.get('/subtitles', controller.subtitles.getSub);
+	app.post('/subtitles', controller.subtitles.hashFile);
 	
 	return app;
 }

@@ -45,11 +45,30 @@ export default {
 	},
 	methods:{
 		play(movie){
+			this.getHash(movie);
 			this.$router.push({ name: "player-film", params:{movie: movie}});
+		},
+		getHash(movie){
+			var url = "http://localhost:3000/subtitles";
+			axios
+			.post(url, {
+				videoPath: "./films/" + movie.imdbCode + "-" + movie.title
+			})
+			.then(response => {
+				if(response.status == 200){
+					console.log("LA RESPONSE");
+					console.log(response.data);
+				}
+			})
+			.catch(error => {
+				console.log(error.response);
+			})
 		},
 		handleResponse(response){
 			if (response.status == 200){
 				var copyResponse = response.data;
+				console.log("lalala");
+				console.log(response);
 				this.films = copyResponse;
 				this.showFilms = true;
 			}
@@ -80,13 +99,14 @@ export default {
 					movie: movie,
 				})
 				.then(response => {
+
 					this.handleResponse(response);
 				})
 		},
 	},
 	mounted(){
 		var movie = this.$route.params.movie;
-		var torrent = this.$route.params.torrent
+		var torrent = this.$route.params.torrent;
 		this.downloadMovies(movie, torrent);
 	}
 }
