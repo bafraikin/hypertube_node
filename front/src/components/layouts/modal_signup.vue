@@ -1,60 +1,42 @@
 <template>
-  <div>
-
-    <v-row justify="center">
-      <v-btn
-        dark
-        @click.stop="dialog = true"
-      >
-        sign up
-      </v-btn>
-
-        
-        <v-dialog
-          attach="#app"
-          v-model="dialog"
-          max-width="700"
-          dark
-        >
-          <v-card>
-            <v-card-title class="headline">Creer ton compte utilisateur</v-card-title>
-
-            <v-card-text>
-              Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-
-              <v-btn
-                color="green darken-1"
-                text
-                @click="dialog = false"
-              >
-                Disagree
-              </v-btn>
-
-              <v-btn
-                color="green darken-1"
-                text
-                @click="dialog = false"
-              >
-                Agree
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-    </v-row>
-  </div>
+  <v-row justify="center">
+    <v-dialog
+      attach="#app"
+      v-model="dialog"
+      max-width="700"
+      dark
+    >
+      <template v-slot:activator="{ on }">
+        <v-btn@click.stop="dialog = true">
+          sign up
+        </v-btn>
+      </template>
+      <v-card>
+        <v-card-title>
+          <span class="headline">Create an account</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <form-sign-up/>
+          </v-container>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+  </v-row>
 </template>
 
 
 <script>
+  import formSignUp from './form_signup'
+
   export default {
     data() {
       return {
         dialog: false
       }
     },
+    components: {
+      'form-sign-up': formSignUp
+    }
   }
 </script>
