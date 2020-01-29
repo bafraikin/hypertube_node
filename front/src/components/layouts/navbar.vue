@@ -28,8 +28,7 @@
 </template>
 
 <script>
-  //  import buttonSignUp from './button_signup'
-  import eventBus from './bus_event.js'
+  import signup from './modal_signup'
 
   export default {
     data() {
@@ -38,7 +37,7 @@
       }
     },
     components: {
-      //    buttonSignUp
+      "sign-up": signup
   } 
   }
 </script>
