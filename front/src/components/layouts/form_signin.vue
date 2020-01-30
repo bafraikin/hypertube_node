@@ -11,10 +11,13 @@
         :rules="emailRules"
         label="E-mail"
         required
-      ></v-text-field>
+      >
+<v-icon>fas fa-lock</v-icon>
+      </v-text-field>
 
       <v-text-field
         v-model="password"
+
         :rules="passwordRules"
         label="Password"
             :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -36,6 +39,9 @@
     </v-form>
   </div>
 </template>
+
+
+
 
 <script>
 

@@ -61,5 +61,6 @@ export default class userController {
 	}
 
 	static test(req: Request, res: Response) {
+		res.send("all good");
 	}
 }

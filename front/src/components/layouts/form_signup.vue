@@ -1,11 +1,22 @@
 <template>
   <div>
 
+
+
     <v-form
       ref="form"
       v-model="valid"
       :lazy-validation="lazy"
     >
+
+  	  <!-- login -->
+      <v-text-field
+        label="login"
+        v-model="login"
+        required
+      ></v-text-field>
+
+  	  <!-- mail -->
       <v-text-field
         v-model="email"
         :rules="emailRules"
@@ -13,6 +24,7 @@
         required
       ></v-text-field>
 
+  	  <!-- password -->
       <v-text-field
         v-model="password"
         :rules="passwordRules"
@@ -22,6 +34,26 @@
              @click:append="showPassword = !showPassword"
         required
       ></v-text-field>
+
+  	  <!-- firstname -->
+      <v-text-field
+        label="First name"
+        v-model="firstName"
+        required
+            append-icon="mdi-android-debug-bridge"
+
+      >
+
+      </v-text-field>
+  	  <!-- lastname -->
+      <v-text-field
+        label="lname"
+        v-model="lastName"
+        required
+      ></v-text-field>
+
+  	  <!-- profile_pic -->
+
 
 
 
@@ -54,8 +86,20 @@
 </template>
 
 <script>
+
+import axios from 'axios';
+
+
   export default {
     data: () => ({
+
+		login: '',
+		fname: '',
+		lname: '',
+
+
+
+
       valid: true,
       password: '',
         showPassword: false,
@@ -76,10 +120,25 @@
       validate () {
         if (this.$refs.form.validate()) {
           this.snackbar = true
+          this.backCreate();
         }
       },
       reset () {
-        this.$refs.form.reset()
+          this.$refs.form.reset()
+      },
+      backCreate () {
+		  axios
+          .get('http://localhost:3000/coucou', {
+          })
+          .then((response) => {
+          	  console.log(response);
+              if(response.status == 200){
+                  console.log(this.response);
+              }
+          })
+          .catch((error) => {
+              console.log(error.response);
+          })
       },
     },
   }
