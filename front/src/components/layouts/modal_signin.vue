@@ -1,34 +1,33 @@
-
 <template>
-	<v-row justify="center">
-		<v-dialog
-			attach="#app"
-			v-model="dialog"
-			persistent
-			max-width="290"
-			dark
-		>
-   <template v-slot:activator="{ on }">
-	   <v-btn color="primary" dark v-on="on">Sign In</v-btn>
-   </template>
-   <v-card>
-	   <v-card-title class="headline">Use Google's location service?</v-card-title>
-	   <v-card-text>Let Google run the world</v-card-text>
-	   <sign-in-form></sign-in-form>
-	   <v-card-actions>
-		   <v-spacer></v-spacer>
-		   <v-btn color="green darken-1" text @click="dialog = false">Disagree</v-btn>
-		   <v-btn color="green darken-1" text @click="dialog = false">Agree</v-btn>
-	   </v-card-actions>
-   </v-card>
-		</v-dialog>
-	</v-row>
+  <v-row justify="center">
+    <v-dialog
+      attach="#app"
+      v-model="dialog"
+      max-width="700"
+      dark>
+      <template v-slot:activator="{ on }">
+        <v-btn@click.stop="dialog = true">
+          sign in
+        </v-btn>
+      </template>
+      <v-card>
+        <v-card-title>
+          <span class="headline">Create an account</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <form-sign-in/>
+          </v-container>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+  </v-row>
 </template>
 
 
 <script>
 
-import signinform from './signinform'
+import formSignIn from './form_signin'
 
 
 export default {
@@ -38,7 +37,7 @@ export default {
 		}
 	},
 	components: {
-		"sign-in-form": signinform,
+		"form-sign-in": formSignIn,
 	},
 }
 </script>
