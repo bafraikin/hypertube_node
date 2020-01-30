@@ -1,6 +1,5 @@
 import {BaseEntity, Entity, PrimaryGeneratedColumn, Column} from "typeorm";
-import {IsFQDN, IsBoolean, IsAlphanumeric, Length, IsEmail, validate, ValidationError} from "class-validator";
-
+import validator from 'validator';
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -11,33 +10,25 @@ export class User extends BaseEntity {
 		id!: number;
 
 	@Column({unique: true})
-		@IsEmail()
-		@Length( 4,  254)
 		email!: string;
 
-	
+
 	@Column()
-		@IsBoolean()
 		oauth!: boolean;	
+
 	@Column()
-		@Length(1,  10)
 		firstname!: string;
 
 	@Column()
-		@Length(1,  10)
 		lastname!: string;
 
 	@Column()
-		@Length(1,  10)
 		pseudo!: string;
 
 	@Column()
-		@Length(8,  254)
 		password!: string;
 
 	@Column()
-		@IsFQDN()
-		@Length( 3, 254)
 		imageUrl!: string;
 
 
@@ -52,28 +43,35 @@ export class User extends BaseEntity {
 	}
 
 	toJSON() {
-	return {
+		return {
 		id: this.id,
-		email: this.email
+	    email: this.email
 		}
 	}
 
 	checkPassIsComplex() {
-		if(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,}$/.test(this.password))
+		if(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,255}$/.test(this.password))
 			return true;
 		return false;
 	}
 
-	async isValide(): Promise<boolean> {
-		return validate(this).then((errors: ValidationError[]) => {
-				if (errors.length ==  0 && this.checkPassIsComplex ()) 
-					return true;
-				return false;
-				}).catch(err => {return false});
+	isValide(): boolean {
+		let error = Array;
+		if( 
+		validator.isEmail(this.email) &&
+		validator.isAlpha(this.pseudo) && validator.isLength(this.pseudo ,{ min:1, max: 250}) &&
+		validator.isAlpha(this.firstname) &&  validator.isLength(this.firstname ,{min:1, max: 250}) &&
+		validator.isAlpha(this.lastname) && validator.isLength(this.lastname ,{min:1, max:250}) &&
+		validator.isFQDN(this.imageUrl) && validator.isLength(this.imageUrl ,{min:1, max: 250}) &&
+		this.checkPassIsComplex())
+			return true;
+		return false;
 	}
 
 	async isEmailTaken() : Promise<boolean> {
-		let bool = await  User.find({ email: this.email});
-		return bool.isObjectEmpty();
+		const  bool = await User.findOne({ email: this.email});
+		if (typeof bool !== 'undefined')
+			return true;
+		return false;
 	}
 }
