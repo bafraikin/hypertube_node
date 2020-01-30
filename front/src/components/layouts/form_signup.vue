@@ -94,8 +94,8 @@ import axios from 'axios';
     data: () => ({
 
 		login: '',
-		fname: '',
-		lname: '',
+		firstName: '',
+		lastName: '',
 
 
 
