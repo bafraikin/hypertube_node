@@ -1,6 +1,5 @@
 import { User } from '../../app/models/user'
 import {Request, Response} from 'express'
-import {validate} from 'class-validator'
 
 export default class userController {
 
@@ -13,7 +12,7 @@ export default class userController {
 		user.password = req.body.password;
 		user.imageUrl = "http://pngimg.com/uploads/anaconda/anaconda_PNG11.png"; //req.body.img;
 		user.oauth = false;
-		if (await user.isValide() && !(await user.isEmailTaken())){
+		if (await User.isValide() && !(await user.isEmailTaken())){
 			user.setPassword(user.password);
 			user.save();
 			res.send("true");

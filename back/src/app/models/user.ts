@@ -10,34 +10,34 @@ export class User extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
-	@Column({unique: true})
 	@IsEmail()
 	@Length( 4,  254)
+	@Column({unique: true})
 	email!: string;
 
-	@Column()
 	@IsBoolean()
+	@Column()
 	oauth!: boolean;	
 
-	@Column()
 	@Length(1,  10)
+	@Column()
 	firstName!: string;
 
-	@Column()
 	@Length(1,  10)
+	@Column()
 	lastName!: string;
 
-	@Column()
 	@Length(1,  10)
+	@Column()
 		login!: string;
 
-	@Column()
 	@Length(8,  254)
+	@Column()
 		password!: string;
 
-	@Column()
 	@IsFQDN()
 	@Length( 3, 254)
+	@Column()
 	imageUrl!: string;
 
 	async setPassword(pw: string) {
@@ -62,9 +62,9 @@ export class User extends BaseEntity {
 		return false;
 	}
 
-	async isValide(): Promise<boolean> {
-		return validate(this).then((errors: ValidationError[]) => {
-				if (errors.length ==  0 && this.checkPassIsComplex ()) 
+	 static async isValid(user: User): Promise<boolean> {
+		return validate(user).then((errors: ValidationError[]) => {
+				if (errors.length ==  0 && user.checkPassIsComplex()) 
 					return true;
 				return false;
 				}).catch(err => {return false});
