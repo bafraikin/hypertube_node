@@ -20,17 +20,17 @@ export default async function getServer (connection: Connection, isDev = false) 
 	});	
 
 	server.use(bodyParser.urlencoded({
-extended: true
-}));
+		extended: true
+	}));
 
 
-server.use(cookieSession({
-maxAge: 30 * 24 * 60 * 60 * 1000,
-keys: ['Arman.D']
-}));
-server.use(cookieParser('Arman.D'));
-server.use(bodyParser.json());
-server = await setupPassport(server);
-server = setRoute(connection, server);
-return server
+	server.use(cookieSession({
+		maxAge: 30 * 24 * 60 * 60 * 1000,
+		keys: ['Arman.D']
+	}));
+	server.use(cookieParser('Arman.D'));
+	server.use(bodyParser.json());
+	server = await setupPassport(server);
+	server = setRoute(connection, server);
+	return server
 }

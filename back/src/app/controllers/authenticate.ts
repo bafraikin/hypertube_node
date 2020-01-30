@@ -12,19 +12,21 @@ export default class authenticateController {
 			return done(null, false)
 		else {
 			const passwordIsCorrect = await user.validatePassword(password)
-				console.log('🙃');
+			console.log('👌');
 
 			if (passwordIsCorrect){
 				console.log('🙃');
 				return done(null, user.toJSON());
 				}
-			else
+			else{
+				console.log('🙂');
 				return done(null, false)
+			}
 		}
 	}
 
 	static async deserialize(id: number, done: Function) {
-		const user: User = (await User.findOne({id}) as User);
+		const user: User = await User.findOne({id}) as User;
 		if (user)
 			done(null, user)
 		else

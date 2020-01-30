@@ -12,13 +12,12 @@ export default class userController {
 		user.password = req.body.password;
 		user.imageUrl = "http://pngimg.com/uploads/anaconda/anaconda_PNG11.png"; //req.body.img;
 		user.oauth = false;
-		if (await User.isValide() && !(await user.isEmailTaken())){
+		if (await user.isValid() && !(await user.isEmailTaken())){	
 			user.setPassword(user.password);
 			user.save();
 			res.send("true");
 			return;
 		}
-		console.log(User.find());
 		res.send("false");
 	}
 
@@ -26,32 +25,32 @@ export default class userController {
 	static async updatePassword(req: Request, res: Response) {
 		let user = await  User.findOne({ email: req.body.email });
 		if (user instanceof User && !(user.isObjectEmpty()))
-		{
-			user.password =  req.body.password;
-			if (user.checkPassIsComplex()){
-				await user.setPassword(req.body.password);
-				user.save;
-				res.send(true);
-				return;
+			{
+				user.password =  req.body.password;
+				if (user.checkPassIsComplex()){
+					await user.setPassword(req.body.password);
+					user.save;
+					res.send(true);
+					return;
+				}
 			}
-		}
-		res.send(false);
-		return;
+			res.send(false);
+			return;
 	}
 
 	static async updateEmail(req: Request, res: Response) {
 		let user = await  User.findOne({ email: req.body.email });
 		if (user instanceof User && !(user.isObjectEmpty()))
-		{
-			user.email = req.body.email;
-			if (await user.isEmailTaken()){
-				user.save;
-				res.send(true);
-				return;
+			{
+				user.email = req.body.email;
+				if (await user.isEmailTaken()){
+					user.save;
+					res.send(true);
+					return;
+				}
 			}
-		}
-		res.send(false);
-		return;
+			res.send(false);
+			return;
 	}
 
 	static destroy(req: Request, res: Response) {
