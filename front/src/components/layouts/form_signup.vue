@@ -14,6 +14,7 @@
         label="login"
         v-model="login"
         required
+        append-icon="mdi-lead-pencil"
       ></v-text-field>
 
   	  <!-- mail -->
@@ -21,6 +22,7 @@
         v-model="email"
         :rules="emailRules"
         label="E-mail"
+        append-icon="mdi-email"
         required
       ></v-text-field>
 
@@ -40,8 +42,7 @@
         label="First name"
         v-model="firstName"
         required
-            append-icon="mdi-android-debug-bridge"
-
+        append-icon="mdi-lead-pencil"
       >
 
       </v-text-field>
@@ -50,11 +51,10 @@
         label="lname"
         v-model="lastName"
         required
+        append-icon="mdi-lead-pencil"
       ></v-text-field>
 
   	  <!-- profile_pic -->
-
-
 
 
       <v-checkbox
