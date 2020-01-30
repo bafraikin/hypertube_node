@@ -5,7 +5,7 @@ import * as bodyParser from 'body-parser'
 import {Connection} from 'typeorm'
 import {red} from 'chalk'
 import setRoute from './route'
-const cors = require('cors');
+//const cors = require('cors');
 import cookieParser from 'cookie-parser'
 const cookieSession = require('cookie-session')
 
@@ -21,6 +21,15 @@ credentials: false
 	server.use(bodyParser.urlencoded({
 extended: true
 }));
+
+	server.use(function(req, res, next) {
+		res.header("Access-Control-Allow-Origin", "http://localhost:8080");
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		next();
+	});
+
+
+
 
 
 server.use(cookieSession({
