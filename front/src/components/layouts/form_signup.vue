@@ -1,22 +1,18 @@
 <template>
   <div>
 
-
-
     <v-form
       ref="form"
       v-model="valid"
       :lazy-validation="lazy"
     >
 
-  	  <!-- login -->
       <v-text-field
         label="login"
         v-model="login"
         required
       ></v-text-field>
 
-  	  <!-- mail -->
       <v-text-field
         v-model="email"
         :rules="emailRules"
@@ -24,38 +20,27 @@
         required
       ></v-text-field>
 
-  	  <!-- password -->
       <v-text-field
         v-model="password"
         :rules="passwordRules"
         label="Password"
-            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="showPassword ? 'text' : 'password'"
-             @click:append="showPassword = !showPassword"
+        :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+        :type="showPassword ? 'text' : 'password'"
+        @click:append="showPassword = !showPassword"
         required
       ></v-text-field>
 
-  	  <!-- firstname -->
       <v-text-field
         label="First name"
         v-model="firstName"
         required
-            append-icon="mdi-android-debug-bridge"
+      ></v-text-field>
 
-      >
-
-      </v-text-field>
-  	  <!-- lastname -->
       <v-text-field
-        label="lname"
+        label="Last name"
         v-model="lastName"
         required
       ></v-text-field>
-
-  	  <!-- profile_pic -->
-
-
-
 
       <v-checkbox
         v-model="checkbox"
@@ -87,57 +72,56 @@
 
 <script>
 
-import axios from 'axios';
+  import axios from 'axios';
 
 
   export default {
     data: () => ({
-
-		login: '',
-		firstName: '',
-		lastName: '',
-
-
-
+      login: '',
+      firstName: '',
+      lastName: '',
 
       valid: true,
       password: '',
-        showPassword: false,
-      passwordRules: [
-        v => !!v || 'Password is required',
-        v=> (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,}$/.test(v)) || 'Password must contains moult truc',
-      ],
+      showPassword: false,
       email: '',
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-      ],
       checkbox: false,
       lazy: false,
+      passwordRules: [
+        v => !!v || 'Password is required',
+        v=> (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,}$/.test(v)) || 'Password must contains moult truc'],
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',],
     }),
 
     methods: {
-      validate () {
+      validate() {
         if (this.$refs.form.validate()) {
           this.snackbar = true
-          this.backCreate();
+          this.requestForm();
         }
       },
-      reset () {
-          this.$refs.form.reset()
+      reset() {
+        this.$refs.form.reset()
       },
-      backCreate () {
-		  axios
-          .get('http://localhost:3000/coucou', {
+      requestForm() {
+        axios
+          .post('http://localhost:3000/user', {
+            email: this.email,
+            firstName: this.firstName,
+            lastName: this.lastName,
+            password: this.password,
+            login: this.login,
           })
           .then((response) => {
-          	  console.log(response);
-              if(response.status == 200){
-                  console.log(this.response);
-              }
+            console.log(response);
+            if(response.status == 200){
+              console.log(this.response);
+            }
           })
           .catch((error) => {
-              console.log(error.response);
+            console.log(error.response);
           })
       },
     },

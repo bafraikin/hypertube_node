@@ -30,15 +30,13 @@
 </style>
 
 <script>
-  export default {
+export default {
   computed: {
-  layout() {
-  return (this.$route.meta.layout)
+    layout() {
+      return (this.$route.meta.layout)
     }
   }
 }
-
-
 </script>
 
 

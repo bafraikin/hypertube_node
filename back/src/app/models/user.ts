@@ -1,5 +1,5 @@
 import {BaseEntity, Entity, PrimaryGeneratedColumn, Column} from "typeorm";
-import {IsFQDN, IsBoolean, IsAlphanumeric, Length, IsEmail, validate, ValidationError} from "class-validator";
+import {IsFQDN, IsBoolean, Length, IsEmail, validate, ValidationError} from "class-validator";
 
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -8,39 +8,37 @@ const saltRounds = 10;
 export class User extends BaseEntity {
 
 	@PrimaryGeneratedColumn()
-		id!: number;
+	id!: number;
 
 	@Column({unique: true})
-		@IsEmail()
-		@Length( 4,  254)
-		email!: string;
-
-	
-	@Column()
-		@IsBoolean()
-		oauth!: boolean;	
-	@Column()
-		@Length(1,  10)
-		firstname!: string;
+	@IsEmail()
+	@Length( 4,  254)
+	email!: string;
 
 	@Column()
-		@Length(1,  10)
-		lastname!: string;
+	@IsBoolean()
+	oauth!: boolean;	
 
 	@Column()
-		@Length(1,  10)
-		pseudo!: string;
+	@Length(1,  10)
+	firstName!: string;
 
 	@Column()
-		@Length(8,  254)
+	@Length(1,  10)
+	lastName!: string;
+
+	@Column()
+	@Length(1,  10)
+		login!: string;
+
+	@Column()
+	@Length(8,  254)
 		password!: string;
 
 	@Column()
-		@IsFQDN()
-		@Length( 3, 254)
-		imageUrl!: string;
-
-
+	@IsFQDN()
+	@Length( 3, 254)
+	imageUrl!: string;
 
 	async setPassword(pw: string) {
 		const hash = await bcrypt.hash(pw, saltRounds);
@@ -55,7 +53,7 @@ export class User extends BaseEntity {
 	return {
 		id: this.id,
 		email: this.email
-		}
+			}
 	}
 
 	checkPassIsComplex() {

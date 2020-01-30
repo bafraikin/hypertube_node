@@ -7,11 +7,11 @@ export default class userController {
 	static async create(req: Request, res: Response) {
 		const user = new User();
 		user.email = req.body.email;
-		user.pseudo = req.body.pseudo;
-		user.firstname = req.body.firstname;
-		user.lastname = req.body.lastname;
+		user.login = req.body.login;
+		user.firstName = req.body.firstName;
+		user.lastName = req.body.lastName;
 		user.password = req.body.password;
-		user.imageUrl = req.body.img;
+		user.imageUrl = "http://pngimg.com/uploads/anaconda/anaconda_PNG11.png"; //req.body.img;
 		user.oauth = false;
 		if (await user.isValide() && !(await user.isEmailTaken())){
 			user.setPassword(user.password);
@@ -21,7 +21,6 @@ export default class userController {
 		}
 		console.log(User.find());
 		res.send("false");
-
 	}
 
 
