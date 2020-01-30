@@ -12,7 +12,7 @@
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">Create an account</span>
+          <span class="headline">Sign in to your account</span>
         </v-card-title>
         <v-card-text>
           <v-container>
