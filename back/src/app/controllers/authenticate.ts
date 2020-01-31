@@ -12,13 +12,15 @@ export default class authenticateController {
 			return done(null, false)
 		else {
 			const passwordIsCorrect = await user.validatePassword(password)
-				console.log('🙃');
+			console.log('Le password result =>');
+				console.log(passwordIsCorrect);
 
 			if (passwordIsCorrect){
 				console.log('🙃');
 				return done(null, user.toJSON());
 				}
 			else
+				console.log(':)');
 				return done(null, false)
 		}
 	}
@@ -35,14 +37,15 @@ export default class authenticateController {
 		done(null, user.id);
 	}
 
-	static authenticateObject():{} {
-		return { 
-			successRedirect: '/',
-			failureRedirect: '/login',
-			failureFlash: false,
-			successFlash: false 
-		}
-	}
+	//static authenticateObject():{} {
+	//	return { 
+	//		//successRedirect: '/',
+	//		successRedirect: '/success-sign-in',
+	//		failureRedirect: '/login',
+	//		failureFlash: false,
+	//		successFlash: false 
+	//	}
+	//}
 
 	static logout(req: Request, res: Response) {
 		req.logout();

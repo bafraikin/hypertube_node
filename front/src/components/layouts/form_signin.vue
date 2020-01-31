@@ -12,7 +12,6 @@
         label="E-mail"
         required
       >
-<v-icon>fas fa-lock</v-icon>
       </v-text-field>
 
       <v-text-field
@@ -45,34 +44,54 @@
 
 <script>
 
+import axios from 'axios';
+
 export default {
 
-    data: () => ({
-      valid: true,
-      password: '',
-        showPassword: false,
-      passwordRules: [
-        v => !!v || 'Password is required',
-        v=> (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,}$/.test(v)) || 'Password must contains moult truc',
-      ],
-      email: '',
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-      ],
-      lazy: false,
-    }),
+	data: () => ({
+		valid: true,
+		password: '',
+		showPassword: false,
+		passwordRules: [
+			v => !!v || 'Password is required',
+			v=> (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,}$/.test(v)) || 'Password must contains moult truc',
+		],
+		email: '',
+		emailRules: [
+			v => !!v || 'E-mail is required',
+			v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+		],
+		lazy: false,
+	}),
 
-    methods: {
-      validate () {
-        if (this.$refs.form.validate()) {
-          this.snackbar = true
-        }
-      },
-      reset () {
-        this.$refs.form.reset()
-      },
-    },
+	methods: {
+		validate () {
+			if (this.$refs.form.validate()) {
+				this.snackbar = true;
+				this.backSignIn();
+			}
+		},
+		reset () {
+			this.$refs.form.reset()
+		},
+		backSignIn () {
+			axios
+				.post('http://localhost:3000/login', {
+					email: this.email,
+					password: this.password,
+				})
+				.then((response) => {
+					console.log("cl du sign in");
+					console.log(response);
+					if(response.status == 200){
+						console.log(this.response);
+					}
+				})
+				.catch((error) => {
+					console.log(error.response);
+				})
+		},
+	},
 
 
 }

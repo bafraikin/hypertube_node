@@ -8,7 +8,17 @@ export default async function setupPassport(server: Express) {
 
 	server.use(passport.initialize());
 	server.use(passport.session());
+
+
+
+
 	passport.use('local', new LocalStrategy({usernameField: 'email', passwordField: 'password'}, authenticateController.authStrategy));
+
+
+
+
+
+
 	passport.serializeUser(authenticateController.serialize);
 	passport.deserializeUser(authenticateController.deserialize);
 	return server; 

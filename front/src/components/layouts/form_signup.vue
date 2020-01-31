@@ -128,9 +128,15 @@ import axios from 'axios';
       },
       backCreate () {
 		  axios
-          .get('http://localhost:3000/coucou', {
+          .post('http://localhost:3000/create', {
+				login: this.login,
+				email: this.email,
+				password: this.password,
+				firstName: this.firstName,
+				lastName: this.lastName,
           })
           .then((response) => {
+			console.log("cl du sign up");
           	  console.log(response);
               if(response.status == 200){
                   console.log(this.response);

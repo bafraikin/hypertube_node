@@ -12,33 +12,33 @@ export class User extends BaseEntity {
 
 	@Column({unique: true})
 		@IsEmail()
-		@Length( 4,  254)
+		@Length(4,  254)
 		email!: string;
 
-	
-	@Column()
-		@IsBoolean()
-		oauth!: boolean;	
-	@Column()
-		@Length(1,  10)
-		firstname!: string;
+	 @Column()
+	 	@IsBoolean()
+	 	oauth!: boolean;	
 
-	@Column()
-		@Length(1,  10)
-		lastname!: string;
+	 @Column()
+	 	@Length(1,  10)
+	 	firstname!: string;
 
-	@Column()
-		@Length(1,  10)
-		pseudo!: string;
+	 @Column()
+	 	@Length(1,  10)
+	 	lastname!: string;
 
-	@Column()
-		@Length(8,  254)
-		password!: string;
+	 @Column()
+	 	@Length(1,  10)
+	 	pseudo!: string;
 
-	@Column()
-		@IsFQDN()
-		@Length( 3, 254)
-		imageUrl!: string;
+	 @Column()
+	 	@Length(8,  254)
+	 	password!: string;
+
+	 @Column()
+	 	@IsFQDN()
+	 	@Length(3, 254)
+	 	imageUrl!: string;
 
 
 
@@ -48,7 +48,29 @@ export class User extends BaseEntity {
 	}
 
 	async validatePassword(plainTextPassword: string) {
-		return await bcrypt.compare(plainTextPassword, this.password + '')
+		console.log("On compare les password");
+		console.log(plainTextPassword);
+		console.log(this.password);
+		//return await bcrypt.compare(plainTextPassword, this.password)
+
+
+
+		// var result = await bcrypt.compare(plainTextPassword, this.password)
+
+		//le pass est pas cript dans la bdd donct je fais uen simple comparaison
+		var result;
+		if (plainTextPassword === this.password){
+			result = true;
+		}
+		else{
+			result = false;
+		}
+
+
+
+
+		console.log(result);
+		return result;
 	}
 
 	toJSON() {
@@ -65,11 +87,16 @@ export class User extends BaseEntity {
 	}
 
 	async isValide(): Promise<boolean> {
-		return validate(this).then((errors: ValidationError[]) => {
-				if (errors.length ==  0 && this.checkPassIsComplex ()) 
+		console.log("cl du this ==>");
+		console.log(this);
+		//return validate(this).then((errors: ValidationError[]) => {
+		//if (errors.length ==  0 && this.checkPassIsComplex ()) 
 					return true;
-				return false;
-				}).catch(err => {return false});
+		//return false;
+		//}).catch(err => {
+		//console.log("cl de l'erreru===>");
+		//console.log(err);
+		//return false});
 	}
 
 	async isEmailTaken() : Promise<boolean> {

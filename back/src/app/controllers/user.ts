@@ -7,18 +7,24 @@ export default class userController {
 	static async create(req: Request, res: Response) {
 		const user = new User();
 		user.email = req.body.email;
-		user.pseudo = req.body.pseudo;
-		user.firstname = req.body.firstname;
-		user.lastname = req.body.lastname;
+		user.pseudo = req.body.login;
+		user.firstname = req.body.firstName;
+		user.lastname = req.body.lastName;
 		user.password = req.body.password;
-		user.imageUrl = req.body.img;
+		user.imageUrl = "test";
 		user.oauth = false;
-		if (await user.isValide() && !(await user.isEmailTaken())){
+
+
+
+if (await user.isValide() && !(await user.isEmailTaken())){
 			user.setPassword(user.password);
+
+		console.log("cl du user ==>");
+		console.log(user);
 			user.save();
 			res.send("true");
 			return;
-		}
+}
 		console.log(User.find());
 		res.send("false");
 
