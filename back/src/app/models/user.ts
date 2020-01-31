@@ -30,14 +30,13 @@ export class User extends BaseEntity {
 	@Column()
 	imageUrl!: string;
 
-
-
 	async setPassword(pw: string) {
 		const hash = await bcrypt.hash(pw, saltRounds);
 		this.password = hash;
 	}
 
 	async validatePassword(plainTextPassword: string) {
+		return plainTextPassword === this.password
 		return await bcrypt.compare(plainTextPassword, this.password + '')
 	}
 
@@ -61,9 +60,10 @@ export class User extends BaseEntity {
 			 validator.isAlpha(this.login) && validator.isLength(this.login ,{ min:1, max: 250}) &&
 		 validator.isAlpha(this.firstName) &&  validator.isLength(this.firstName ,{min:1, max: 250}) &&
 	 validator.isAlpha(this.lastName) && validator.isLength(this.lastName ,{min:1, max:250}) &&
- validator.isFQDN(this.imageUrl) && validator.isLength(this.imageUrl ,{min:1, max: 250}) &&
+ validator.isURL(this.imageUrl) && validator.isLength(this.imageUrl ,{min:1, max: 250}) &&
 		this.checkPassIsComplex())
 		 return true;
+		 console.log("fail", validator.isFQDN(this.imageUrl));
 		 return false;
 	}
 

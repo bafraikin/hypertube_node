@@ -6,20 +6,15 @@ import {Request, Response} from 'express'
 export default class authenticateController {
 
 	static async authStrategy(email: string, password: string, done: Function) {
-	console.log();
 		const user: User | undefined = await User.findOne({email});
 		if (!user)
 			return done(null, false)
 		else {
 			const passwordIsCorrect = await user.validatePassword(password)
-			console.log('👌');
-
 			if (passwordIsCorrect){
-				console.log('🙃');
 				return done(null, user.toJSON());
-				}
+			}
 			else{
-				console.log('🙂');
 				return done(null, false)
 			}
 		}
@@ -39,8 +34,8 @@ export default class authenticateController {
 
 	static authenticateObject():{} {
 		return { 
-			successRedirect: '/',
-			failureRedirect: '/login',
+			successRedirect: 'localhost:8080/',
+			failureRedirect: '/authentication',
 			failureFlash: false,
 			successFlash: false 
 		}

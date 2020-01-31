@@ -12,7 +12,7 @@
         label="E-mail"
         required
       >
-<v-icon>fas fa-lock</v-icon>
+        <v-icon>fas fa-lock</v-icon>
       </v-text-field>
 
       <v-text-field
@@ -20,9 +20,9 @@
 
         :rules="passwordRules"
         label="Password"
-            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="showPassword ? 'text' : 'password'"
-             @click:append="showPassword = !showPassword"
+        :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+        :type="showPassword ? 'text' : 'password'"
+        @click:append="showPassword = !showPassword"
         required
       ></v-text-field>
 
@@ -31,7 +31,7 @@
         :disabled="!valid"
         color="success"
         class="mr-4"
-        @click="validate"
+        @click="requestForm"
       >
         Validate
       </v-btn>
@@ -40,27 +40,26 @@
   </div>
 </template>
 
+<script> 
 
+  import axios from 'axios'
 
-
-<script>
-
-export default {
+  export default {
 
     data: () => ({
       valid: true,
       password: '',
-        showPassword: false,
+      email: '',
+      lazy: false,
+      showPassword: false,
       passwordRules: [
         v => !!v || 'Password is required',
         v=> (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,}$/.test(v)) || 'Password must contains moult truc',
       ],
-      email: '',
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ],
-      lazy: false,
     }),
 
     methods: {
@@ -72,8 +71,17 @@ export default {
       reset () {
         this.$refs.form.reset()
       },
+      requestForm() {
+        axios
+          .post('http://localhost:3000/authentication', {
+            email: this.email,
+            password: this.password
+          })
+          .then((response) => {
+            console.log("it works")
+          })
+          .catch(err => console.log(err))
+      }
     },
-
-
-}
+  }
 </script>

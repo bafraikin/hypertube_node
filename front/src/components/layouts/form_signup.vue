@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <v-form
       ref="form"
       v-model="valid"
@@ -115,10 +114,8 @@
             login: this.login,
           })
           .then((response) => {
-            console.log(response);
-            if(response.status == 200){
-              console.log(this.response);
-            }
+            if (response.status == 200)
+              console.log('it work');
           })
           .catch((error) => {
             console.log(error.response);

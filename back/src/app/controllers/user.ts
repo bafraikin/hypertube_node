@@ -12,7 +12,7 @@ export default class userController {
 		user.password = req.body.password;
 		user.imageUrl = "http://pngimg.com/uploads/anaconda/anaconda_PNG11.png"; //req.body.img;
 		user.oauth = false;
-		if (await user.isValid() && !(await user.isEmailTaken())){	
+		if (user.isValid() && !(await user.isEmailTaken())) {	
 			user.setPassword(user.password);
 			user.save();
 			res.send("true");
