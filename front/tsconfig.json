@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
+		"rootDirs": [
+			"./src"
+		],
     "target": "esnext",
+		"traceResolution": true,
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
@@ -13,7 +17,8 @@
     "baseUrl": ".",
     "types": [
       "webpack-env",
-      "jest"
+      "jest",
+			"vuetify"
     ],
     "paths": {
       "@/*": [

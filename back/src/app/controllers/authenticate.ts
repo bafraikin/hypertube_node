@@ -8,19 +8,20 @@ export default class authenticateController {
 	static async authStrategy(email: string, password: string, done: Function) {
 		const user: User | undefined = await User.findOne({email});
 		if (!user)
-			done(null, false, { message: "This email doesn't exist" })
+			return done(null, false)
 		else {
 			const passwordIsCorrect = await user.validatePassword(password)
-
-			if (passwordIsCorrect)
-				done(null, user.toJSON())
-			else
-				done(null, false, { message: 'Wrong password' })
+			if (passwordIsCorrect){
+				return done(null, user.toJSON());
+			}
+			else{
+				return done(null, false)
+			}
 		}
 	}
 
 	static async deserialize(id: number, done: Function) {
-		const user: User = (await User.findOne({id}) as User);
+		const user: User = await User.findOne({id}) as User;
 		if (user)
 			done(null, user)
 		else
@@ -33,10 +34,10 @@ export default class authenticateController {
 
 	static authenticateObject():{} {
 		return { 
-			successRedirect: '/',
-			failureRedirect: '/login',
-			failureFlash: true,
-			successFlash: 'Welcome!' 
+			successRedirect: 'localhost:8080/',
+			failureRedirect: '/authentication',
+			failureFlash: false,
+			successFlash: false 
 		}
 	}
 
