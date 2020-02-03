@@ -5,7 +5,7 @@ import * as bodyParser from 'body-parser'
 import {Connection} from 'typeorm'
 import {red} from 'chalk'
 import setRoute from './route'
-const cors = require('cors');
+//const cors = require('cors');
 import cookieParser from 'cookie-parser'
 const cookieSession = require('cookie-session')
 
