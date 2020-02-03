@@ -42,6 +42,7 @@ const router = new VueRouter({
 		component: () => import('../views/Film-play.vue')
 	},
 ]
+})
 
 
 export default router
