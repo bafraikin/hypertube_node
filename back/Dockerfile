@@ -7,9 +7,9 @@ RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/inst
 WORKDIR /back
 
 COPY package.json /back
-COPY package-lock.json /back
+#COPY package-lock.json /back
 
-RUN npm ci
+RUN npm install
 
 COPY . /back
 

@@ -1,0 +1,65 @@
+<template>
+	<div id="lala">
+		<div v-if="showFilm">
+			<h1>{{ film.title }}</h1>
+			<video  ref="myVid"  id="videoPlayer"  	@progress="playerPgrogress($event)" 
+													@changed="playerStateChanged($event)"
+													@error="errorVideo($event)"
+													@durationchange="durationchange($event)"
+													@stalled="stalled($event)"
+						controls >
+				<source v-bind:src="filmPath" type="video/mp4"   >
+			</video>
+		</div>
+	</div>
+</template>
+
+<script>
+
+import axios from 'axios';
+
+export default {
+	name: 'download',
+	data() {
+		return {
+			film: null,
+			showFilm: false,
+			filmPath: null,
+		}
+	},
+	methods:{
+		play(){
+			this.$router.push({ name: "film-play", params:{title: title}});
+		},
+		getMovies(){
+		},
+		playerPgrogress(event){
+			console.log("player progress");
+			//console.log(event);
+		},
+		playerStateChanged(event){
+			console.log("player state change");
+			//console.log(event);
+		},
+		errorVideo(event){
+			console.log("player error");
+			//console.log("Error " + vid.error.code + "; details: " + vid.error.message);
+			//alert("Error! Something went wrong");
+		},
+		durationchange(event){
+			console.log("duration change");
+		},
+		stalled(event){
+			console.log(event);
+		},
+	},
+	mounted(){
+		this.film = this.$route.params.movie;
+		if (this.film != undefined){
+			this.filmPath = "http://localhost:3000/player/" + this.film.imdbCode + "-" + this.film.title;
+			this.showFilm = true;
+		}
+		console.log("bijour");
+	}
+}
+</script>
