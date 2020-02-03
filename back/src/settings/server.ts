@@ -12,12 +12,15 @@ const cookieSession = require('cookie-session')
 export default async function getServer (connection: Connection, isDev = false) {
 	let server = express();
 
-
 	server.use(function(req, res, next) {
 		res.header("Access-Control-Allow-Origin", "http://localhost:8080");
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		next();
-	});	
+
+	});
+
+	server.use(express.static('films'));
+
 
 	server.use(bodyParser.urlencoded({
 		extended: true

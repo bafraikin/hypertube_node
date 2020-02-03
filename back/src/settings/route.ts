@@ -5,13 +5,16 @@ import {Express, Request, Response, Router} from "express";
 
 export default function setRoute(connection: Connection, app: Express) {
 
+
 	app.get('/test', (req: Request, res: Response) => {return 
-					console.log("cocuou");
+			
 					res.send({coucou: 'salut'});})
 
 					app.route('/authentication')
 					.post(passport.authenticate('local', controller.authenticate.authenticateObject()))
 					.delete(controller.authenticate.logout);
+
+
 
 
 
@@ -24,11 +27,18 @@ export default function setRoute(connection: Connection, app: Express) {
 					 */
 
 					app.post("/user", controller.user.create);
-					app.get('/coucou', controller.user.test); 
 
 
 
 					return app;
+
+
+
+	app.post('/film-info', controller.filmInfo.searchInfo);
+	
+	app.post('/film-search-api-query-string', controller.movies.ytsApiQueryString);
+	app.post('/download', controller.movies.getDownload);
+	app.get('/download/delete', controller.movies.deleteAllMovies);
+	app.get('/player/:file', controller.movies.player);
+	return app;
 }
-
-
