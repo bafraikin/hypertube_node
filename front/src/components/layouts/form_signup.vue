@@ -9,6 +9,7 @@
       <v-text-field
         label="login"
         v-model="login"
+        :rules="nameRules"
         required
       ></v-text-field>
 
@@ -32,12 +33,14 @@
       <v-text-field
         label="First name"
         v-model="firstName"
+        :rules="nameRules"
         required
       ></v-text-field>
 
       <v-text-field
         label="Last name"
         v-model="lastName"
+        :rules="nameRules"
         required
       ></v-text-field>
 
@@ -92,6 +95,9 @@
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',],
+      nameRules: [
+        v => !!v || 'this field is required',
+        v => v.length > 1 && v.length < 256 || 'a name should be inside 1 and 255 charactere'],
     }),
 
     methods: {
