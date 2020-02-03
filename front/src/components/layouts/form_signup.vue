@@ -91,13 +91,13 @@
       lazy: false,
       passwordRules: [
         v => !!v || 'Password is required',
-        v=> (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,}$/.test(v)) || 'Password must contains moult truc'],
+        v=> (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,255}$/.test(v)) || 'A Maj. letter and a Min. letter and a number and be more than 8 length'],
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',],
       nameRules: [
         v => !!v || 'this field is required',
-        v => v.length > 1 && v.length < 256 || 'a name should be inside 1 and 255 charactere'],
+        v => v.length > 0 && v.length < 251 || 'a name should be inside 1 and 250 charactere'],
     }),
 
     methods: {
