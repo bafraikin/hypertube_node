@@ -32,13 +32,10 @@ export default class authenticateController {
 		done(null, user.id);
 	}
 
-	static authenticateObject():{} {
-		return { 
-			successRedirect: 'localhost:8080/',
-			failureRedirect: '/authentication',
-			failureFlash: false,
-			successFlash: false 
-		}
+	static authenticateObject(req: Request, res: Response) {
+			// If this function gets called, authentication was successful.
+			// `req.user` contains the authenticated user.
+			res.send(req.user);	
 	}
 
 	static logout(req: Request, res: Response) {
