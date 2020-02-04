@@ -34,17 +34,27 @@ export default class authenticateController {
 		done(null, user.id);
 	}
 
-	static authenticateObject():{} {
-		return { 
-			successRedirect: '/sucess-sign-in',
-			failureRedirect: '/authentication',
-			failureFlash: false,
-			successFlash: false 
-		}
+	static authenticateObject(req: Request, res: Response) {
+			// If this function gets called, authentication was successful.
+			// `req.user` contains the authenticated user.
+			res.send(req.user);
 	}
 
 	static logout(req: Request, res: Response) {
 		req.logout();
 		res.redirect('/');
 	}
-}  
+
+	static checkNotAuth(req: Request, res: Response, next: Function) {
+		if (req.user)
+			res.send({type: "error", data: "a user should not be authenticated to acces this path"});
+		next();
+	}
+
+	static checkAuth(req: Request, res: Response, next: Function) {
+		if (!req.user)
+			res.send({type: "error", data: "a user should be authenticated to acces this path"});
+		next();
+	}
+
+}
