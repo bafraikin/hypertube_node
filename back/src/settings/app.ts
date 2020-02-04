@@ -9,21 +9,6 @@ const isTest = false;
 
 const env = (isDev && 'development') || (isTest && 'test') || 'production'
 
-
-
-declare global {
-	interface Object {
-		isObjectEmpty: Function;
-	}
-}
-
-
-Object.prototype.isObjectEmpty = function() {
-	if ( Object.entries(this).length === 0 && this.constructor === Object)
-		return true;
-	return false;
-}
-
 async function bootstrap() {
 	const app = await startServer({ isDev, isTest });
 	const port: number = 3000;

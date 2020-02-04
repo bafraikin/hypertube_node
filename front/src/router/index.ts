@@ -11,36 +11,44 @@ Vue.component("layout", Layout)
 
 const router = new VueRouter({
 	mode: 'history',
-	routes: [
-		{
-			path: '/',
-			name: 'home',
-			component: Home,
-			meta: {layout: "layout"}
-		},
-		{
-			path: '/film-info',
-			name: 'film-info',
-			component: () => import('../views/Film-info.vue')
-		},
-		{
-			path: '/film-list',
-			name: 'film_list',
-			component: FilmList,
-			meta: {layout: "layout"}   //je sais pas a quoi cela correspond
-		},
-		{
-			path: '/download/',
-			name: 'film-download',
-			component: FilmDownload,
-			meta: {layout: "layout"}   //je sais pas a quoi cela correspond
-		},
-		{
-			path: '/film-player/',
-			name: 'player-film',
-			component: () => import('../views/Film-play.vue')
-		},
-	]
+  routes: [
+  {
+    path: '/',
+    name: 'home',
+    component: Home,
+		meta: {layout: "layout"}
+  },
+	{
+		path: '/film-info',
+		name: 'film-info',
+		component: () => import('../views/Film-info.vue'),
+		meta: {layout: "layout"}
+	},
+	{
+		path: '/film-list',
+		name: 'film-list',
+		component: () => import('../views/Film-list.vue'),
+		meta: {layout: "layout"}
+	},
+	{
+		path: '/download/',
+		name: 'film-download',
+		component: () => import('../views/Film-download.vue'),
+		meta: {layout: "layout"}
+	},
+	{
+		path: '/download/',
+		name: 'film-download-seconde',
+		component: () => import('../views/Film-download.vue'),
+		meta: {layout: "layout"}
+	},
+	{
+		path: '/film-player/',
+		name: 'player-film',
+		component: () => import('../views/Film-play.vue'),
+		meta: {layout: "layout"}
+	},
+]
 })
 
 
