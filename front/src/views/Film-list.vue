@@ -1,32 +1,30 @@
 <template>
-	<div>
+	<v-container>
 		<h1>Research for a movie on YTS</h1>
-		<form v-on:submit="submitForm" action="#" method="post" >
-			<input type="text" v-model="researchText" placeholder="Movie title, Actor name...">
-			<input type="submit" value="Submit" >
-		</form>
+		<v-form>
+			<v-text-field v-model="researchText" label="Research"></v-text-field>
+			<v-btn class="mr-4" @click="submitForm" > Search </v-btn>
+		</v-form>
 
-		<MovieSearch  v-if="researchResult" v-on:selectMovie="showMovieDetailsFun($event)" :movies="movies"  ></MovieSearch>
+		<MoviesList  v-if="showResearchResult" v-on:selectMovie="showMovieDetailsFun($event)" :movies="movies"  ></MoviesList>
 		<MovieDetails  v-if="showMovieDetails" :movieDetail="movieDetail"></MovieDetails>
-
-	</div>
+	</v-container>
 </template>
 
 <script>
 
-import MovieSearch from '../components/MovieResearch.vue'
+import MoviesList from '../components/MovieResearch.vue'
 import MovieDetails from '../components/MovieDetails.vue'
 import axios from 'axios';
 
 export default {
-  	name: 'filmList',
 	components: {
-		"MovieSearch": MovieSearch,
+		"MoviesList": MoviesList,
 		"MovieDetails": MovieDetails,
 	},
 	data() {
 		return {
-			researchResult: false,
+			showResearchResult: false,
 			showMovieDetails: false,
 			researchText: null,
 			movieDetail: null,
@@ -36,10 +34,9 @@ export default {
 	},
 	methods:{
 		showMovieDetailsFun(movieAA){
-			console.log(movieAA);
 			this.movieDetail = movieAA;
 			this.showMovieDetails = true;
-			this.researchResult = false;
+			this.showResearchResult = false;
 			this.research = false;
 		},
 		submitForm(e){
@@ -59,7 +56,8 @@ export default {
 							arrayMovies.push(movie);
 						}
 						this.movies = arrayMovies;
-						this.researchResult = true;
+						this.showResearchResult = true;
+						this.showMovieDetails = false;
 					}
 				})
 		}
