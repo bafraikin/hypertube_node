@@ -38,6 +38,9 @@ export default {
 		}
 	},
 	methods:{
+	download(movie, torrent){
+				this.$router.push({ name: "film-download", params:{movie: movie, torrent: torrent}});
+			},
 	},
 	mounted(){
 		console.log("hello Movies details");

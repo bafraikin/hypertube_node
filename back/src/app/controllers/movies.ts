@@ -20,7 +20,9 @@ export default class moviesController {
 
 	static async listDownload(req: Request, res: Response){
 		var allMovies = await Movie.find();
-		var hereMovie = JSON.stringify(allMovies)
+		var hereMovie = await JSON.stringify(allMovies)
+				console.log("LES MOvies");
+		console.log(hereMovie);
 		res.send(hereMovie);
 	}
 

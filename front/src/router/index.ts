@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Layout from '../../src/components/layouts/layout.vue'
 import FilmList from '../../src/views/Film-list.vue'
+import FilmDownload from '../../src/views/Film-download.vue'
 
 Vue.use(VueRouter)
 Vue.component("layout", Layout)
@@ -31,12 +32,8 @@ const router = new VueRouter({
 		{
 			path: '/download/',
 			name: 'film-download',
-			component: () => import('../views/Film-download.vue')
-		},
-		{
-			path: '/download/',
-			name: 'film-download-seconde',
-			component: () => import('../views/Film-download.vue')
+			component: FilmDownload,
+			meta: {layout: "layout"}   //je sais pas a quoi cela correspond
 		},
 		{
 			path: '/film-player/',

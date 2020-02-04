@@ -82,15 +82,16 @@ export class Movie extends BaseEntity {
 
 	async downloadMovie(){
 		this.downloadStatus = "downloadOnGoing";
-		this.save();
+		// this.save();
 		var engine = torrentStream(this.magnetLink, {path: '/back/films'});
+
 		engine.on('download', (index: any) => {
 			//console.log("On a download", index);
 		})
 		engine.on('idle', () =>{
 			console.log("on a tout finis");
 			this.downloadStatus = "downloadFinish";
-			this.save();
+			// this.save();
 		})
 		engine.on('ready', () => {
 		engine.files.forEach( (file: any) => {
@@ -109,11 +110,12 @@ export class Movie extends BaseEntity {
 					var write = fs.createWriteStream(filePath);
 					var stream = file.createReadStream(opt);
 					stream.on('data', (chunk: any) => {
+				console.log("8***********************************");
 						//console.log("received " + chunk.length + " bytes of data");
 						progress += chunk.length;
-						// this.pourcentage = Math.round((progress * 100 / file.length));
+						this.pourcentage = Math.round((progress * 100 / file.length));
 						// this.save();
-						// console.log("Le pourcentage du total ==>", this.pourcentage  + "%");
+						console.log("Le pourcentage du total ==>", this.pourcentage  + "%");
 					})
 					stream.on('end', () => {
 						console.log("Download completed");
