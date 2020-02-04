@@ -77,7 +77,7 @@
           .post('/authentication', {
             email: this.email,
             password: this.password
-          })
+          }, {withCredentials: true})
           .then((response) => {
             this.$store.commit('connectUser', response.data.user)
           })
