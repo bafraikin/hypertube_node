@@ -76,7 +76,7 @@
           .post('http://localhost:3000/authentication', {
             email: this.email,
             password: this.password
-          })
+          }, {withCredentials: true})
           .then((response) => {
             console.log("it works")
           })
