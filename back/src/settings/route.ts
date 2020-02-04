@@ -14,9 +14,6 @@ export default function setRoute(connection: Connection, app: Express) {
 	.post("/user", controller.user.create);
 
 
-
-
-
 	/*
 	 * La route /UserCreate permet de cree un utilisateur 
 	 * Elle prend elle a besoin des info du model user.ts pour fonctionner
@@ -39,5 +36,14 @@ export default function setRoute(connection: Connection, app: Express) {
 
 	app.use("/", userNotAuthenticated);
 	app.use("/😱", userAuthenticated);
-	return app;
+
+			/*
+			 * La route /UserCreate permet de cree un utilisateur 
+			 * Elle prend elle a besoin des info du model user.ts pour fonctionner
+			 * peut etre tester a la main avec cette commande :
+			 * curl -d "img=abc.fr&password=7char_and_a_int&email=email@42.fr&firstname=foo&lastname=bar&pseudo=xXx"
+			 -X POST http://localhost:3000/UserCreate
+			 */
+
+return app;
 }
