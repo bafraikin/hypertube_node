@@ -11,7 +11,7 @@ export default function setRoute(connection: Connection, app: Express) {
 
 
 	userNotAuthenticated
-	.post('/authentication', passport.authenticate('local', controller.authenticate.authenticateObject()))
+	.post('/authentication', passport.authenticate('local'), controller.authenticate.authenticateObject)
 	.post("/user", controller.user.create);
 
 
