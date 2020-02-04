@@ -12,9 +12,11 @@ export default class authenticateController {
 		else {
 			const passwordIsCorrect = await user.validatePassword(password)
 			if (passwordIsCorrect){
+				console.log("le pass est correct");
 				return done(null, user.toJSON());
 			}
 			else{
+				console.log("le pass est  PAS correct");
 				return done(null, false)
 			}
 		}
@@ -34,7 +36,7 @@ export default class authenticateController {
 
 	static authenticateObject():{} {
 		return { 
-			successRedirect: 'localhost:8080/',
+			successRedirect: '/sucess-sign-in',
 			failureRedirect: '/authentication',
 			failureFlash: false,
 			successFlash: false 

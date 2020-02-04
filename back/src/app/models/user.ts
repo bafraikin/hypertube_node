@@ -36,8 +36,10 @@ export class User extends BaseEntity {
 	}
 
 	async validatePassword(plainTextPassword: string) {
-		return plainTextPassword === this.password
-		return await bcrypt.compare(plainTextPassword, this.password + '')
+		console.log(plainTextPassword);
+		console.log(this.password);
+		return (plainTextPassword === this.password);
+		//return await bcrypt.compare(plainTextPassword, this.password + '')
 	}
 
 	toJSON() {
