@@ -9,13 +9,11 @@ export default function setRoute(connection: Connection, app: Express) {
 	let userAuthenticated: Router = Router().use(controller.authenticate.checkAuth);
 
 
-	userNotAuthenticated.post('/authentication', passport.authenticate('local', controller.authenticate.authenticateObject()));
-	userNotAuthenticated.post("/user", controller.user.create);
+	userNotAuthenticated
+	.post('/authentication', passport.authenticate('local', controller.authenticate.authenticateObject()))
+	.post("/user", controller.user.create);
 
-	userAuthenticated.delete("/user", controller.authenticate.logout);
 
-	app.use("/", userNotAuthenticated);
-	app.use("/😱", userAuthenticated);
 
 
 
@@ -28,13 +26,18 @@ export default function setRoute(connection: Connection, app: Express) {
 	 */
 
 
+	userAuthenticated.route("/authentication").delete(controller.authenticate.logout);
 
 
-	app.post('/film-info', controller.filmInfo.searchInfo);
+	userAuthenticated
+	.post('/film-info', controller.filmInfo.searchInfo)
+	.post('/film-search-api-query-string', controller.movies.ytsApiQueryString)
+	.post('/download', controller.movies.getDownload)
+	.get('/download/delete', controller.movies.deleteAllMovies)
+	.get('/player/:file', controller.movies.player);
 
-	app.post('/film-search-api-query-string', controller.movies.ytsApiQueryString);
-	app.post('/download', controller.movies.getDownload);
-	app.get('/download/delete', controller.movies.deleteAllMovies);
-	app.get('/player/:file', controller.movies.player);
+
+	app.use("/", userNotAuthenticated);
+	app.use("/😱", userAuthenticated);
 	return app;
 }
