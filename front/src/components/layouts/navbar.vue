@@ -8,7 +8,7 @@
       <h2>Hypertubulaire</h2>
       <div class="navbar">
 
-        <div v-if="!connected" class="navbar"> 
+        <div v-if="!isConnected" class="navbar"> 
           <sign-up></sign-up>
           <sign-in></sign-in>
         </div>
@@ -56,11 +56,6 @@
   import signin from './modal_signin'
 
   export default {
-  data() {
-  return {
-  connected:false
-  }
-  },
   computed: {
   isConnected() {
   return this.$store.getters.connected
