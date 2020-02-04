@@ -24,7 +24,7 @@ export default class userController {
 
 	static async updatePassword(req: Request, res: Response) {
 		let user = await  User.findOne({ email: req.body.email });
-		if (user instanceof User)
+		if (user instanceof User && !user.isEmpty())
 			{
 				user.password =  req.body.password;
 				if (user.checkPassIsComplex()){
@@ -40,7 +40,7 @@ export default class userController {
 
 	static async updateEmail(req: Request, res: Response) {
 		let user = await  User.findOne({ email: req.body.email });
-		if (user instanceof User)
+		if (user instanceof User && user.isEmpty())
 			{
 				user.email = req.body.email;
 				if (await user.isEmailTaken()){
