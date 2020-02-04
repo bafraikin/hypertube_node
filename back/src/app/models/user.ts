@@ -37,7 +37,7 @@ export class User extends BaseEntity {
 
 	async validatePassword(plainTextPassword: string) {
 		return plainTextPassword === this.password
-		return await bcrypt.compare(plainTextPassword, this.password + '')
+			return await bcrypt.compare(plainTextPassword, this.password + '')
 	}
 
 	toJSON() {
@@ -77,6 +77,12 @@ id: this.id,
 	async isEmailTaken() : Promise<boolean> {
 		const  bool = await User.findOne({ email: this.email});
 		if (typeof bool !== 'undefined')
+			return true;
+		return false;
+	}
+
+	isEmpty(): boolean{
+		if ( Object.entries(this).length === 0 && this.constructor === Object)
 			return true;
 		return false;
 	}

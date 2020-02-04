@@ -12,7 +12,7 @@ export default class userController {
 		user.password = req.body.password;
 		user.imageUrl = "http://pngimg.com/uploads/anaconda/anaconda_PNG11.png"; //req.body.img;
 		user.oauth = false;
-		if (user.isValid() && !(await user.isEmailTaken())) {	
+		if (user.isValid() && !(await user.isEmailTaken())) {
 			user.setPassword(user.password);
 			user.save();
 			res.send("true");
@@ -24,7 +24,7 @@ export default class userController {
 
 	static async updatePassword(req: Request, res: Response) {
 		let user = await  User.findOne({ email: req.body.email });
-		if (user instanceof User && !(user.isObjectEmpty()))
+		if (user instanceof User && !user.isEmpty())
 			{
 				user.password =  req.body.password;
 				if (user.checkPassIsComplex()){
@@ -40,7 +40,7 @@ export default class userController {
 
 	static async updateEmail(req: Request, res: Response) {
 		let user = await  User.findOne({ email: req.body.email });
-		if (user instanceof User && !(user.isObjectEmpty()))
+		if (user instanceof User && user.isEmpty())
 			{
 				user.email = req.body.email;
 				if (await user.isEmailTaken()){
