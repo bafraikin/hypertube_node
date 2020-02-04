@@ -7,9 +7,13 @@
     <div class="navbar">
       <h2>Hypertubulaire</h2>
       <div class="navbar">
-        <sign-up></sign-up>
-        <sign-in></sign-in>
-        <div data-app='true'> 
+
+        <div v-if="!connected" class="navbar"> 
+          <sign-up></sign-up>
+          <sign-in></sign-in>
+        </div>
+
+        <div v-else data-app='true'> 
           <v-menu>
             <template v-slot:activator="{ on }">
               <v-btn icon  v-on="on">
@@ -54,7 +58,12 @@
   export default {
   data() {
   return {
-  arr: ['a', 'c']
+  connected:false
+  }
+  },
+  computed: {
+  isConnected() {
+  return this.$store.getters.connected
   }
   },
   components: {

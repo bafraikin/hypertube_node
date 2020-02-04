@@ -1,23 +1,21 @@
 import Vue from 'vue'
-import Vuex, { StoreOptions } from 'vuex'
+import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-interface DefaultState = {
-	connected: Boolean
-}
 
-const store: StoreOptions<DefaultState> = {
+const store = {
 	state: {
-		connected:  false 
+		connected: Boolean(false)
 	},
 	mutations: {
-		connectUser(state: StoreOptions<DefaultState>, user: Object) {
+		connectUser(state: any, user: Object) {
 			state.connected = true
 			state.user = user
 		},
-		disconnectUser(state) {
+		disconnectUser(state: any) {
 			state.connected = false
+			state.user = null
 		}
 	},
 	actions: {
@@ -25,12 +23,12 @@ const store: StoreOptions<DefaultState> = {
 	modules: {
 	},
 	getters: {
-		doneTodos: state => {
-			return state.connected
+		connected: (state: any) => {
+			state.connected
 		}
 	}
 }
 
 
 
-export default new Vuex.Store<DefaultState>(store)
+export default new Vuex.Store(store)

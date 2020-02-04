@@ -6,9 +6,9 @@ import {Express, Request, Response, Router} from "express";
 export default function setRoute(connection: Connection, app: Express) {
 
 
-	app.get('/test', (req: Request, res: Response) => {return 
-			
-					res.send({coucou: 'salut'});})
+	app.get('/test', (req: Request, res: Response) => {
+			res.send({coucou: 'salut'});
+	})
 
 					app.route('/authentication')
 					.post(passport.authenticate('local', controller.authenticate.authenticateObject()))
