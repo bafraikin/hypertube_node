@@ -42,4 +42,17 @@ export default class authenticateController {
 		req.logout();
 		res.redirect('/');
 	}
+
+	static checkNotAuth(req: Request, res: Response, next: Function) {
+		if (req.user)
+			res.send({type: "error", data: "a user should not be authenticated to acces this path"});
+		next();
+	}
+
+	static checkAuth(req: Request, res: Response, next: Function) {
+		if (!req.user)
+			res.send({type: "error", data: "a user should be authenticated to acces this path"});
+		next();
+	}
+
 }  
