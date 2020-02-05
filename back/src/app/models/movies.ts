@@ -33,7 +33,8 @@ export class Movie extends BaseEntity {
 	@Column()
 	pourcentage!: number;
 
-	size!: number;
+	// @Column()
+	// size!: number;
 
 	toJSON() {
 		return {
@@ -42,7 +43,7 @@ export class Movie extends BaseEntity {
 			downloadStatus: this.downloadStatus,
 			imdbCode: this.imdbCode,
 			pourcentage: this.pourcentage,
-			size: this.size,
+			// size: this.size,
 		}
 	}
 
@@ -102,8 +103,9 @@ export class Movie extends BaseEntity {
 				if (isMovie){
 					console.log("Cest un film");
 					console.log('Le nom du fichier:', file.name);
-					console.log("La taille du fichier total ==>", file.length);
-					this.size = file.length;
+					console.log("**********************************************************La taille du fichier total ==>", file.length);
+					// this.size = file.length;
+					// this.save();
 					var progress = 0;
 					var opt = {
 						start: 0,

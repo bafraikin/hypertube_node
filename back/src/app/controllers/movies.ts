@@ -43,6 +43,7 @@ export default class moviesController {
 				movie.buildMagnetLink();
 				movie.downloadStatus = "notStarted";
 				movie.pourcentage = 0;
+				// movie.size = 0;
 				await movie.save();
 			}
 			else{
