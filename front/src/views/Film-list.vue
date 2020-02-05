@@ -13,9 +13,9 @@
 
 <script>
 
-import MoviesList from '../components/MovieResearch.vue'
-import MovieDetails from '../components/MovieDetails.vue'
-import axios from 'axios';
+import MoviesList from '@/components/MovieResearch.vue'
+import MovieDetails from '@/components/MovieDetails.vue'
+import axios from  '@/config/axios_default';
 
 export default {
 	components: {
@@ -45,9 +45,13 @@ export default {
 		},
 		searchForMovies(stringToSeach){
 			axios
-				.post('http://localhost:3000/film-search-api-query-string', {
+				.post('yes/film-search-api-query-string', {
 					queryString: stringToSeach
-				})
+				},     
+					{headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json',
+					}})
 				.then(response => {
 					if (response.status == 200){
 						var arrayMovies = [];

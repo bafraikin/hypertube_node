@@ -12,8 +12,8 @@ export default class authenticateController {
 		else {
 			const passwordIsCorrect = await user.validatePassword(password)
 			if (passwordIsCorrect){
-				console.log("le pass est correct");
-				return done(null, user.toJSON());
+				console.log("c'est gOd")
+				return done(null, {user: user.toJSON()});
 			}
 			else{
 				console.log("le pass est  PAS correct");
@@ -45,16 +45,23 @@ export default class authenticateController {
 		res.redirect('/');
 	}
 
-	static checkNotAuth(req: Request, res: Response, next: Function) {
-		if (req.user)
-			res.send({type: "error", data: "a user should not be authenticated to acces this path"});
-		next();
-	}
 
 	static checkAuth(req: Request, res: Response, next: Function) {
 		if (!req.user)
+			{
 			res.send({type: "error", data: "a user should be authenticated to acces this path"});
+			return;
+			}
+		console.log("request been accept")
 		next();
 	}
 
+	static checkNotAuth(req: Request, res: Response, next: Function) {
+		if (req.user)
+			{
+				console.log(req.user)
+				res.send({type: "error", data: "a user should not be authenticated to acces this path"});
+			}
+			next();
+	}
 }

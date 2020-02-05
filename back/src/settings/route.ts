@@ -9,7 +9,6 @@ export default function setRoute(connection: Connection, app: Express) {
 	let userAuthenticated: Router = Router().use(controller.authenticate.checkAuth);
 
 
-
 	userNotAuthenticated
 	.post('/authentication', passport.authenticate('local'), controller.authenticate.authenticateObject)
 	.post("/user", controller.user.create);
@@ -27,15 +26,15 @@ export default function setRoute(connection: Connection, app: Express) {
 	userAuthenticated.route("/authentication").delete(controller.authenticate.logout);
 
 	userAuthenticated
-	.post('/film-info', controller.filmInfo.searchInfo)
-	.post('/film-search-api-query-string', controller.movies.ytsApiQueryString)
+	.post('/film-info', controller.filmInfo.searchInfo);
+	userAuthenticated.post('/film-search-api-query-string', controller.movies.ytsApiQueryString)
 	.post('/download', controller.movies.getDownload)
 	.get('/download/delete', controller.movies.deleteAllMovies)
 	.get('/player/:file', controller.movies.player);
 
 
-	app.use("/", userNotAuthenticated);
-	app.use("/😱", userAuthenticated);
+	app.use("/no", userNotAuthenticated);
+	app.use("/yes", userAuthenticated);
 
 
 	return app;
