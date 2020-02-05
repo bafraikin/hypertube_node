@@ -7,13 +7,9 @@
     <div class="navbar">
       <h2>Hypertubulaire</h2>
       <div class="navbar">
-
-        <div v-if="!isConnected" class="navbar"> 
-          <sign-up></sign-up>
-          <sign-in></sign-in>
-        </div>
-
-        <div v-else data-app='true'> 
+        <sign-up></sign-up>
+        <sign-in></sign-in>
+        <div data-app='true'> 
           <v-menu>
             <template v-slot:activator="{ on }">
               <v-btn icon  v-on="on">
@@ -56,9 +52,9 @@
   import signin from './modal_signin'
 
   export default {
-  computed: {
-  isConnected() {
-  return this.$store.getters.connected
+  data() {
+  return {
+  arr: ['a', 'c']
   }
   },
   components: {

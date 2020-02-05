@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+		"rootDirs": [
+			"./src"
+		],
     "target": "esnext",
 		"traceResolution": true,
     "module": "esnext",

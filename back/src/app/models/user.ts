@@ -42,8 +42,8 @@ export class User extends BaseEntity {
 
 	toJSON() {
 		return {
-	    email: this.email,
-			login: this.login
+id: this.id,
+	    email: this.email
 		}
 	}
 

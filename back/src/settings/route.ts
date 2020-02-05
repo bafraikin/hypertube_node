@@ -9,6 +9,7 @@ export default function setRoute(connection: Connection, app: Express) {
 	let userAuthenticated: Router = Router().use(controller.authenticate.checkAuth);
 
 
+
 	userNotAuthenticated
 	.post('/authentication', passport.authenticate('local', controller.authenticate.authenticateObject()))
 	.post("/user", controller.user.create);

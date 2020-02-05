@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <v-form
       ref="form"
       v-model="valid"
@@ -41,9 +42,10 @@
 
 <script> 
 
-  import axios from '@/config/axios_default'
+  import axios from 'axios'
 
   export default {
+
     data: () => ({
       valid: true,
       password: '',
@@ -69,17 +71,14 @@
       reset () {
         this.$refs.form.reset()
       },
-      test() {
-        axios.get("/test").then(response => console.log(response))
-      },
       requestForm() {
         axios
-          .post('/authentication', {
+          .post('http://localhost:3000/authentication', {
             email: this.email,
             password: this.password
           }, {withCredentials: true})
           .then((response) => {
-            this.$store.commit('connectUser', response.data.user)
+            console.log("it works")
           })
           .catch(err => console.log(err))
       }
