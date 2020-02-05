@@ -12,7 +12,7 @@ export default class authenticateController {
 		else {
 			const passwordIsCorrect = await user.validatePassword(password)
 			if (passwordIsCorrect){
-				return done(null, user.toJSON());
+				return done(null, {user: user.toJSON()});
 			}
 			else{
 				return done(null, false)

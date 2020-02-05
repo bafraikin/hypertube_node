@@ -3,13 +3,32 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-  }
-})
+
+const store = {
+	state: {
+		connected: Boolean(false)
+	},
+	mutations: {
+		connectUser(state: any, user: Object) {
+			state.connected = true
+			state.user = user
+		},
+		disconnectUser(state: any) {
+			state.connected = false
+			state.user = null
+		}
+	},
+	actions: {
+	},
+	modules: {
+	},
+	getters: {
+		connected: (state: any) => {
+			state.connected
+		}
+	}
+}
+
+
+
+export default new Vuex.Store(store)
