@@ -24,10 +24,10 @@
             <v-list>
               <v-list-item
                 v-for="n in arr"
-                :key='n'
+                :key="n.message"
                 @click="() => {}"
               >
-                <v-list-item-title>Option {{ n }}</v-list-item-title>
+                <v-list-item-title @click="n.method">Option {{ n.message }}</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -37,33 +37,50 @@
   </v-card>
 </template>
 
+
+<script>
+
+  import signup from './modal_signup'
+  import signin from './modal_signin'
+  import axios from "@/config/axios_default"
+
+  export default {
+    data() {
+      return {
+        arr: [{message: 'logout', method: this.logout}]
+      }
+    },
+    methods: {
+      logout() {
+        console.log("aaaaaa");
+        axios.delete("/😂/authentication").then((response) => {
+          this.$store.commit('disconnectUser')
+        }) 
+      }
+    },
+    computed: {
+      isConnected() {
+        return this.$store.getters.connected
+      }
+    },
+    components: {
+  "sign-up": signup,
+  "sign-in": signin
+    } 
+  }
+
+</script>
+
 <style lang="scss" media="screen">
 
   .navbar{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  .navbar{
-  justify-content: space-around;
-  width: 15%;
-  }
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .navbar{
+      justify-content: space-around;
+      width: 15%;
+    }
   }
 
 </style>
-
-<script>
-  import signup from './modal_signup'
-  import signin from './modal_signin'
-
-  export default {
-  computed: {
-  isConnected() {
-  return this.$store.getters.connected
-  }
-  },
-  components: {
-  "sign-up": signup,
-  "sign-in": signin
-  } 
-  }
-</script>

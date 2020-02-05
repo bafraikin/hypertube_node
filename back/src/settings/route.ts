@@ -10,8 +10,12 @@ export default function setRoute(connection: Connection, app: Express) {
 
 
 	userNotAuthenticated
-	.post('/authentication', passport.authenticate('local', controller.authenticate.authenticateObject()))
-	.post("/user", controller.user.create);
+	.post('/authentication', passport.authenticate('local'), controller.authenticate.authenticateObject)
+	.post("/user", controller.user.create)
+	.get("/test", (req: Request, res: Response) => {
+		console.log("been here")
+		res.send("")
+	})
 
 
 	/*
@@ -34,9 +38,8 @@ export default function setRoute(connection: Connection, app: Express) {
 	.get('/player/:file', controller.movies.player);
 
 
-	app.use("/", userNotAuthenticated);
-	app.use("/😱", userAuthenticated);
-
+	app.use(`/${encodeURI("😱")}`, userNotAuthenticated);
+	app.use(`/${encodeURI("😂")}`, userAuthenticated);
 
 	return app;
 }
