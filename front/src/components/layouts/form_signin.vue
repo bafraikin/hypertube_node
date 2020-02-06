@@ -71,10 +71,10 @@
       },
       requestForm() {
         axios
-          .post('/authentication', {
+          .post('😱/authentication', {
             email: this.email,
             password: this.password
-          }, {withCredentials: true})
+          })
           .then((response) => {
             this.$emit('connected');
             this.$store.commit('connectUser', response.data.user)

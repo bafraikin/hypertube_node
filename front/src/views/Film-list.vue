@@ -1,8 +1,6 @@
 <template>
 	<div id="lala" class="ui main container" >
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.css" type="text/css" charset="utf-8">
-
-
 		<div v-if="research">
 			<h1>Research for a movie on YTS</h1>
 			<form v-on:submit="submitForm" action="#" method="post" >
@@ -83,7 +81,7 @@
 
 <script>
 
-import axios from 'axios';
+import axios from '@/config/axios_default';
 export default {
 	name: 'home',
 	data() {
@@ -113,8 +111,7 @@ export default {
 			this.$router.push({ name: "film-download", params:{movie: movie, torrent: torrent}});
 		},
 		searchForMovies(stringToSeach){
-			axios
-				.post('http://localhost:3000/film-search-api-query-string', {
+			axios.post('😂/film-search-api-query-string', {
 					queryString: stringToSeach
 				})
 				.then(response => {
