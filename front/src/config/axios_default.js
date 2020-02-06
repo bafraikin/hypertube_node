@@ -6,7 +6,6 @@ import store from "@/store/index"
 const axiosInstance = axios.create({
 	baseURL: 'http://localhost:3000',
 	withCredentials: true,
-	handlerEnabled: true
 });
 
 
@@ -28,7 +27,7 @@ axiosInstance.interceptors.response.use(function (response) {
 
 axiosInstance.interceptors.response.use(
    response => {
-       return (null);
+       return (response);
    },
    (error, dd) => {
 		 console.log(error, dd);
