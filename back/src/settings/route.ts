@@ -14,8 +14,12 @@ export default function setRoute(connection: Connection, app: Express) {
 	.post("/user", controller.user.create)
 	.get("/test", (req: Request, res: Response) => {
 		console.log("been here")
-		res.send("")
-	})
+		res.send("No login")
+	})	
+	.get('/success',(req: Request, res: Response) => {
+		console.log("HHHH")
+		res.send("login")
+	});
 
 
 	/*
@@ -30,12 +34,22 @@ export default function setRoute(connection: Connection, app: Express) {
 	userAuthenticated.route("/authentication").delete(controller.authenticate.logout);
 
 
+	userAuthenticated.post('/film-info', controller.filmInfo.searchInfo);
+
+	userAuthenticated.post('/film-search-api-query-string', controller.movies.ytsApiQueryString);
+
 	userAuthenticated
-	.post('/film-info', controller.filmInfo.searchInfo)
-	.post('/film-search-api-query-string', controller.movies.ytsApiQueryString)
 	.post('/download', controller.movies.getDownload)
 	.get('/download/delete', controller.movies.deleteAllMovies)
-	.get('/player/:file', controller.movies.player);
+	.get('/player/:file', controller.movies.player)
+	.get('/success',(req: Request, res: Response) => {
+		console.log("HHHH")
+		res.send("login")
+	})
+	.get("/test", (req: Request, res: Response) => {
+		console.log("been here")
+		res.send("No login")
+	});
 
 
 	app.use(`/${encodeURI("😱")}`, userNotAuthenticated);

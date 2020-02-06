@@ -36,14 +36,14 @@ export class User extends BaseEntity {
 	}
 
 	async validatePassword(plainTextPassword: string) {
-		return plainTextPassword === this.password
-			return await bcrypt.compare(plainTextPassword, this.password + '')
+		return await bcrypt.compare(plainTextPassword, this.password + '')
 	}
 
 	toJSON() {
 		return {
+		id: this.id,
 	    email: this.email,
-			login: this.login
+	    login: this.login
 		}
 	}
 
@@ -54,7 +54,6 @@ export class User extends BaseEntity {
 	}
 
 	isValid(): boolean {
-		let error = Array;
 		try {
 			if( validator.isEmail(this.email) &&
 					validator.isAlpha(this.login) && 
