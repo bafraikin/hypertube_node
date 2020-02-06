@@ -1,8 +1,8 @@
 import "reflect-metadata"
 import { createConnection, Connection, Repository } from "typeorm"
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions'
-import {User} from '@/app/models/user'
-import {Movie} from '@/app/models/movies'
+import {User} from '@app/models/user'
+import {Movie} from '@app/models/movies'
 import {yellow, red} from 'chalk'
 export let connection: Connection
 

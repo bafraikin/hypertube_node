@@ -1,6 +1,6 @@
 import {Connection} from 'typeorm'
 import passport from 'passport';
-import * as controller from '@/app/controllers/index'
+import * as controller from '@app/controllers/index'
 import {Express, Request, Response, Router} from "express";
 
 export default function setRoute(connection: Connection, app: Express) {

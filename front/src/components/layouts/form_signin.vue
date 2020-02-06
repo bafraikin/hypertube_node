@@ -69,9 +69,6 @@
       reset () {
         this.$refs.form.reset()
       },
-      test() {
-        axios.get("/test").then(response => console.log(response))
-      },
       requestForm() {
         axios
           .post('/authentication', {
@@ -79,6 +76,7 @@
             password: this.password
           }, {withCredentials: true})
           .then((response) => {
+            this.$emit('connected');
             this.$store.commit('connectUser', response.data.user)
           })
           .catch(err => console.log(err))

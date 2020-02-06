@@ -1,20 +1,20 @@
 {
-  "compilerOptions": {
-		"baseUrl": "./src" ,
-    "target": "es5",
-    "module": "commonjs",
-    "sourceMap": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "outDir": "./dist",
-    "strict": true,
-
-    "esModuleInterop": true
-  },
-  "include": [
-    "src/**/*.ts"
-  ],
-	"path": [
-"@/*": "src/*"
+	"compilerOptions": {
+		"baseUrl": "." ,
+		"target": "es6",
+		"module": "commonjs",
+		"sourceMap": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"outDir": "dist",
+		"strict": true,
+		"esModuleInterop": true,
+		"paths": {
+			"@app/*": ["./src/app/*"],
+			"@settings/*": ["./src/settings/*"]
+		}
+	},
+	"include": [
+		"src/**/*.ts"
 	]
 }

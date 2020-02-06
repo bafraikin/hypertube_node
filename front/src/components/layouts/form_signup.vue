@@ -120,11 +120,11 @@
             login: this.login,
           })
           .then((response) => {
-            if (response.status == 200)
+            this.$emit("created");
               console.log('it work');
           })
           .catch((error) => {
-            console.log(error.response);
+            console.log(error);
           })
       },
     },

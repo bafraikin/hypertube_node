@@ -1,3 +1,4 @@
+require('module-alias/register')
 import startServer from './start_server'
 import { join } from 'path'
 import {blue, red }from 'chalk'

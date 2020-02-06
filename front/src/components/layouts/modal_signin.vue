@@ -6,7 +6,7 @@
       max-width="700"
       dark>
       <template v-slot:activator="{ on }">
-        <v-btn@click.stop="dialog = true">
+        <v-btn v-on="on">
           sign in
         </v-btn>
       </template>
@@ -16,7 +16,7 @@
         </v-card-title>
         <v-card-text>
           <v-container>
-            <form-sign-in/>
+            <form-sign-in @connected="() => this.dialog= false"></form-sign-in>
           </v-container>
         </v-card-text>
       </v-card>
@@ -27,17 +27,17 @@
 
 <script>
 
-import formSignIn from './form_signin'
+  import formSignIn from './form_signin'
 
 
-export default {
-	data () {
-		return {
-			dialog: false,
-		}
-	},
-	components: {
-		"form-sign-in": formSignIn,
-	},
-}
+  export default {
+    data () {
+      return {
+        dialog: false,
+      }
+    },
+    components: {
+      "form-sign-in": formSignIn,
+    },
+  }
 </script>

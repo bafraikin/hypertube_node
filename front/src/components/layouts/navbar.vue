@@ -8,12 +8,12 @@
       <h2>Hypertubulaire</h2>
       <div class="navbar">
 
-        <div v-if="!isConnected" class="navbar"> 
-          <sign-up></sign-up>
-          <sign-in></sign-in>
+        <div v-show="!isConnected" data-app="true"> 
+          <sign-up/>
+          <sign-in/>
         </div>
 
-        <div v-else data-app='true'> 
+        <div v-show="isConnected" data-app='true'> 
           <v-menu>
             <template v-slot:activator="{ on }">
               <v-btn icon  v-on="on">
@@ -64,8 +64,8 @@
       }
     },
     components: {
-  "sign-up": signup,
-  "sign-in": signin
+      "sign-up": signup,
+      "sign-in": signin
     } 
   }
 
