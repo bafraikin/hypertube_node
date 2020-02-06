@@ -1,6 +1,6 @@
 import passport from 'passport';
 import { Express} from 'express'
-import authenticateController from '../app/controllers/authenticate'
+import authenticateController from '@/app/controllers/authenticate'
 let LocalStrategy = require('passport-local').Strategy;
 
 export default async function setupPassport(server: Express) {
