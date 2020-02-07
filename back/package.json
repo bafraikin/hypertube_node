@@ -1,47 +1,49 @@
 {
-  "name": "hypertube",
-  "version": "1.0.0",
-  "description": "stream torrent with node js",
-  "main": "app.js",
-  "scripts": {
-    "dev": "concurrently -k \"npm run build:watch\" \"npm run start:dev\"",
-    "start": "node dist/settings/app.js",
-    "start:dev": "nodemon --inspect=0.0.0.0:9229 dist/settings/app.js",
-    "build": "tsc",
-    "build:watch": "tsc -w",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "dependencies": {
-    "@types/cookie-parser": "^1.4.2",
-    "axios": "^0.19.1",
-    "bcrypt": "^3.0.7",
-    "body-parser": "^1.19.0",
-    "chalk": "^3.0.0",
-    "connect-flash": "^0.1.1",
-    "cookie-parser": "^1.4.4",
-    "cookie-session": "^1.4.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "express-session": "^1.17.0",
-    "passport": "^0.4.1",
-    "passport-local": "^1.0.0",
-    "pg": "^7.17.1",
-    "reflect-metadata": "^0.1.13",
-    "torrent-stream": "^1.2.0",
-    "typeorm": "^0.2.22",
-    "typescript": "^3.7.4",
-    "validator": "^12.2.0"
-  },
-  "devDependencies": {
-    "@types/validator": "^12.0.1",
-    "@types/cookie-parser": "^1.4.2",
-    "@types/bcrypt": "^3.0.0",
-    "@types/cors": "^2.8.6",
-    "@types/express": "^4.17.2",
-    "@types/node": "^11.15.4",
-    "@types/passport": "^1.0.2",
-    "@types/pg": "^7.14.1",
-    "concurrently": "^4.1.2",
-    "nodemon": "^1.19.4"
-  }
+	"name": "hypertube",
+	"version": "1.0.0",
+	"description": "stream torrent with node js",
+	"main": "app.js",
+	"_moduleAliases": {
+		"@app": "./dist/app"
+	},
+	"scripts": {
+		"dev": "concurrently -k \"npm run build:watch\"  \"npm run start:dev\"",
+		"start": "node dist/settings/app.js",
+		"start:dev": "nodemon --inspect=0.0.0.0:9229 dist/settings/app.js",
+		"build": "tsc",
+		"build:watch": "tsc -w",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"dependencies": {
+		"axios": "^0.19.1",
+		"bcrypt": "^3.0.7",
+		"body-parser": "^1.19.0",
+		"chalk": "^3.0.0",
+		"connect-flash": "^0.1.1",
+		"cookie-parser": "^1.4.4",
+		"cookie-session": "^1.4.0",
+		"cors": "^2.8.5",
+		"express": "^4.17.1",
+		"module-alias": "^2.2.2",
+		"passport": "^0.4.1",
+		"passport-local": "^1.0.0",
+		"pg": "^7.17.1",
+		"reflect-metadata": "^0.1.13",
+		"torrent-stream": "^1.2.0",
+		"typeorm": "^0.2.22",
+		"typescript": "^3.7.4",
+		"validator": "^12.2.0"
+	},
+	"devDependencies": {
+		"@types/cookie-parser": "^1.4.2",
+		"@types/validator": "^12.0.1",
+		"@types/bcrypt": "^3.0.0",
+		"@types/cors": "^2.8.6",
+		"@types/express": "^4.17.2",
+		"@types/node": "^11.15.4",
+		"@types/passport": "^1.0.2",
+		"@types/pg": "^7.14.1",
+		"concurrently": "^4.1.2",
+		"nodemon": "^1.19.4"
+	}
 }

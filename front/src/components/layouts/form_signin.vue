@@ -69,19 +69,20 @@
       reset () {
         this.$refs.form.reset()
       },
-      test() {
-        axios.get("/test").then(response => console.log(response))
-      },
       requestForm() {
         axios
-          .post('/authentication', {
+          .post('😱/authentication', {
             email: this.email,
             password: this.password
-          }, {withCredentials: true})
-          .then((response) => {
-            this.$store.commit('connectUser', response.data.user)
           })
-          .catch(err => console.log(err))
+          .then((response) => {
+            console.log(response);
+             this.$emit('connected');
+             this.$store.commit('connectUser', response)
+          })
+          .catch((err) => {
+            console.log(err.response);
+          })
       }
     },
   }

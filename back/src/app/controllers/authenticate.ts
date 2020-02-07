@@ -1,4 +1,3 @@
-
 import { User } from '../../app/models/user'
 import {Request, Response} from 'express'
 
@@ -11,48 +10,54 @@ export default class authenticateController {
 			return done(null, false)
 		else {
 			const passwordIsCorrect = await user.validatePassword(password)
-			if (passwordIsCorrect){
-				return done(null, {user: user.toJSON()});
-			}
-			else{
-				return done(null, false)
-			}
+				if (passwordIsCorrect){
+					return done(null, user);
+				}
+				else {
+					return done(null, false)
+				}
 		}
 	}
 
-	static async deserialize(id: number, done: Function) {
-		const user: User = await User.findOne({id}) as User;
-		if (user)
-			done(null, user)
+	static async deserialize(userObject: User, done: Function) {
+	console.log(userObject);
+		let user: User | undefined = await User.findOne({id: userObject.id});
+		if (user instanceof User)
+			done(null, user);
 		else
-			done(null, {})
+			done(null, {});
 	}
 
 	static serialize(user: User, done: Function) {
-		done(null, user.id);
+		done(null, user);
 	}
 
-	static authenticateObject(req: Request, res: Response) {
-			// If this function gets called, authentication was successful.
-			// `req.user` contains the authenticated user.
-			res.send(req.user);	
+	static afterAuth(req: Request, res: Response) {
+		// If this function gets called, authentication was successful.
+		res.json({type: "success", user: req.user})
 	}
+
 
 	static logout(req: Request, res: Response) {
 		req.logout();
-		res.redirect('/');
+		res.json({type: "response", message: "user successfully logout"});
 	}
 
 	static checkNotAuth(req: Request, res: Response, next: Function) {
 		if (req.user)
-			res.send({type: "error", data: "a user should not be authenticated to acces this path"});
+		{
+			res.status(402).json({type: "error", data: "a user should not be authenticated to acces this path"});
+			return;
+		}
 		next();
 	}
 
 	static checkAuth(req: Request, res: Response, next: Function) {
-		if (!req.user)
-			res.send({type: "error", data: "a user should be authenticated to acces this path"});
+		if (!req.user && req.method != "OPTIONS")
+		{
+			res.status(403).json({type: "error", data: "a user should be authenticated to acces this path"});
+			return;
+		}
 		next();
 	}
-
 }  

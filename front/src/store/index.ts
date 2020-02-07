@@ -23,8 +23,8 @@ const store = {
 	modules: {
 	},
 	getters: {
-		connected: (state: any) => {
-			state.connected
+		connected(state: any) {
+			return state.connected
 		}
 	}
 }

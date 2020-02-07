@@ -74,7 +74,7 @@
 
 <script>
 
-  import axios from 'axios';
+  import axios from '@/config/axios_default';
 
 
   export default {
@@ -112,7 +112,7 @@
       },
       requestForm() {
         axios
-          .post('http://localhost:3000/user', {
+          .post('😱/user', {
             email: this.email,
             firstName: this.firstName,
             lastName: this.lastName,
@@ -120,11 +120,11 @@
             login: this.login,
           })
           .then((response) => {
-            if (response.status == 200)
+            this.$emit("created");
               console.log('it work');
           })
           .catch((error) => {
-            console.log(error.response);
+            console.log(error);
           })
       },
     },

@@ -6,7 +6,7 @@
       max-width="700"
       dark>
       <template v-slot:activator="{ on }">
-        <v-btn@click.stop="dialog = true">
+        <v-btn v-on="on">
           sign up
         </v-btn>
       </template>
@@ -16,7 +16,7 @@
         </v-card-title>
         <v-card-text>
           <v-container>
-            <form-sign-up/>
+            <form-sign-up @created="() => this.dialog = false"/> 
           </v-container>
         </v-card-text>
       </v-card>
