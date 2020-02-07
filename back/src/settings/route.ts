@@ -30,6 +30,7 @@ export default function setRoute(connection: Connection, app: Express) {
 
 
 	userNotAuthenticated
+	.get('/ytsApiDefaultList', controller.movies.ytsApiDefaultList)
 	.post('/authentication', passport.authenticate('local'), controller.authenticate.afterAuth)
 	.post("/user", controller.user.create)
 	.get("/test", (req: Request, res: Response) => {
@@ -59,6 +60,7 @@ export default function setRoute(connection: Connection, app: Express) {
 	userAuthenticated.post('/film-search-api-query-string', controller.movies.ytsApiQueryString);
 
 	userAuthenticated
+	.get('/ytsApiDefaultList', controller.movies.ytsApiDefaultList)
 	.post('/download', controller.movies.getDownload)
 	.get('/download/delete', controller.movies.deleteAllMovies)
 	.get('/player/:file', controller.movies.player)
