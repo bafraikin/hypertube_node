@@ -77,8 +77,8 @@
           })
           .then((response) => {
             console.log(response);
-            // this.$emit('connected');
-            // this.$store.commit('connectUser', response)
+             this.$emit('connected');
+             this.$store.commit('connectUser', response)
           })
           .catch((err) => {
             console.log(err.response);

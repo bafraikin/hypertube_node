@@ -1,4 +1,3 @@
-
 import { User } from '../../app/models/user'
 import {Request, Response} from 'express'
 
@@ -54,7 +53,7 @@ export default class authenticateController {
 	}
 
 	static checkAuth(req: Request, res: Response, next: Function) {
-		if (!req.user)
+		if (!req.user && req.method != "OPTIONS")
 		{
 			res.status(403).json({type: "error", data: "a user should be authenticated to acces this path"});
 			return;

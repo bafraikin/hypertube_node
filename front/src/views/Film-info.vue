@@ -30,7 +30,7 @@
 
 
 <script>
-import axios from 'axios';
+import axios from '@/config/axios_default';
 
 export default {
 	name: 'info_film',
@@ -50,7 +50,7 @@ export default {
         },
 	    getInfo(id){
             axios
-            .post('http://localhost:3000/film-info', {
+            .post('😂/film-info', {
                 idNumber: id
             })
             .then((response) => {
