@@ -2,6 +2,7 @@ import {Connection} from 'typeorm'
 import passport from 'passport';
 import * as controller from '@app/controllers/index'
 import {Express, NextFunction ,Request, Response, Router} from "express";
+import logger from "./logger"
 
 export default function setRoute(connection: Connection, app: Express) {
 
@@ -29,7 +30,7 @@ export default function setRoute(connection: Connection, app: Express) {
 
 
 	userNotAuthenticated
-	.post('/authentication', passport.authenticate('local'), controller.authenticate.authenticateObject)
+	.post('/authentication', passport.authenticate('local'), controller.authenticate.afterAuth)
 	.post("/user", controller.user.create)
 	.get("/test", (req: Request, res: Response) => {
 		console.log("been here")

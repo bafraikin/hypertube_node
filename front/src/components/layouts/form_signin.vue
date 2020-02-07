@@ -76,10 +76,13 @@
             password: this.password
           })
           .then((response) => {
-            this.$emit('connected');
-            this.$store.commit('connectUser', response.data.user)
+            console.log(response);
+            // this.$emit('connected');
+            // this.$store.commit('connectUser', response)
           })
-          .catch(err => console.log(err))
+          .catch((err) => {
+            console.log(err.response);
+          })
       }
     },
   }

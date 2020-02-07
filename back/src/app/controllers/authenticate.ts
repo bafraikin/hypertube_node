@@ -33,21 +33,21 @@ export default class authenticateController {
 		done(null, user);
 	}
 
-	static authenticateObject(req: Request, res: Response) {
+	static afterAuth(req: Request, res: Response) {
 		// If this function gets called, authentication was successful.
-		res.send({type: "success", user: req.user})
+		res.json({type: "success", user: req.user})
 	}
 
 
 	static logout(req: Request, res: Response) {
 		req.logout();
-		res.send({type: "response", message: "user successfully logout"});
+		res.json({type: "response", message: "user successfully logout"});
 	}
 
 	static checkNotAuth(req: Request, res: Response, next: Function) {
 		if (req.user)
 		{
-			res.status(401).send({type: "error", data: "a user should not be authenticated to acces this path"});
+			res.status(402).json({type: "error", data: "a user should not be authenticated to acces this path"});
 			return;
 		}
 		next();
@@ -56,10 +56,9 @@ export default class authenticateController {
 	static checkAuth(req: Request, res: Response, next: Function) {
 		if (!req.user)
 		{
-			res.status(403).send({type: "error", data: "a user should be authenticated to acces this path"});
+			res.status(403).json({type: "error", data: "a user should be authenticated to acces this path"});
 			return;
 		}
 		next();
 	}
-
 }  

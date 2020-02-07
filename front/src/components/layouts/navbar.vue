@@ -8,7 +8,7 @@
       <h2>Hypertubulaire</h2>
       <div class="navbar">
 
-        <div v-show="!isConnected" data-app="true"> 
+        <div v-show="!isConnected" class="navbar" data-app="true"> 
           <sign-up/>
           <sign-in/>
         </div>

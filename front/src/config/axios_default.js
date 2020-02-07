@@ -27,20 +27,23 @@ axiosInstance.interceptors.response.use(function (response) {
 
 axiosInstance.interceptors.response.use(
    response => {
+		 console.log(response);
        return (response);
    },
-   (error, dd) => {
-		 console.log(error, dd);
-       Promise.reject(error)
+   (error) => {
+		 const status = error.response.status
+		if (status >= 400 && status <= 405)
+		 console.log("unauthorized")
+     return Promise.reject(error)
    });
 
 axiosInstance.interceptors.request.use(
    response => {
+		 console.log(response);
        return (response);
    },
    (error) => {
-		 console.log(error, dd);
-       Promise.reject(error)
+    return Promise.reject(error)
    });
 
 export default axiosInstance;
