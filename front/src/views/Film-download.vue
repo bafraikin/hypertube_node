@@ -52,7 +52,7 @@ export default {
 			var url = "http://localhost:3000/subtitles";
 			axios
 			.post(url, {
-				videoPath: "./films/" + movie.imdbCode + "-" + movie.title
+				imdbId: movie.imdbCode
 			})
 			.then(response => {
 				if(response.status == 200){
