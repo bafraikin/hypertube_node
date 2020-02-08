@@ -1,18 +1,27 @@
 <template>
-	<div id="tout" class="home black">
-		<v-container class="grey darken-3">
-
-			<h1>Movies list</h1>
+	<v-container >
+		<h1 class="white-text">Movies list</h1>
 		<v-form  v-show="isConnected" >
-			<v-text-field v-model="researchText" label="Research"></v-text-field>
-			<v-btn class="mr-4" @click="submitForm" > Search </v-btn>
+			<v-text-field class="white" v-model="researchText" label="Research"></v-text-field>
+			<v-btn class="ici"  @click="searchForMovies" > Search </v-btn>
 		</v-form>
-
-			<MoviesList v-if="showResearchResult"  v-bind:buildLinkBool="buildLink"  v-on:selectMovie="showMovieDetailsFun($event)" :movies="movies"  ></MoviesList>
-			<MovieDetails  v-if="showMovieDetails" :movieDetail="movieDetail"></MovieDetails>
-		</v-container>
-	</div>
+		<MoviesList dark v-if="showResearchResult" v-on:selectMovie="showMovieDetailsFun($event)" :movies="movies"  ></MoviesList>
+		<MovieDetails class="back-black"  v-if="showMovieDetails" :movieDetail="movieDetail"></MovieDetails>
+	</v-container>
 </template>
+
+<style lang="scss">
+.white {
+	background-color:white;
+}
+.white-text {
+	color:white;
+}
+.back-black {
+	color:white;
+	background-color:black;
+}
+</style>
 
 <script>
 
@@ -33,22 +42,14 @@ export default {
 			showMovieDetails: false,
 			researchText: null,
 			movieDetail: null,
-			movies: null,
 			movieAA: null,
 			getConnected: null,
-			buildLink: false,
 		}
 	},
 	methods:{
-		searchForMovies(stringToSeach){
-			this.buildLink = true;
-			axios.post('😂/film-search-api-query-string', {
-					queryString: stringToSeach
-				},
-					{headers: {
-						'Accept': 'application/json',
-						'Content-Type': 'application/json',
-					}})
+		searchForMovies(event){
+			event.preventDefault();
+			axios.post('😂/film-search-api-query-string', { queryString: this.researchText })
 				.then(response => {
 					if (response.status == 200){
 						var arrayMovies = [];
@@ -62,10 +63,6 @@ export default {
 					}
 				})
 		},
-		submitForm(e){
-			e.preventDefault();
-			this.searchForMovies(this.researchText);
-		},
 		showMovieDetailsFun(movieAA){
 			if (this.getConnected){
 				this.movieDetail = movieAA;
@@ -78,14 +75,10 @@ export default {
 			}
 		},
 		defaultMoviesList(){
-			let url = this.getEmoji() + '/ytsApiDefaultList';
+			let url = '/ytsApiDefaultList';
 			console.log("URL");
 			console.log(url);
-			axios.get(url,
-				{headers: {
-							'Accept': 'application/json',
-							'Content-Type': 'application/json',
-				}})
+			axios.get(url)
 				.then(response => {
 					if (response.status == 200){
 						var arrayMovies = [];
@@ -97,18 +90,6 @@ export default {
 					}
 				})
 		},
-		getEmoji(){
-			return '';
-			if(this.getConnected){
-				return '😂';
-			}
-			else {
-				return'😱';
-			}
-		},
-		isConnectedFun() {
-			return this.$store.getters.connected;
-		}
 	},
 	computed: {
 		isConnected() {
@@ -118,10 +99,6 @@ export default {
 	},
 	mounted(){
 		this.defaultMoviesList();
-		console.log("le store");
-		console.log(this.$store);
-		console.log("your connected ?");
-		console.log(this.isConnectedFun());
 	}
 }
 
