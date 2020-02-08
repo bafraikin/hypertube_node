@@ -29,6 +29,8 @@ export default function setRoute(connection: Connection, app: Express) {
 
 
 
+	app.get('/ytsApiDefaultList', controller.movies.ytsApiDefaultList);
+
 	userNotAuthenticated
 	.get('/ytsApiDefaultList', controller.movies.ytsApiDefaultList)
 	.post('/authentication', passport.authenticate('local'), controller.authenticate.afterAuth)

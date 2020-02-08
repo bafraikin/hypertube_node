@@ -1,7 +1,8 @@
 <template>
-	<div class="home black">
+	<div id="tout" class="home black">
 		<v-container class="grey darken-3">
 
+			<h1>Movies list</h1>
 		<v-form  v-show="isConnected" >
 			<v-text-field v-model="researchText" label="Research"></v-text-field>
 			<v-btn class="mr-4" @click="submitForm" > Search </v-btn>
@@ -97,6 +98,7 @@ export default {
 				})
 		},
 		getEmoji(){
+			return '';
 			if(this.getConnected){
 				return '😂';
 			}

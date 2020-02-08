@@ -58,7 +58,7 @@ export default class moviesController {
 	static ytsApiQueryString(req: Request, res: Response) {
 		var stringResearch = req.body.queryString;
 		stringResearch = encodeURI(stringResearch);
-		var url = 'http://yts.tl/api/v2/list_movies.json?query_term='+ stringResearch;
+		var url = 'http://yts.mx/api/v2/list_movies.json?query_term='+ stringResearch;
 		axios
 		.get(url)
 		.then((response: any) => {
