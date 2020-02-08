@@ -16,7 +16,7 @@
 
 <script>
 
-import axios from 'axios';
+import axios from  '@/config/axios_default';
 
 export default {
 	name: 'download',
@@ -25,6 +25,7 @@ export default {
 			film: null,
 			showFilm: false,
 			filmPath: null,
+			imdbCode:null,
 		}
 	},
 	methods:{
@@ -52,13 +53,48 @@ export default {
 		stalled(event){
 			console.log(event);
 		},
-	},
-	mounted(){
+		downloadMovies(movie, torrent){
+			console.log("Le IMDB code");
+			console.log(movie.imdb_code);
+			if (movie === undefined){
+				var imdbCode = undefined;
+				this.imdbCode = undefined
+			}
+			else{
+				var imdbCode = movie.imdb_code;
+				this.imdbCode = movie.imdb_code;
+			}
+			if (torrent != undefined){
+				var url = torrent.url;
+				var hash = torrent.hash;
+			}
+			else {
+				var url = undefined;
+				var hash = undefined;
+			}
+			console.log("On va download");
+			axios.post('😂/download', {
+					url: url,
+					hash: hash,
+					imdbCode: imdbCode,
+					movie: movie,
+				})
+				.then(response => {
+					//this.handleResponse(response);
 		this.film = this.$route.params.movie;
 		if (this.film != undefined){
-			this.filmPath = "http://localhost:3000/player/" + this.film.imdbCode + "-" + this.film.title;
+			this.filmPath = "http://localhost:3000/😂/player/" + this.imdbCode + "-" + this.film.title;
 			this.showFilm = true;
 		}
+				})
+		},
+	},
+	mounted(){
+		console.log("Les params");
+		console.log(this.$route.params);
+		var movie = this.$route.params.movie;
+		var torrent = this.$route.params.torrent
+		this.downloadMovies(movie, torrent);
 		console.log("bijour");
 	}
 }

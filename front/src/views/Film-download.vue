@@ -33,7 +33,7 @@
 
 
 <script>
-import axios from 'axios';
+import axios from  '@/config/axios_default';
 
 export default {
 	name: 'download',
@@ -73,14 +73,14 @@ export default {
 				var hash = undefined;
 			}
 			axios
-				.post('http://localhost:3000/download', {
+				.post('😂/download', {
 					url: url,
 					hash: hash,
 					imdbCode: imdbCode,
 					movie: movie,
 				})
 				.then(response => {
-					this.handleResponse(response);
+					//this.handleResponse(response);
 				})
 		},
 	},

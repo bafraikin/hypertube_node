@@ -27,8 +27,6 @@ export default function setRoute(connection: Connection, app: Express) {
 })
 
 
-
-
 	app.get('/ytsApiDefaultList', controller.movies.ytsApiDefaultList);
 
 	userNotAuthenticated
@@ -55,25 +53,24 @@ export default function setRoute(connection: Connection, app: Express) {
 
 
 	userAuthenticated.route("/authentication").delete(controller.authenticate.logout);
-
-
 	userAuthenticated.post('/film-info', controller.filmInfo.searchInfo);
-
 	userAuthenticated.post('/film-search-api-query-string', controller.movies.ytsApiQueryString);
+	userAuthenticated.post('/download', controller.movies.getDownload);
+	userAuthenticated .get('/player/:file', controller.movies.player);
 
-	userAuthenticated
-	.get('/ytsApiDefaultList', controller.movies.ytsApiDefaultList)
-	.post('/download', controller.movies.getDownload)
-	.get('/download/delete', controller.movies.deleteAllMovies)
-	.get('/player/:file', controller.movies.player)
-	.get('/success',(req: Request, res: Response) => {
-		console.log("HHHH")
-		res.send("login")
-	})
-	.get("/test", (req: Request, res: Response) => {
-		console.log("been here")
-		res.send("No login")
-	});
+	// userAuthenticated
+	// .get('/ytsApiDefaultList', controller.movies.ytsApiDefaultList)
+	// .get('/download/delete', controller.movies.deleteAllMovies)
+	// .post('/download', controller.movies.getDownload)
+	// .get('/player/:file', controller.movies.player)
+	// .get('/success',(req: Request, res: Response) => {
+	// 	console.log("HHHH")
+	// 	res.send("login")
+	// })
+	// .get("/test", (req: Request, res: Response) => {
+	// 	console.log("been here")
+	// 	res.send("No login")
+	// });
 
 
 	app.use(`/${encodeURI("😱")}`, userNotAuthenticated);
