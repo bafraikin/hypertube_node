@@ -1,13 +1,8 @@
 <template>
 	<div id="lala">
 		<div v-if="showFilm">
-			<h1>{{ film.title }}</h1>
-			<video  ref="myVid"  id="videoPlayer"  	@progress="playerPgrogress($event)" 
-						@changed="playerStateChanged($event)"
-						@error="errorVideo($event)"
-						@durationchange="durationchange($event)"
-						@stalled="stalled($event)"
-						controls >
+			<!-- <h1>{{ title }}</h1> -->
+			<video  ref="myVid"  id="videoPlayer" controls >
 						<source v-bind:src="filmPath" type="video/mp4"   >
 			</video>
 		</div>
@@ -22,7 +17,7 @@ export default {
 	name: 'download',
 	data() {
 		return {
-			film: null,
+			title: '',
 			showFilm: false,
 			filmPath: null,
 			imdbCode:null,
@@ -30,6 +25,7 @@ export default {
 	},
 	methods:{
 		downloadMovies(movie, torrent){
+			console.log(movie);
 			if (movie === undefined){
 				var imdbCode = undefined;
 				this.imdbCode = undefined
@@ -46,26 +42,22 @@ export default {
 				var url = undefined;
 				var hash = undefined;
 			}
-			console.log("On va download");
-			axios.post('😂/download', {
-				url: url,
-				hash: hash,
-				imdbCode: imdbCode,
-				movie: movie,
-			})
-			.then(response => {
-					//this.handleResponse(response);
-				this.film = this.$route.params.movie;
-				if (this.film != undefined){
-					this.filmPath = "http://localhost:3000/😂/player/" + this.imdbCode + "-" + this.film.title;
-					this.showFilm = true;
-				}
-			})
+			url = encodeURIComponent(url);
+			hash = encodeURIComponent(hash);
+			imdbCode = encodeURIComponent(imdbCode);
+			console.log(movie);
+			console.log(movie.title);
+			this.title = movie.title;
+			let title = encodeURIComponent(movie.title);
+
+			this.filmPath = "http://localhost:3000/😂/player/" + url + "/"+ hash + "/"+ imdbCode+ "/" + title;
+			this.showFilm = true;
 		},
 	},
 	mounted(){
 		var movie = this.$route.params.movie;
 		var torrent = this.$route.params.torrent
+		console.log(movie);
 		this.downloadMovies(movie, torrent);
 	}
 }

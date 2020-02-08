@@ -30,8 +30,8 @@ export default function setRoute(connection: Connection, app: Express) {
 	userAuthenticated.route("/authentication").delete(controller.authenticate.logout);
 	userAuthenticated.post('/film-info', controller.filmInfo.searchInfo);
 	userAuthenticated.post('/film-search-api-query-string', controller.movies.ytsApiQueryString);
-	userAuthenticated.post('/download', controller.movies.getDownload);
-	userAuthenticated .get('/player/:file', controller.movies.player);
+	// userAuthenticated.post('/download', controller.movies.getDownload);
+	userAuthenticated.get('/player/:url/:hash/:imdbCode/:title', controller.movies.player);
 
 	app.use(`/${encodeURI("😱")}`, userNotAuthenticated);
 	app.use(`/${encodeURI("😂")}`, userAuthenticated);

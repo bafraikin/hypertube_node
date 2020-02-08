@@ -29,9 +29,11 @@ export class Movie extends BaseEntity {
 	@Column()
 	imdbCode!: string;
 
-
 	@Column()
 	pourcentage!: number;
+
+	// @Entity()
+	size: number;
 
 	toJSON() {
 		return {
@@ -43,15 +45,34 @@ export class Movie extends BaseEntity {
 		}
 	}
 
-	static getMovie() {
-		//if file exist
-		//return downloaded
-		//else
-		return "noExist";
-	}
+	async getMovie(params: any) {
+		console.log(params);
+		if (params.url == undefined || params.hash == undefined || params.imdbCode == undefined || params.title == undefined)
+			throw "erreur dans get Movie";
 
-	static getMovies() {
-		return "Toy_story_baby";
+		params.hash = decodeURIComponent(params.hash);
+		params.url = decodeURIComponent(params.url);
+		params.imdbCode = decodeURIComponent(params.imdbCode);
+		params.title = decodeURIComponent(params.title);
+
+		const movieSearch = await Movie.findOne({ hash: params.hash, url: params.url, imdbCode: params.imdbCode});
+		if (movieSearch == undefined){
+			var movie = new Movie;
+			movie.title = params.title;
+			movie.imdbCode = params.imdbCode;
+			movie.hash = params.hash;
+			movie.imageUrl = "la super image url du film";
+			movie.url = params.url;
+			movie.buildMagnetLink();
+			movie.downloadStatus = "notStarted";
+			movie.pourcentage = 0;
+			movie.size = 0;
+			await movie.save();
+		}
+		else{
+			var movie = movieSearch;
+		}
+		return movie;
 	}
 
 	buildMagnetLink(){
@@ -80,53 +101,14 @@ export class Movie extends BaseEntity {
 		this.magnetLink = magnetLink;
 	}
 
-	async downloadMovie(){
-		this.downloadStatus = "downloadOnGoing";
-		this.save();
-		var engine = torrentStream(this.magnetLink, {path: '/back/films'});
-		engine.on('download', (index: any) => {
-			//console.log("On a download", index);
-		})
-		engine.on('idle', () =>{
-			console.log("on a tout finis");
-			this.downloadStatus = "downloadFinish";
-			this.save();
-		})
-		engine.on('ready', () => {
-		engine.files.forEach( (file: any) => {
-				var regex = /mp4/;
-				var isMovie = regex.test(file.name);
-				if (isMovie){
-					console.log("Cest un film");
-					console.log('Le nom du fichier:', file.name);
-					console.log("La taille du fichier total ==>", file.length);
-					var progress = 0;
-					var opt = {
-						start: 0,
-						end: file.length
-					}
-					var filePath = '/back/films/' + this.imdbCode + '-' + this.title;
-					var write = fs.createWriteStream(filePath);
-					var stream = file.createReadStream(opt);
-					stream.on('data', (chunk: any) => {
-						//console.log("received " + chunk.length + " bytes of data");
-						progress += chunk.length;
-						// this.pourcentage = Math.round((progress * 100 / file.length));
-						// this.save();
-						// console.log("Le pourcentage du total ==>", this.pourcentage  + "%");
-					})
-					stream.on('end', () => {
-						console.log("Download completed");
-					})
-					stream.pipe(write);
-				}
-				else {
-					console.log("ce n'est pas un film");
-					console.log(file.name);
-					file.deselect();
-				}
+	async downloadMovie(start: any){
+		return new Promise((resolve, reject) => {
+			var engine = torrentStream(this.magnetLink, {path: '/back/films'});
+			engine.on('ready', () => {
+				console.log("************READY ***************************");
+    			return resolve(engine);
 			});
-		});
+		}) ;
 	}
 }
 

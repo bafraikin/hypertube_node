@@ -42,7 +42,6 @@ export default {
 			showMovieDetails: false,
 			researchText: null,
 			movieDetail: null,
-			movieAA: null,
 			getConnected: null,
 		}
 	},
@@ -68,7 +67,6 @@ export default {
 				this.movieDetail = movieAA;
 				this.showMovieDetails = true;
 				this.showResearchResult = false;
-				this.research = false;
 			}
 			else{
 				console.log("please sign in first");
@@ -76,8 +74,6 @@ export default {
 		},
 		defaultMoviesList(){
 			let url = '/ytsApiDefaultList';
-			console.log("URL");
-			console.log(url);
 			axios.get(url)
 				.then(response => {
 					if (response.status == 200){
