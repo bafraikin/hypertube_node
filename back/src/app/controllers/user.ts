@@ -21,7 +21,6 @@ export default class userController {
 		res.send("false");
 	}
 
-
 	static async updatePassword(req: Request, res: Response) {
 		let user = await  User.findOne({ email: req.body.email });
 		if (user instanceof User && !user.isEmpty())
@@ -57,7 +56,7 @@ export default class userController {
 
 	}
 
-	static test(req: Request, res: Response) {
-		res.send("all good");
+	static getUser(req: Request, res: Response) {
+		res.send(req.user);
 	}
 }

@@ -27,11 +27,15 @@ export default function setRoute(connection: Connection, app: Express) {
 	userNotAuthenticated.get('/ytsApiDefaultList', controller.movies.ytsApiDefaultList);
 	userNotAuthenticated.post('/authentication', passport.authenticate('local'), controller.authenticate.afterAuth);
 	userNotAuthenticated.post("/user", controller.user.create);
+	userAuthenticated.get("/user", controller.user.getUser);
 	userAuthenticated.route("/authentication").delete(controller.authenticate.logout);
 	userAuthenticated.post('/film-info', controller.filmInfo.searchInfo);
 	userAuthenticated.post('/film-search-api-query-string', controller.movies.ytsApiQueryString);
-	// userAuthenticated.post('/download', controller.movies.getDownload);
 	userAuthenticated.get('/player/:url/:hash/:imdbCode/:title', controller.movies.player);
+
+	userAuthenticated.post('/getComments', controller.comments.getComments);
+	userAuthenticated.post('/postComment', controller.comments.postComment);
+
 
 	app.use(`/${encodeURI("😱")}`, userNotAuthenticated);
 	app.use(`/${encodeURI("😂")}`, userAuthenticated);
@@ -55,6 +59,7 @@ export default function setRoute(connection: Connection, app: Express) {
 	 -X POST http://localhost:3000/UserCreate
 	 */
 
+	// userAuthenticated.post('/download', controller.movies.getDownload);
 	// userAuthenticated
 	// .get('/ytsApiDefaultList', controller.movies.ytsApiDefaultList)
 	// .get('/download/delete', controller.movies.deleteAllMovies)

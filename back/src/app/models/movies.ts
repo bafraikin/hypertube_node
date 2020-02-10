@@ -105,7 +105,6 @@ export class Movie extends BaseEntity {
 		return new Promise((resolve, reject) => {
 			var engine = torrentStream(this.magnetLink, {path: '/back/films'});
 			engine.on('ready', () => {
-				console.log("************READY ***************************");
     			return resolve(engine);
 			});
 		}) ;

@@ -21,14 +21,22 @@
 				</tbody>
 			</template>
 		</v-simple-table>
+
+		<Comment :imdbCode="movieDetail.imdb_code" :title="movieDetail.title"></Comment>
+
 	</v-container>
 </template>
 
 
 <script>
+import Comment from '@/components/Comments.vue'
+
 export default {
 	props: {
 		movieDetail: { type: Object }
+	},
+	components: {
+		"Comment": Comment,
 	},
 	data() {
 		return {
@@ -41,7 +49,8 @@ export default {
 			},
 	},
 	mounted(){
-		console.log("hello Movies details");
+		console.log(this.movieDetail.imdb_code);
+		console.log(this.movieDetail.title);
 	}
 }
 </script>
