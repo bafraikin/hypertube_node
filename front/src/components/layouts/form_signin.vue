@@ -70,8 +70,9 @@
         this.$refs.form.reset()
       },
       async requestForm() {
-        let response = await
-          axios.post('😱/authentication', {
+        let response = await axios.post(
+          '😱/authentication', 
+          {
             email: this.email,
             password: this.password
           })
