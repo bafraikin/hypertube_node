@@ -46,7 +46,7 @@ export default class authenticateController {
 	static checkNotAuth(req: Request, res: Response, next: Function) {
 		if (req.user)
 		{
-			res.status(402).json({type: "error", data: "a user should not be authenticated to acces this path"});
+			res.status(403).json({type: "error", data: "a user should not be authenticated to acces this path"});
 			return;
 		}
 		next();
@@ -55,7 +55,7 @@ export default class authenticateController {
 	static checkAuth(req: Request, res: Response, next: Function) {
 		if (!req.user && req.method != "OPTIONS")
 		{
-			res.status(403).json({type: "error", data: "a user should be authenticated to acces this path"});
+			res.status(401).json({type: "error", data: "a user should be authenticated to acces this path"});
 			return;
 		}
 		next();

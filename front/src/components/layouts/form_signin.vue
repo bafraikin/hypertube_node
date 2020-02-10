@@ -70,19 +70,21 @@
         this.$refs.form.reset()
       },
       async requestForm() {
-        await axios
-          .post('😱/authentication', {
+        let response = await
+          axios.post('😱/authentication', {
             email: this.email,
             password: this.password
           })
           .then((response) => {
-            console.log(response);
-             this.$emit('connected');
-             this.$store.commit('connectUser', response)
+            return response
           })
           .catch((err) => {
-            console.log(err.response);
+            return false
           })
+        if (response !== false) {
+             this.$emit('connected');
+             this.$store.commit('connectUser', response)
+        }
       }
     },
   }
