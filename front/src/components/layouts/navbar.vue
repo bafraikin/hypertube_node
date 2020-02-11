@@ -51,11 +51,11 @@
       }
     },
     methods: {
-      logout() {
-        console.log("aaaaaa");
-        axios.delete("/😂/authentication").then((response) => {
-          this.$store.commit('disconnectUser')
-        }) 
+      async logout() {
+        const response = await axios.delete("/😂/authentication").then((response) => {
+          return true;
+        }); 
+        this.$store.commit('disconnectUser')
       }
     },
     computed: {

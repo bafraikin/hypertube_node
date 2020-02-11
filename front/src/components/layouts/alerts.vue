@@ -7,8 +7,7 @@
 	export default {
     methods: {
       displayAlert(args) {
-        console.log("11");
-        this.$toast[`${args.type}`](args.msg, {color: args.type})
+        this.$toast[`${args.type}`](args.msg)
       }
     },
     created() {
