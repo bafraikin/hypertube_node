@@ -2,7 +2,7 @@
 	<div>
 		<h2>Comments</h2>
 		<div v-for="comment in comments">
-			<p>{{ comment.login }}</p>
+			<p v-on:click="displayUserProfile(comment.userId)">{{ comment.login }}</p>
 			<p>{{ comment.content }}</p>
 		</div>
 		<v-form>
@@ -40,6 +40,11 @@ export default {
 		}
 	},
 	methods:{
+		displayUserProfile(userId){
+			console.log("ici");
+			console.log(userId);
+				this.$router.push({ name: "userProfile", params:{userId: userId}});
+		},
 		getComments(imdbCode, title){
 			axios.post('😂/getComments',
 				{
@@ -48,6 +53,7 @@ export default {
 				})
 				.then(response => {
 					if (response.status == 200){
+						console.log(response.data);
 						this.comments = response.data;
 					}
 				})

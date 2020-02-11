@@ -35,6 +35,7 @@ export default function setRoute(connection: Connection, app: Express) {
 
 	userAuthenticated.post('/getComments', controller.comments.getComments);
 	userAuthenticated.post('/postComment', controller.comments.postComment);
+	userAuthenticated.post("/getUserProfile", controller.user.getUserProfile);
 
 
 	app.use(`/${encodeURI("😱")}`, userNotAuthenticated);

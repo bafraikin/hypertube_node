@@ -21,6 +21,12 @@ const router = new VueRouter({
 			component: () => import('../views/Film-play.vue'),
 			meta: {layout: "layout"}
 		},
+		{
+			path: '/user',
+			name: 'userProfile',
+			component: () => import('../views/Profile.vue'),
+			meta: {layout: "layout"}
+		}
 	]
 })
 

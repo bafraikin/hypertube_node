@@ -3,6 +3,12 @@ import {Request, Response} from 'express'
 
 export default class userController {
 
+	static async getUserProfile(req: Request, res: Response) {
+		let userId = req.body.userId;
+		let user = await  User.findOne({ userId: userId });
+		res.send(user);
+	}
+
 	static async create(req: Request, res: Response) {
 		const user = new User();
 		user.email = req.body.email;
