@@ -7,39 +7,46 @@ const axios = require('axios');
 
 export default class commentController {
 
-	static create(params: any){
-		let comment = new Comment;
-		comment.userId = params.userId;
-		comment.date = "la date bebe";
-		comment.movieImdbCode = params.movieImdbCode;
-		comment.movieTitle = params.movieTitle;
-		comment.content = params.content;
-		comment.save();
-		return comment;
-	}
-
 	static async getComments(req: Request, res: Response) {
 		let movieImdbCode = req.body.movieImdbCode;
-		let movieTitle = req.body.movieTitle;
-		let comments :any  = await  Comment.find({ movieImdbCode: movieImdbCode, movieTitle: movieTitle });
-		let index = 0;
-		while (index < comments.length){
-			const user : any = await User.findOne({ id: comments[index].userId });
-			comments[index].login = user.login;
-			index++;
+		console.log("******************");
+		console.log("On get");
+		console.log(movieImdbCode);
+		console.log("******************");
+		let movie = await Movie.findOne({ imdbCode: movieImdbCode});
+		if (movie == undefined){
+			res.send("nothing");
 		}
-		res.send(comments);
+		else{
+			res.send(movie.comments); // trouver une autre solution que !
+		}
 	}
 
 	static async postComment(req: Request, res: Response) {
-		//verifs des params  ==> plus tard
 		let params: any = {};
-		let user : any = req.user;
-		params.userId = user.id;
-		params.movieImdbCode = req.body.movieImdbCode;
-		params.movieTitle = req.body.movieTitle;
+		let userrr : any = req.user;
+
+		params.userId = userrr.id;
+		params.movie = req.body.movie;
+		console.log("*********le movie first************");
+		console.log(params.movie);
 		params.content = req.body.content;
-		let comment = commentController.create(params);
+		//verifs des params  ==> plus tard
+
+		let movie = await Movie.getMovie(params.movie);
+		console.log("*********le movie************");
+		console.log(movie);
+		const user = await User.findOne({ id: params.userId })
+		let comment = new Comment;
+		comment.date = "la date bebe";
+		comment.content = params.content;
+		comment.user = user;
+		comment.movie = movie;
+		await comment.save();
+		console.log("******************");
+		console.log("On post");
+		console.log("******************");
+		console.log(comment);
 		res.send(comment);
 	}
 

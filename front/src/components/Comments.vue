@@ -26,11 +26,9 @@
 <script>
 import axios from  '@/config/axios_default';
 
-
 export default {
 	props: {
-		imdbCode: { type: String },
-		title: { type: String },
+		movie: { type: Object },
 	},
 	data() {
 		return {
@@ -43,8 +41,7 @@ export default {
 		getComments(imdbCode, title){
 			axios.post('😂/getComments',
 				{
-					movieImdbCode: this.imdbCode,
-					movieTitle: this.title,
+					movie: this.movie,
 				})
 				.then(response => {
 					if (response.status == 200){
@@ -60,8 +57,7 @@ export default {
 		postComment(){
 			axios.post('😂/postComment',
 				{
-					movieImdbCode: this.imdbCode,
-					movieTitle: this.title,
+					movie: this.movie,
 					content: this.textarea,
 				})
 				.then(response => {
@@ -70,9 +66,12 @@ export default {
 					}
 					this.getComments();
 				})
+			this.textarea = null;
 		},
 	},
 	mounted(){
+		console.log("Le movie");
+		console.log(this.movie);
 		this.getComments()
 	}
 }

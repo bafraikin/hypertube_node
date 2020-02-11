@@ -1,4 +1,5 @@
-import {BaseEntity, Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
+import {Comment} from '@app/models/comment'
 let torrentStream = require('torrent-stream');
 const fs = require('fs')
 
@@ -23,6 +24,9 @@ export class Movie extends BaseEntity {
 	@Column()
 	magnetLink!: string;
 
+	@OneToMany(type => Comment, comment => comment.movie)
+    comments: Comment[];
+
 	@Column()
 	downloadStatus!: string;
 
@@ -40,32 +44,38 @@ export class Movie extends BaseEntity {
 		}
 	}
 
-	async getMovie(params: any) {
+	static async getMovie(params: any) {
 		console.log(params);
-		if (params.url == undefined || params.hash == undefined || params.imdbCode == undefined || params.title == undefined)
+		if (params == undefined || params.imdb_code == undefined || params.title == undefined)
 			throw "erreur dans get Movie";
 
-		params.hash = decodeURIComponent(params.hash);
-		params.url = decodeURIComponent(params.url);
 		params.imdbCode = decodeURIComponent(params.imdbCode);
 		params.title = decodeURIComponent(params.title);
 
-		const movieSearch = await Movie.findOne({ hash: params.hash, url: params.url, imdbCode: params.imdbCode});
-		let movie;
-		if (movieSearch == undefined){
+		let movie = await Movie.findOne({ imdbCode: params.imdbCode });
+		if (movie == undefined){
 			movie = new Movie;
 			movie.title = params.title;
 			movie.imdbCode = params.imdbCode;
-			movie.hash = params.hash;
 			movie.imageUrl = "la super image url du film";
-			movie.url = params.url;
-			movie.buildMagnetLink();
 			movie.downloadStatus = "notStarted";
 			movie.size = 0;
+
+			if (params.url == undefined || params.hash == undefined){
+				movie.hash = "";
+				movie.url = "";
+				movie.magnetLink = "";
+			}
+			else {
+				params.hash = decodeURIComponent(params.hash);
+				params.url = decodeURIComponent(params.url);
+				movie.hash = params.hash;
+				movie.url = params.url;
+				movie.buildMagnetLink();
+			}
+			console.log("on va enregistrer");
+			console.log(movie);
 			await movie.save();
-		}
-		else{
-			movie = movieSearch;
 		}
 		return movie;
 	}

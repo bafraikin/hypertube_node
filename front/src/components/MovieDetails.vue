@@ -22,7 +22,7 @@
 			</template>
 		</v-simple-table>
 
-		<Comment :imdbCode="movieDetail.imdb_code" :title="movieDetail.title"></Comment>
+		<Comment :movie="movieDetail"></Comment>
 
 	</v-container>
 </template>
@@ -36,12 +36,7 @@ export default {
 		movieDetail: { type: Object }
 	},
 	components: {
-		"Comment": Comment,
-	},
-	data() {
-		return {
-			//movieDetail: null,
-		}
+		"Comment": Comment
 	},
 	methods:{
 	download(movie, torrent){
@@ -49,8 +44,7 @@ export default {
 			},
 	},
 	mounted(){
-		console.log(this.movieDetail.imdb_code);
-		console.log(this.movieDetail.title);
+		console.log(this.movieDetail);
 	}
 }
 </script>
