@@ -13,6 +13,12 @@
         switch(code){
           case "UNSIGNED": 
             return "you need to sign in to perform this action";
+          case "NOT_ALLOWED":
+            return "you're not allowed to perform this";
+          case "BAD_INPUT":
+            return "bad input"
+          case "CREATED":
+            return "action granteed";
           default:
             return "error"
         }
