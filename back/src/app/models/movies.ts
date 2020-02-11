@@ -29,7 +29,6 @@ export class Movie extends BaseEntity {
 	@Column()
 	imdbCode!: string;
 
-	// @Entity()
 	size: number;
 
 	toJSON() {
@@ -52,8 +51,9 @@ export class Movie extends BaseEntity {
 		params.title = decodeURIComponent(params.title);
 
 		const movieSearch = await Movie.findOne({ hash: params.hash, url: params.url, imdbCode: params.imdbCode});
+		let movie;
 		if (movieSearch == undefined){
-			let movie = new Movie;
+			movie = new Movie;
 			movie.title = params.title;
 			movie.imdbCode = params.imdbCode;
 			movie.hash = params.hash;
@@ -65,7 +65,7 @@ export class Movie extends BaseEntity {
 			await movie.save();
 		}
 		else{
-			let movie = movieSearch;
+			movie = movieSearch;
 		}
 		return movie;
 	}
@@ -100,7 +100,6 @@ export class Movie extends BaseEntity {
 		return new Promise((resolve, reject) => {
 			let engine = torrentStream(this.magnetLink, {path: '/back/films'});
 			engine.on('ready', () => {
-				console.log("************READY ***************************");
     			return resolve(engine);
 			});
 		}) ;
