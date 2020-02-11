@@ -1,18 +1,18 @@
 <template>
 	<div>
-	<h2>Comments</h2>
-	<div v-for="comment in comments">
-		<p>{{ comment.login }}</p>
-		<p>{{ comment.content }}</p>
-	</div>
-	<v-form>
-		<v-textarea
-	  		v-model="textarea"
-	  		background-color="white"
+		<h2>Comments</h2>
+		<div v-for="comment in comments">
+			<p>{{ comment.login }}</p>
+			<p>{{ comment.content }}</p>
+		</div>
+		<v-form>
+			<v-textarea
+			v-model="textarea"
+			background-color="white"
 			label="Please enter your comment"
-        ></v-textarea>
-		<v-btn class="mr-4" @click="submit">submit</v-btn>
-	</v-form>
+			></v-textarea>
+			<v-btn class="mr-4" @click="submit">submit</v-btn>
+		</v-form>
 	</div>
 </template>
 
@@ -48,8 +48,6 @@ export default {
 				})
 				.then(response => {
 					if (response.status == 200){
-						console.log("les comments")
-						console.log(response);
 						this.comments = response.data;
 					}
 				})
@@ -57,7 +55,6 @@ export default {
 		submit(event){
 			//controle cote client==> plus tard
 			event.preventDefault();
-			console.log(this.textarea);
 			this.postComment();
 		},
 		postComment(){
@@ -68,7 +65,6 @@ export default {
 					content: this.textarea,
 				})
 				.then(response => {
-					console.log(response);
 					if (response.status == 200){
 						console.log(response);
 					}
@@ -77,13 +73,8 @@ export default {
 		},
 	},
 	mounted(){
-		console.log("On monte les commentaires");
-		console.log("le imdb code", this.imdbCode);
-		console.log("le title", this.title);
 		this.getComments()
 	}
 }
-
-
 
 </script>

@@ -14,7 +14,7 @@ export class Comment extends BaseEntity {
 
 	@Column()
 	movieImdbCode!: string;
-	
+
 	@Column()
 	movieTitle!: string;
 
@@ -31,7 +31,6 @@ export class Comment extends BaseEntity {
 			login: this.login,
 		}
 	}
-
 
 }
 
