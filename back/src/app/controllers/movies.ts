@@ -3,7 +3,6 @@ import { Movie } from '../../app/models/movies';
 const fs = require('fs');
 const axios = require('axios');
 
-
 export default class moviesController {
 
 	static create() {
@@ -16,12 +15,6 @@ export default class moviesController {
 			allMovies[property].remove();
 		}
 		res.send("movies delete")
-	}
-
-	static async listDownload(req: Request, res: Response){
-		var allMovies = await Movie.find();
-		var hereMovie = JSON.stringify(allMovies)
-		res.send(hereMovie);
 	}
 
 	static ytsApiQueryString(req: Request, res: Response) {
@@ -41,7 +34,7 @@ export default class moviesController {
 	}
 
 	static ytsApiDefaultList(req: Request, res: Response) {
-		var url = 'https://yts.mx/api/v2/list_movies.json';
+		const url = 'https://yts.mx/api/v2/list_movies.json';
 		axios
 		.get(url)
 		.then((response: any) => {
@@ -56,24 +49,23 @@ export default class moviesController {
 	}
 
 	static async player(req: Request, res: Response) {
-		var movie = new Movie;
+		let movie = new Movie;
 		movie = await movie.getMovie(req.params);
 		const range = req.headers.range;
 		if (range) {
 			const parts = range.replace(/bytes=/, "").split("-");
 			const start = parseInt(parts[0], 10);
 			console.log("le start ==>", start);
-			var engine: any = await movie.downloadMovie(start);
+			let engine: any = await movie.downloadMovie(start);
 			engine.files.forEach( (file: any) => {
-				var regex = /mp4/;
-				var isMovie = regex.test(file.name);
+				let regex = /mp4/;
+				let isMovie = regex.test(file.name);
 				if (isMovie){
-					// var progress = 0;
-					var opt = {
+					let opt = {
 						start: start,
 						end: file.length
 					}
-					var stream = file.createReadStream(opt);
+					let stream = file.createReadStream(opt);
 					const fileSize = file.length;
 					const end = parts[1]
 						? parseInt(parts[1], 10)
@@ -107,6 +99,9 @@ export default class moviesController {
 }
 
 
+
+
+// var progress = 0;
 // stream.on('data', (chunk: any) => {
 // 	console.log("received " + chunk.length + " bytes of data");
 // progress += chunk.length;
@@ -116,3 +111,10 @@ export default class moviesController {
 // stream.on('end', () => {
 // console.log("Download completed");
 // })
+
+
+// static async listDownload(req: Request, res: Response){
+// 	var allMovies = await Movie.find();
+// 	var hereMovie = JSON.stringify(allMovies)
+// 	res.send(hereMovie);
+// }
