@@ -1,5 +1,5 @@
 import {BaseEntity, Entity, PrimaryGeneratedColumn, Column} from "typeorm";
-var torrentStream = require('torrent-stream');
+let torrentStream = require('torrent-stream');
 const fs = require('fs')
 
 @Entity("movies")
@@ -29,10 +29,6 @@ export class Movie extends BaseEntity {
 	@Column()
 	imdbCode!: string;
 
-	@Column()
-	pourcentage!: number;
-
-	// @Entity()
 	size: number;
 
 	toJSON() {
@@ -41,7 +37,6 @@ export class Movie extends BaseEntity {
 			title: this.title,
 			downloadStatus: this.downloadStatus,
 			imdbCode: this.imdbCode,
-			pourcentage: this.pourcentage,
 		}
 	}
 
@@ -56,8 +51,9 @@ export class Movie extends BaseEntity {
 		params.title = decodeURIComponent(params.title);
 
 		const movieSearch = await Movie.findOne({ hash: params.hash, url: params.url, imdbCode: params.imdbCode});
+		let movie;
 		if (movieSearch == undefined){
-			var movie = new Movie;
+			movie = new Movie;
 			movie.title = params.title;
 			movie.imdbCode = params.imdbCode;
 			movie.hash = params.hash;
@@ -65,28 +61,27 @@ export class Movie extends BaseEntity {
 			movie.url = params.url;
 			movie.buildMagnetLink();
 			movie.downloadStatus = "notStarted";
-			movie.pourcentage = 0;
 			movie.size = 0;
 			await movie.save();
 		}
 		else{
-			var movie = movieSearch;
+			movie = movieSearch;
 		}
 		return movie;
 	}
 
 	buildMagnetLink(){
 		console.log("je construit le magnet link");
-		var torrent_hash = this.hash;  //"F976B434321C0FBE9027BB7B40386E0E40C23853";
-		var torrent_url = this.url;  // "/torrent/download/F976B434321C0FBE9027BB7B40386E0E40C23853";
-		var tracker_1 =  "udp://glotorrents.pw:6969/announce";
-		var tracker_2 =  "udp://tracker.opentrackr.org:1337/announce";
-		var tracker_3 =  "udp://torrent.gresille.org:80/announce";
-		var tracker_4 =  "udp://tracker.openbittorrent.com:80";
-		var tracker_5 =  "udp://tracker.coppersurfer.tk:6969";
-		var tracker_6 =  "udp://tracker.leechers-paradise.org:6969";
-		var tracker_7 =  "udp://p4p.arenabg.ch:1337";
-		var tracker_8 =  "udp://tracker.internetwarriors.net:1337";
+		let torrent_hash = this.hash;  //"F976B434321C0FBE9027BB7B40386E0E40C23853";
+		let torrent_url = this.url;  // "/torrent/download/F976B434321C0FBE9027BB7B40386E0E40C23853";
+		let tracker_1 =  "udp://glotorrents.pw:6969/announce";
+		let tracker_2 =  "udp://tracker.opentrackr.org:1337/announce";
+		let tracker_3 =  "udp://torrent.gresille.org:80/announce";
+		let tracker_4 =  "udp://tracker.openbittorrent.com:80";
+		let tracker_5 =  "udp://tracker.coppersurfer.tk:6969";
+		let tracker_6 =  "udp://tracker.leechers-paradise.org:6969";
+		let tracker_7 =  "udp://p4p.arenabg.ch:1337";
+		let tracker_8 =  "udp://tracker.internetwarriors.net:1337";
 		torrent_hash = encodeURI(torrent_hash);
 		torrent_url = encodeURI(torrent_url);
 		tracker_1 = encodeURI(tracker_1);
@@ -97,13 +92,13 @@ export class Movie extends BaseEntity {
 		tracker_6 = encodeURI(tracker_6);
 		tracker_7 = encodeURI(tracker_7);
 		tracker_8 = encodeURI(tracker_8);
-		var magnetLink = "magnet:?xt=urn:btih:" + torrent_hash + "&dn=" + torrent_url + "&tr=" + tracker_1 + "&tr=" +tracker_2 + "&tr=" + tracker_3 + "&tr=" + tracker_4 + "&tr=" + tracker_5 + "&tr=" + tracker_6 + "&tr=" + tracker_7 + "&tr=" + tracker_8;
+		let magnetLink = "magnet:?xt=urn:btih:" + torrent_hash + "&dn=" + torrent_url + "&tr=" + tracker_1 + "&tr=" +tracker_2 + "&tr=" + tracker_3 + "&tr=" + tracker_4 + "&tr=" + tracker_5 + "&tr=" + tracker_6 + "&tr=" + tracker_7 + "&tr=" + tracker_8;
 		this.magnetLink = magnetLink;
 	}
 
 	async downloadMovie(start: any){
 		return new Promise((resolve, reject) => {
-			var engine = torrentStream(this.magnetLink, {path: '/back/films'});
+			let engine = torrentStream(this.magnetLink, {path: '/back/films'});
 			engine.on('ready', () => {
     			return resolve(engine);
 			});
