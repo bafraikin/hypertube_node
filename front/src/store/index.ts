@@ -1,8 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VuexPersistence from 'vuex-persist'
+
+const vuexLocal = new VuexPersistence({
+  storage: window.localStorage
+})
 
 Vue.use(Vuex)
-
 
 const store = {
 	state: {
@@ -26,7 +30,8 @@ const store = {
 		connected(state: any) {
 			return state.connected
 		}
-	}
+	},
+	plugins: [vuexLocal.plugin]
 }
 
 
