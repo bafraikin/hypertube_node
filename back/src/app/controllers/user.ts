@@ -15,10 +15,10 @@ export default class userController {
 		if (user.isValid() && !(await user.isEmailTaken())) {
 			await user.setPassword(user.password);
 			user.save();
-			res.send("true");
+			res.status(201).send(true);
 			return;
 		}
-		res.send("false");
+		res.status(400).send("false");
 	}
 
 
@@ -34,7 +34,7 @@ export default class userController {
 					return;
 				}
 			}
-			res.send(false);
+			res.status(405).send(false);
 			return;
 	}
 
@@ -49,7 +49,7 @@ export default class userController {
 					return;
 				}
 			}
-			res.send(false);
+			res.status(405).send(false);
 			return;
 	}
 

@@ -2,6 +2,7 @@
 <template>
 	<div>	
 		<navbar/>
+    <alerts/>
 		<div class='container-md'>
 			<slot />
 		</div>
@@ -10,10 +11,12 @@
 
 <script>
 import Navbar from './navbar.vue'
+import Alerts from './alerts.vue'
 
 export default {
 	components: {
-		Navbar
+    Navbar,
+    Alerts
 	}
 }
 
