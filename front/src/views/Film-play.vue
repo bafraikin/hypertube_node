@@ -1,14 +1,9 @@
 <template>
 	<div id="lala">
 		<div v-if="showFilm">
-			<h1>{{ film.title }}</h1>
-			<video  ref="myVid"  id="videoPlayer"  	@progress="playerPgrogress($event)" 
-													@changed="playerStateChanged($event)"
-													@error="errorVideo($event)"
-													@durationchange="durationchange($event)"
-													@stalled="stalled($event)"
-						controls >
-				<source v-bind:src="filmPath" type="video/mp4"   >
+			<!-- <h1>{{ title }}</h1> -->
+			<video  ref="myVid"  id="videoPlayer" controls >
+						<source v-bind:src="filmPath" type="video/mp4"   >
 			</video>
 		</div>
 	</div>
@@ -16,50 +11,54 @@
 
 <script>
 
-import axios from 'axios';
+import axios from  '@/config/axios_default';
 
 export default {
 	name: 'download',
 	data() {
 		return {
-			film: null,
+			title: '',
 			showFilm: false,
 			filmPath: null,
+			imdbCode:null,
 		}
 	},
 	methods:{
-		play(){
-			this.$router.push({ name: "film-play", params:{title: title}});
-		},
-		getMovies(){
-		},
-		playerPgrogress(event){
-			console.log("player progress");
-			//console.log(event);
-		},
-		playerStateChanged(event){
-			console.log("player state change");
-			//console.log(event);
-		},
-		errorVideo(event){
-			console.log("player error");
-			//console.log("Error " + vid.error.code + "; details: " + vid.error.message);
-			//alert("Error! Something went wrong");
-		},
-		durationchange(event){
-			console.log("duration change");
-		},
-		stalled(event){
-			console.log(event);
+		downloadMovies(movie, torrent){
+			console.log(movie);
+			if (movie === undefined){
+				var imdbCode = undefined;
+				this.imdbCode = undefined
+			}
+			else{
+				var imdbCode = movie.imdb_code;
+				this.imdbCode = movie.imdb_code;
+			}
+			if (torrent != undefined){
+				var url = torrent.url;
+				var hash = torrent.hash;
+			}
+			else {
+				var url = undefined;
+				var hash = undefined;
+			}
+			url = encodeURIComponent(url);
+			hash = encodeURIComponent(hash);
+			imdbCode = encodeURIComponent(imdbCode);
+			console.log(movie);
+			console.log(movie.title);
+			this.title = movie.title;
+			let title = encodeURIComponent(movie.title);
+
+			this.filmPath = "http://localhost:3000/😂/player/" + url + "/"+ hash + "/"+ imdbCode+ "/" + title;
+			this.showFilm = true;
 		},
 	},
 	mounted(){
-		this.film = this.$route.params.movie;
-		if (this.film != undefined){
-			this.filmPath = "http://localhost:3000/player/" + this.film.imdbCode + "-" + this.film.title;
-			this.showFilm = true;
-		}
-		console.log("bijour");
+		var movie = this.$route.params.movie;
+		var torrent = this.$route.params.torrent
+		console.log(movie);
+		this.downloadMovies(movie, torrent);
 	}
 }
 </script>

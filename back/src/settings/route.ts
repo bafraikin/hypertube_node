@@ -9,38 +9,43 @@ export default function setRoute(connection: Connection, app: Express) {
 	let userNotAuthenticated: Router = Router().use(controller.authenticate.checkNotAuth);
 	let userAuthenticated: Router = Router().use(controller.authenticate.checkAuth);
 
-
 	app.use((error: any, req: Request, res: Response, next: NextFunction) => {
-  if (error != null && error instanceof SyntaxError) {
-    return res.status(422).json({
-      error: 'invalid json'
-    })
-  }
-  return next()
-})
-
-
+		if (error != null && error instanceof SyntaxError) {
+			return res.status(422).json({
+				error: 'invalid json'
+			})
+		}
+		return next()
+	})
 	app.use(function(req: Request, res: Response, next: NextFunction) {
-  res.removeHeader('X-Powered-By')
-  logger.info(`[Express] ${req.method} ${req.url} ${req.ip}`)
-  return next()
-})
+		res.removeHeader('X-Powered-By')
+		logger.info(`[Express] ${req.method} ${req.url} ${req.ip}`)
+		return next()
+	})
 
+	app.get('/ytsApiDefaultList', controller.movies.ytsApiDefaultList);
+	userNotAuthenticated.get('/ytsApiDefaultList', controller.movies.ytsApiDefaultList);
+	userNotAuthenticated.post('/authentication', passport.authenticate('local'), controller.authenticate.afterAuth);
+	userNotAuthenticated.post("/user", controller.user.create);
+	userAuthenticated.route("/authentication").delete(controller.authenticate.logout);
+	userAuthenticated.post('/film-info', controller.filmInfo.searchInfo);
+	userAuthenticated.post('/film-search-api-query-string', controller.movies.ytsApiQueryString);
+	// userAuthenticated.post('/download', controller.movies.getDownload);
+	userAuthenticated.get('/player/:url/:hash/:imdbCode/:title', controller.movies.player);
 
+	app.use(`/${encodeURI("😱")}`, userNotAuthenticated);
+	app.use(`/${encodeURI("😂")}`, userAuthenticated);
+	return app;
+}
 
-
-	userNotAuthenticated
-	.post('/authentication', passport.authenticate('local'), controller.authenticate.afterAuth)
-	.post("/user", controller.user.create)
-	.get("/test", (req: Request, res: Response) => {
-		console.log("been here")
-		res.send("No login")
-	})	
-	.get('/success',(req: Request, res: Response) => {
-		console.log("HHHH")
-		res.send("login")
-	});
-
+	// userNotAuthenticated.get("/test", (req: Request, res: Response) => {
+	// 	console.log("been here")
+	// 	res.send("No login")
+	// })	
+	// userNotAuthenticated.get('/success',(req: Request, res: Response) => {
+	// 	console.log("HHHH")
+	// 	res.send("login")
+	// });
 
 	/*
 	 * La route /UserCreate permet de cree un utilisateur 
@@ -50,30 +55,6 @@ export default function setRoute(connection: Connection, app: Express) {
 	 -X POST http://localhost:3000/UserCreate
 	 */
 
-
-	userAuthenticated.route("/authentication").delete(controller.authenticate.logout);
-
-
-	userAuthenticated.post('/film-info', controller.filmInfo.searchInfo);
-
-	userAuthenticated.post('/film-search-api-query-string', controller.movies.ytsApiQueryString);
-
-	userAuthenticated
-	.post('/download', controller.movies.getDownload)
-	.get('/download/delete', controller.movies.deleteAllMovies)
-	.get('/player/:file', controller.movies.player)
-	.get('/success',(req: Request, res: Response) => {
-		console.log("HHHH")
-		res.send("login")
-	})
-	.get("/test", (req: Request, res: Response) => {
-		console.log("been here")
-		res.send("No login")
-	});
-
-
-	app.use(`/${encodeURI("😱")}`, userNotAuthenticated);
-	app.use(`/${encodeURI("😂")}`, userAuthenticated);
-
-	return app;
-}
+	// userAuthenticated
+	// .get('/ytsApiDefaultList', controller.movies.ytsApiDefaultList)
+	// .get('/download/delete', controller.movies.deleteAllMovies)
