@@ -5,7 +5,13 @@
 			<v-text-field class="white" v-model="researchText" label="Research"></v-text-field>
 			<v-btn class="ici"  @click="searchForMovies" > Search </v-btn>
 		</v-form>
-		<MoviesList dark v-if="showResearchResult" v-on:selectMovie="showMovieDetailsFun($event)" :movies="movies"  ></MoviesList>
+		<MoviesList
+		dark
+		v-if="showResearchResult"
+		v-on:selectMovie="showMovieDetailsFun($event)"
+		:movies="movies" 
+		:watchList="watchList"
+		></MoviesList>
 		<MovieDetails class="back-black"  v-if="showMovieDetails" :movieDetail="movieDetail"></MovieDetails>
 	</v-container>
 </template>
@@ -43,9 +49,12 @@ export default {
 			researchText: null,
 			movieDetail: null,
 			getConnected: null,
+			watchList: null,
 		}
 	},
 	methods:{
+		getWatchList(){
+		},
 		searchForMovies(event){
 			event.preventDefault();
 			axios.post('😂/film-search-api-query-string', { queryString: this.researchText })

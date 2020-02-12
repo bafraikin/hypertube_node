@@ -34,6 +34,8 @@ export class User extends BaseEntity {
 	@OneToMany(type => Comment, comment => comment.user)
     comments: Comment[];
 
+	@OneToMany(type => WatchList, watchList => watchList.user)
+    watchLists: WatchList[];
 
 	async setPassword(pw: string) {
 		const hash = await bcrypt.hash(pw, saltRounds);
