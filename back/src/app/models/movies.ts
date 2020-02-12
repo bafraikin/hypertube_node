@@ -24,7 +24,6 @@ export class Movie extends BaseEntity {
 	toJSON() {
 		return {
 			id: this.id,
-			title: this.title,
 			imdbCode: this.imdbCode,
 		}
 	}
@@ -36,7 +35,6 @@ export class Movie extends BaseEntity {
 			throw "erreur dans get Movie";
 
 		params.imdb_code = decodeURIComponent(params.imdb_code);
-		params.title = decodeURIComponent(params.title);
 
 		let movie = await Movie.findOne({ imdbCode: params.imdb_code });
 		if (movie == undefined){
