@@ -39,11 +39,11 @@ export default {
 	},
 	methods:{
 		getComments(imdbCode, title){
-			axios.post('😂/getComments',
-				{
-					movie: this.movie,
-				})
-				.then(response => {
+			axios.get('😂/comment', {
+					params: {
+						imdbCode: this.movie.imdb_code
+    				}
+				}) .then(response => {
 					if (response.status == 200){
 						this.comments = response.data;
 					}
@@ -55,23 +55,18 @@ export default {
 			this.postComment();
 		},
 		postComment(){
-			axios.post('😂/postComment',
-				{
+			axios.post('😂/comment', {
 					movie: this.movie,
 					content: this.textarea,
-				})
-				.then(response => {
+				}) .then(response => {
 					if (response.status == 200){
-						console.log(response);
+						this.getComments();
 					}
-					this.getComments();
 				})
 			this.textarea = null;
 		},
 	},
 	mounted(){
-		console.log("Le movie");
-		console.log(this.movie);
 		this.getComments()
 	}
 }

@@ -7,19 +7,14 @@ const axios = require('axios');
 
 export default class commentController {
 
-	static async getComments(req: Request, res: Response) {
-		let movieImdbCode = req.body.movie.imdb_code;
-		console.log("******************");
-		console.log("On get");
-		console.log(movieImdbCode);
-		console.log("******************");
+	static async getComment(req: Request, res: Response) {
+		let movieImdbCode = req.query.imdbCode;
 		let movie = await Movie.findOne({ imdbCode: movieImdbCode});
-		console.log(movie);
 		if (movie == undefined){
-			res.send("nothing");
+			res.send(undefined); //Baptiste cette ligne est pour toi
 		}
 		else{
-			res.send(movie.comments); // trouver une autre solution que !
+			res.send(movie.comments);
 		}
 	}
 
