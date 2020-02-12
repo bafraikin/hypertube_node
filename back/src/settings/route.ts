@@ -33,9 +33,11 @@ export default function setRoute(connection: Connection, app: Express) {
 	userAuthenticated.post('/film-search-api-query-string', controller.movies.ytsApiQueryString);
 	userAuthenticated.get('/player/:url/:hash/:imdbCode/:title', controller.movies.player);
 
-	userAuthenticated.post('/getComments', controller.comments.getComments);
-	userAuthenticated.post('/postComment', controller.comments.postComment);
 	userAuthenticated.post("/getUserProfile", controller.user.getUserProfile);
+
+
+	userAuthenticated.get('/comment', controller.comments.getComment);
+	userAuthenticated.post('/comment', controller.comments.postComment);
 
 
 	app.use(`/${encodeURI("😱")}`, userNotAuthenticated);
@@ -46,7 +48,7 @@ export default function setRoute(connection: Connection, app: Express) {
 	// userNotAuthenticated.get("/test", (req: Request, res: Response) => {
 	// 	console.log("been here")
 	// 	res.send("No login")
-	// })	
+	// })
 	// userNotAuthenticated.get('/success',(req: Request, res: Response) => {
 	// 	console.log("HHHH")
 	// 	res.send("login")

@@ -49,8 +49,7 @@ export default class moviesController {
 	}
 
 	static async player(req: Request, res: Response) {
-		let movie = new Movie;
-		movie = await movie.getMovie(req.params);
+		let movie = await Movie.getMovie(req.params);
 		const range = req.headers.range;
 		if (range) {
 			const parts = range.replace(/bytes=/, "").split("-");

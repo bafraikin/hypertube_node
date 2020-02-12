@@ -1,4 +1,5 @@
-import {BaseEntity, Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
+import {Comment} from '@app/models/comment'
 import validator from 'validator';
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -7,28 +8,32 @@ const saltRounds = 10;
 export class User extends BaseEntity {
 
 	@PrimaryGeneratedColumn()
-		id!: number;
+	id!: number;
 
 	@Column({unique: true})
-		email!: string;
+	email!: string;
 
 	@Column()
-		oauth!: boolean;	
+	oauth!: boolean;	
 
 	@Column()
-		firstName!: string;
+	firstName!: string;
 
 	@Column()
-		lastName!: string;
+	lastName!: string;
 
 	@Column()
-		login!: string;
+	login!: string;
 
 	@Column()
-		password!: string;
+	password!: string;
 
 	@Column()
-		imageUrl!: string;
+	imageUrl!: string;
+
+	@OneToMany(type => Comment, comment => comment.user)
+    comments: Comment[];
+
 
 	async setPassword(pw: string) {
 		const hash = await bcrypt.hash(pw, saltRounds);
@@ -53,22 +58,22 @@ export class User extends BaseEntity {
 
 	checkPassIsComplex() {
 		if(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,255}$/.test(this.password))
-			return true;
+		return true;
 		return false;
 	}
 
 	isValid(): boolean {
 		try {
 			if( validator.isEmail(this.email) &&
-					validator.isAlpha(this.login) && 
-					validator.isLength(this.login ,{ min:1, max: 250}) &&
-					validator.isAlpha(this.firstName) && 
-					validator.isLength(this.firstName ,{min:1, max: 250}) &&
-					validator.isAlpha(this.lastName) && 
-					validator.isLength(this.lastName ,{min:1, max:250}) &&
-					validator.isURL(this.imageUrl) && 
-					validator.isLength(this.imageUrl ,{min:1, max: 250}) &&
-					this.checkPassIsComplex())
+			   validator.isAlpha(this.login) && 
+				   validator.isLength(this.login ,{ min:1, max: 250}) &&
+					   validator.isAlpha(this.firstName) && 
+						   validator.isLength(this.firstName ,{min:1, max: 250}) &&
+							   validator.isAlpha(this.lastName) && 
+								   validator.isLength(this.lastName ,{min:1, max:250}) &&
+									   validator.isURL(this.imageUrl) && 
+										   validator.isLength(this.imageUrl ,{min:1, max: 250}) &&
+											   this.checkPassIsComplex())
 				return true;
 			return false;
 		}

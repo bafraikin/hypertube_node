@@ -2,7 +2,7 @@
 	<div>
 		<h2>Comments</h2>
 		<div v-for="comment in comments">
-			<p v-on:click="displayUserProfile(comment.userId)">{{ comment.login }}</p>
+			<p v-on:click="displayUserProfile(comment.user.id)">{{ comment.user.login }}</p>
 			<p>{{ comment.content }}</p>
 		</div>
 		<v-form>
@@ -26,11 +26,9 @@
 <script>
 import axios from  '@/config/axios_default';
 
-
 export default {
 	props: {
-		imdbCode: { type: String },
-		title: { type: String },
+		movie: { type: Object },
 	},
 	data() {
 		return {
@@ -46,12 +44,11 @@ export default {
 				this.$router.push({ name: "userProfile", params:{userId: userId}});
 		},
 		getComments(imdbCode, title){
-			axios.post('😂/getComments',
-				{
-					movieImdbCode: this.imdbCode,
-					movieTitle: this.title,
-				})
-				.then(response => {
+			axios.get('😂/comment', {
+					params: {
+						imdbCode: this.movie.imdb_code
+    				}
+				}) .then(response => {
 					if (response.status == 200){
 						console.log(response.data);
 						this.comments = response.data;
@@ -64,18 +61,15 @@ export default {
 			this.postComment();
 		},
 		postComment(){
-			axios.post('😂/postComment',
-				{
-					movieImdbCode: this.imdbCode,
-					movieTitle: this.title,
+			axios.post('😂/comment', {
+					movie: this.movie,
 					content: this.textarea,
-				})
-				.then(response => {
+				}) .then(response => {
 					if (response.status == 200){
-						console.log(response);
+						this.getComments();
 					}
-					this.getComments();
 				})
+			this.textarea = null;
 		},
 	},
 	mounted(){

@@ -1,4 +1,6 @@
-import {BaseEntity, Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinTable} from "typeorm";
+import {Movie} from '@app/models/movies'
+import {User} from '@app/models/user'
 
 @Entity("comments")
 export class Comment extends BaseEntity {
@@ -7,28 +9,28 @@ export class Comment extends BaseEntity {
 	id!: number;
 
 	@Column()
-	userId!: number;
-
-	@Column()
 	date!: string;
 
 	@Column()
-	movieImdbCode!: string;
-
-	@Column()
-	movieTitle!: string;
-
-	@Column()
 	content!: string;
+
+	@ManyToOne(type => Movie, movie => movie.comments)
+    movie: Movie;
+
+    @ManyToOne(type => User, user => user.comments, {
+		eager: true
+	})
+	@JoinTable()
+    user: User | undefined;
 
 	login:string;
 
 	toJSON() {
 		return {
 			id: this.id,
-			userId: this.userId,
 			content: this.content,
 			login: this.login,
+			user: this.user,
 		}
 	}
 
