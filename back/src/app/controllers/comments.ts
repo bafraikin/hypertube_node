@@ -35,7 +35,7 @@ export default class commentController {
 		comment.user = user;
 		comment.movie = movie;
 		await comment.save();
-		res.send(comment);
+		res.status(201).json(comment);
 	}
 
 }

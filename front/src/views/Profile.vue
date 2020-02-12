@@ -1,10 +1,12 @@
 <template>
 	<div>
+		<div v-if="user">
 		<h1 class="ici">User profile</h1>
-		<p class="ici" dark>Login ==> {{user.login}}</p>
-		<p class="ici" dark>First Name ==> {{user.firstName}}</p>
-		<p class="ici" dark>Last Name ==> {{user.lastName}}</p>
-		<p class="ici" dark>Image ==> {{user.imageUrl}}</p>
+		<p class="ici" dark>Login == {{user.login}}</p>
+		<p class="ici" dark>First Name == {{user.firstName}}</p>
+		<p class="ici" dark>Last Name == {{user.lastName}}</p>
+		<p class="ici" dark>Image == {{user.imageUrl}}</p>
+		</div>
 	</div>
 </template>
 
@@ -13,7 +15,6 @@
 	color:white;
 }
 </style>
-
 
 <script>
 import axios from  '@/config/axios_default';
@@ -27,17 +28,9 @@ export default {
 	},
 	methods:{
 		getUserProfile(){
-			axios.post('😂/getUserProfile',
-				{
-					userId: this.userId,
-				})
-				.then(response => {
-					if (response.status == 200){
-						this.user = response.data;
-					}
-				})
+			axios.get('😂/userProfile', { params: { userId: this.userId}
+			}) .then(response => { this.user = response.data; })
 		}
-
 	},
 	mounted(){
 		this.userId = this.$route.params.userId

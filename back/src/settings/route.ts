@@ -33,11 +33,9 @@ export default function setRoute(connection: Connection, app: Express) {
 	userAuthenticated.post('/film-search-api-query-string', controller.movies.ytsApiQueryString);
 	userAuthenticated.get('/player/:url/:hash/:imdbCode/:title', controller.movies.player);
 
-	userAuthenticated.post("/getUserProfile", controller.user.getUserProfile);
-
-
 	userAuthenticated.get('/comment', controller.comments.getComment);
 	userAuthenticated.post('/comment', controller.comments.postComment);
+	userAuthenticated.get("/userProfile", controller.user.userProfile);
 
 
 	app.use(`/${encodeURI("😱")}`, userNotAuthenticated);

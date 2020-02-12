@@ -44,16 +44,8 @@ export default {
 				this.$router.push({ name: "userProfile", params:{userId: userId}});
 		},
 		getComments(imdbCode, title){
-			axios.get('😂/comment', {
-					params: {
-						imdbCode: this.movie.imdb_code
-    				}
-				}) .then(response => {
-					if (response.status == 200){
-						console.log(response.data);
-						this.comments = response.data;
-					}
-				})
+			axios.get('😂/comment', { params: { imdbCode: this.movie.imdb_code }
+				}) .then(response => { this.comments = response.data; })
 		},
 		submit(event){
 			//controle cote client==> plus tard
@@ -61,14 +53,8 @@ export default {
 			this.postComment();
 		},
 		postComment(){
-			axios.post('😂/comment', {
-					movie: this.movie,
-					content: this.textarea,
-				}) .then(response => {
-					if (response.status == 200){
-						this.getComments();
-					}
-				})
+			axios.post('😂/comment', { movie: this.movie, content: this.textarea,
+				}) .then(response => { this.getComments(); })
 			this.textarea = null;
 		},
 	},

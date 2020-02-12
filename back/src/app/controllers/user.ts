@@ -3,9 +3,9 @@ import {Request, Response} from 'express'
 
 export default class userController {
 
-	static async getUserProfile(req: Request, res: Response) {
-		let userId = req.body.userId;
-		let user = await  User.findOne({ userId: userId });
+	static async userProfile(req: Request, res: Response) {
+		let userId = req.query.userId;
+		let user = await  User.findOne({ id: userId });
 		res.send(user);
 	}
 

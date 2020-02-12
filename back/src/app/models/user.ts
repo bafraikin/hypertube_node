@@ -14,7 +14,7 @@ export class User extends BaseEntity {
 	email!: string;
 
 	@Column()
-	oauth!: boolean;	
+	oauth!: boolean;
 
 	@Column()
 	firstName!: string;
@@ -51,7 +51,6 @@ export class User extends BaseEntity {
 	    login: this.login,
 	    firstName: this.firstName,
 	    lastName: this.lastName,
-	    login: this.login,
 	    imageUrl: this.imageUrl
 		}
 	}
