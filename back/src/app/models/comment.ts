@@ -1,4 +1,4 @@
-import {BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
+import {BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinTable} from "typeorm";
 import {Movie} from '@app/models/movies'
 import {User} from '@app/models/user'
 
@@ -17,7 +17,10 @@ export class Comment extends BaseEntity {
 	@ManyToOne(type => Movie, movie => movie.comments)
     movie: Movie;
 
-    @ManyToOne(type => User, user => user.comments)
+    @ManyToOne(type => User, user => user.comments, {
+		eager: true
+	})
+	@JoinTable()
     user: User | undefined;
 
 	login:string;

@@ -1,4 +1,4 @@
-import {BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
+import {BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinTable} from "typeorm";
 import {Comment} from '@app/models/comment'
 let torrentStream = require('torrent-stream');
 const fs = require('fs')
@@ -24,7 +24,10 @@ export class Movie extends BaseEntity {
 	@Column()
 	magnetLink!: string;
 
-	@OneToMany(type => Comment, comment => comment.movie)
+	@OneToMany(type => Comment, comment => comment.movie,{
+		eager: true
+	})
+	@JoinTable()
     comments: Comment[];
 
 	@Column()
@@ -49,14 +52,14 @@ export class Movie extends BaseEntity {
 		if (params == undefined || params.imdb_code == undefined || params.title == undefined)
 			throw "erreur dans get Movie";
 
-		params.imdbCode = decodeURIComponent(params.imdbCode);
+		params.imdb_code = decodeURIComponent(params.imdb_code);
 		params.title = decodeURIComponent(params.title);
 
-		let movie = await Movie.findOne({ imdbCode: params.imdbCode });
+		let movie = await Movie.findOne({ imdbCode: params.imdb_code });
 		if (movie == undefined){
 			movie = new Movie;
 			movie.title = params.title;
-			movie.imdbCode = params.imdbCode;
+			movie.imdbCode = params.imdb_code;
 			movie.imageUrl = "la super image url du film";
 			movie.downloadStatus = "notStarted";
 			movie.size = 0;
@@ -73,7 +76,7 @@ export class Movie extends BaseEntity {
 				movie.url = params.url;
 				movie.buildMagnetLink();
 			}
-			console.log("on va enregistrer");
+			console.log("***********on va enregistrer***********");
 			console.log(movie);
 			await movie.save();
 		}

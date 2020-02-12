@@ -2,7 +2,7 @@
 	<div>
 		<h2>Comments</h2>
 		<div v-for="comment in comments">
-			<p>{{ comment.login }}</p>
+			<p>{{ comment.user.login }}</p>
 			<p>{{ comment.content }}</p>
 		</div>
 		<v-form>
