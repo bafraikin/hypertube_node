@@ -34,14 +34,15 @@
       >
         Validate
       </v-btn>
-
     </v-form>
+    <oauth> </oauth>
   </div>
 </template>
 
 <script> 
 
   import axios from '@/config/axios_default'
+  import oauth from '@/components/layouts/oauth.vue'
 
   export default {
     data: () => ({
@@ -52,14 +53,17 @@
       showPassword: false,
       passwordRules: [
         v => !!v || 'Password is required',
-        v=> (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,}$/.test(v)) || 'Password must contains moult truc',
+        v=> (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,250}$/.test(v)) || 'Password must contains moult truc',
       ],
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ],
     }),
-
+    components: {
+		"oauth": oauth,
+	},
+	
     methods: {
       validate () {
         if (this.$refs.form.validate()) {

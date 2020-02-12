@@ -1,7 +1,6 @@
 import { User } from '../../app/models/user'
 import {Request, Response} from 'express'
 
-
 export default class authenticateController {
 
 	static async authStrategy(email: string, password: string, done: Function) {
@@ -14,13 +13,34 @@ export default class authenticateController {
 					return done(null, user);
 				}
 				else {
-					return done(null, false)
+					return done(null, false);
 				}
 		}
 	}
 
+	static async oAuthStrategyFortyTwo(accessToken: any , refreshToken: any , profile: any, done: Function) {
+		console.log(profile, "profile");
+		console.log(refreshToken, "R token");
+		console.log(accessToken, "accessToken");
+		const user: User | undefined = await User.findOne({ email: profile.email });
+		if (user instanceof User) {
+			return done(null, user);
+		}
+		if (user === undefined){
+			let newUser = new User();
+			newUser.createOAuth(profile);
+			try{
+				newUser.save;
+				return done(null, newUser);
+			}
+			catch{
+				console.log("error l36 authenticat.ts");
+			}
+		}
+	}
+
 	static async deserialize(userObject: User, done: Function) {
-	console.log(userObject);
+		console.log(userObject);
 		let user: User | undefined = await User.findOne({id: userObject.id});
 		if (user instanceof User)
 			done(null, user);

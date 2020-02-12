@@ -21,6 +21,12 @@ const router = new VueRouter({
 			component: () => import('../views/Film-play.vue'),
 			meta: {layout: "layout"}
 		},
+		{
+			path: '/oauth42/callback',
+			name: 'oauth42',
+			component: () => import('../views/oauth42.vue'),
+			meta: {layout: "layout"}
+		}
 	]
 })
 

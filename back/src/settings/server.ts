@@ -12,6 +12,7 @@ export default async function getServer (connection: Connection, isDev = false) 
 	let server = express();
 
 	server.use(function(req, res, next) {
+	console.log("ddddddddddddddddy🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪🤪")
 		res.header("Access-Control-Allow-Origin", "http://localhost:8080");
 		res.header("Access-Control-Allow-Methods", "GET, HEAD, POST, DELETE, OPTIONS");
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
