@@ -49,7 +49,11 @@ export default class moviesController {
 	}
 
 	static async player(req: Request, res: Response) {
+		console.log("params dans player");
+		console.log(req.params);
 		let movie = await Movie.getMovie(req.params);
+		movie.buildMagnetLink(req.params);
+
 		const range = req.headers.range;
 		if (range) {
 			const parts = range.replace(/bytes=/, "").split("-");

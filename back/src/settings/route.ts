@@ -23,44 +23,25 @@ export default function setRoute(connection: Connection, app: Express) {
 		return next()
 	})
 
-	app.get('/ytsApiDefaultList', controller.movies.ytsApiDefaultList);
-	userNotAuthenticated.get('/ytsApiDefaultList', controller.movies.ytsApiDefaultList);
 	userNotAuthenticated.post('/authentication', passport.authenticate('local'), controller.authenticate.afterAuth);
 	userNotAuthenticated.post("/user", controller.user.create);
 	userAuthenticated.get("/user", controller.user.getUser);
 	userAuthenticated.route("/authentication").delete(controller.authenticate.logout);
 	userAuthenticated.post('/film-info', controller.filmInfo.searchInfo);
+	userAuthenticated.get('/player/:url/:hash/:imdb_code', controller.movies.player);
+
+
+
+
 	userAuthenticated.post('/film-search-api-query-string', controller.movies.ytsApiQueryString);
-	userAuthenticated.get('/player/:url/:hash/:imdbCode/:title', controller.movies.player);
 
 	userAuthenticated.get('/comment', controller.comments.getComment);
 	userAuthenticated.post('/comment', controller.comments.postComment);
 	userAuthenticated.get("/userProfile", controller.user.userProfile);
+	app.get('/ytsApiDefaultList', controller.movies.ytsApiDefaultList);
 
 
 	app.use(`/${encodeURI("😱")}`, userNotAuthenticated);
 	app.use(`/${encodeURI("😂")}`, userAuthenticated);
 	return app;
 }
-
-	// userNotAuthenticated.get("/test", (req: Request, res: Response) => {
-	// 	console.log("been here")
-	// 	res.send("No login")
-	// })
-	// userNotAuthenticated.get('/success',(req: Request, res: Response) => {
-	// 	console.log("HHHH")
-	// 	res.send("login")
-	// });
-
-	/*
-	 * La route /UserCreate permet de cree un utilisateur 
-	 * Elle prend elle a besoin des info du model user.ts pour fonctionner
-	 * peut etre tester a la main avec cette commande :
-	 * curl -d "img=abc.fr&password=7char_and_a_int&email=email@42.fr&firstname=foo&lastname=bar&pseudo=xXx"
-	 -X POST http://localhost:3000/UserCreate
-	 */
-
-	// userAuthenticated.post('/download', controller.movies.getDownload);
-	// userAuthenticated
-	// .get('/ytsApiDefaultList', controller.movies.ytsApiDefaultList)
-	// .get('/download/delete', controller.movies.deleteAllMovies)

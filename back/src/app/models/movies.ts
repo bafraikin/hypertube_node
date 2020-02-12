@@ -9,21 +9,6 @@ export class Movie extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
-	@Column()
-	title!: string;
-
-	@Column()
-	url!: string;
-
-	@Column()
-	hash!: string;
-
-	@Column()
-	imageUrl!: string;
-
-	@Column()
-	magnetLink!: string;
-
 	@OneToMany(type => Comment, comment => comment.movie,{
 		eager: true
 	})
@@ -31,25 +16,23 @@ export class Movie extends BaseEntity {
     comments: Comment[];
 
 	@Column()
-	downloadStatus!: string;
-
-	@Column()
 	imdbCode!: string;
 
 	size: number;
+	magnetLink!: string;
 
 	toJSON() {
 		return {
 			id: this.id,
 			title: this.title,
-			downloadStatus: this.downloadStatus,
 			imdbCode: this.imdbCode,
 		}
 	}
 
 	static async getMovie(params: any) {
+		console.log("params dans get movie");
 		console.log(params);
-		if (params == undefined || params.imdb_code == undefined || params.title == undefined)
+		if (params == undefined || params.imdb_code == undefined)
 			throw "erreur dans get Movie";
 
 		params.imdb_code = decodeURIComponent(params.imdb_code);
@@ -58,24 +41,7 @@ export class Movie extends BaseEntity {
 		let movie = await Movie.findOne({ imdbCode: params.imdb_code });
 		if (movie == undefined){
 			movie = new Movie;
-			movie.title = params.title;
 			movie.imdbCode = params.imdb_code;
-			movie.imageUrl = "la super image url du film";
-			movie.downloadStatus = "notStarted";
-			movie.size = 0;
-
-			if (params.url == undefined || params.hash == undefined){
-				movie.hash = "";
-				movie.url = "";
-				movie.magnetLink = "";
-			}
-			else {
-				params.hash = decodeURIComponent(params.hash);
-				params.url = decodeURIComponent(params.url);
-				movie.hash = params.hash;
-				movie.url = params.url;
-				movie.buildMagnetLink();
-			}
 			console.log("***********on va enregistrer***********");
 			console.log(movie);
 			await movie.save();
@@ -83,10 +49,15 @@ export class Movie extends BaseEntity {
 		return movie;
 	}
 
-	buildMagnetLink(){
+	buildMagnetLink(params: any){
+		if (params == undefined || params.hash == undefined || params.url == undefined)
+			throw "erreur dans build magnet link";
+
+		params.hash = decodeURIComponent(params.hash);
+		params.url = decodeURIComponent(params.url);
 		console.log("je construit le magnet link");
-		let torrent_hash = this.hash;  //"F976B434321C0FBE9027BB7B40386E0E40C23853";
-		let torrent_url = this.url;  // "/torrent/download/F976B434321C0FBE9027BB7B40386E0E40C23853";
+		let torrent_hash = params.hash;  //"F976B434321C0FBE9027BB7B40386E0E40C23853";
+		let torrent_url = params.url;  // "/torrent/download/F976B434321C0FBE9027BB7B40386E0E40C23853";
 		let tracker_1 =  "udp://glotorrents.pw:6969/announce";
 		let tracker_2 =  "udp://tracker.opentrackr.org:1337/announce";
 		let tracker_3 =  "udp://torrent.gresille.org:80/announce";
