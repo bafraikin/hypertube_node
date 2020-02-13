@@ -35,8 +35,8 @@ export default function setRoute(connection: Connection, app: Express) {
 
 	userAuthenticated.post('/film-search-api-query-string', controller.movies.ytsApiQueryString);
 
-	userAuthenticated.get('/watch', controller.comments.getWatch);
-	userAuthenticated.post('/watch', controller.comments.postWatch);
+	userAuthenticated.get('/watch', controller.watch.getWatch);
+	userAuthenticated.post('/watch', controller.watch.postWatch);
 	userAuthenticated.get('/comment', controller.comments.getComment);
 	userAuthenticated.post('/comment', controller.comments.postComment);
 	userAuthenticated.get("/userProfile", controller.user.userProfile);

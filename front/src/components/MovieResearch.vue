@@ -38,13 +38,13 @@ export default {
 			this.$emit('selectMovie', movie);
 		},
 		isInWatchList(imdbCode){
-			const found = watchList.find(element => element == imdbCode);
+			const found = this.watchList.find(element => element == imdbCode);
 			if (found == undefined){
 				return false;
 			}else{
 				return true;
 			}
 		}
-	},
+	}
 }
 </script>

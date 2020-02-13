@@ -49,11 +49,17 @@ export default {
 			researchText: null,
 			movieDetail: null,
 			getConnected: null,
-			watchList: null,
+			watchList: [],
 		}
 	},
 	methods:{
 		getWatchList(){
+			if (this.getConnected){
+				axios.get('😂/watch')
+					.then(response => {
+						this.watchList = response.data;
+					})
+			}
 		},
 		searchForMovies(event){
 			event.preventDefault();
@@ -104,6 +110,7 @@ export default {
 	},
 	mounted(){
 		this.defaultMoviesList();
+		this.getWatchList();
 	}
 }
 

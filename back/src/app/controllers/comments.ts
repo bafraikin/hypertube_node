@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
-import { Comment } from '../../app/models/comment';
-import { Movie } from '../../app/models/movies';
-import { User } from '../../app/models/user';
+import { Comment } from '@app/models/comment';
+import { Movie } from '@app/models/movies';
+import { User } from '@app/models/user';
 const axios = require('axios');
 
 
