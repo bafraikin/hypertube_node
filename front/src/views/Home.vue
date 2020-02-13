@@ -7,7 +7,8 @@
 		</v-form>
 		<MoviesList dark v-if="showResearchResult" v-on:selectMovie="showMovieDetailsFun($event)" :movies="movies"  ></MoviesList>
 		<MovieDetails class="back-black"  v-if="showMovieDetails" :movieDetail="movieDetail"></MovieDetails>
-	</v-container>
+  <pagination/>
+  </v-container>
 </template>
 
 <style lang="scss">
@@ -28,12 +29,14 @@
 import axios from  '@/config/axios_default';
 import MoviesList from '@/components/MovieResearch.vue'
 import MovieDetails from '@/components/MovieDetails.vue'
+import pagination from '@/components/utils/pagination.vue'
 
 export default {
 	name: 'home',
 	components: {
 		"MoviesList": MoviesList,
 		"MovieDetails": MovieDetails,
+		pagination,
 	},
 	data() {
 		return {
@@ -43,6 +46,7 @@ export default {
 			researchText: null,
 			movieDetail: null,
 			getConnected: null,
+      page: 0
 		}
 	},
 	methods:{
