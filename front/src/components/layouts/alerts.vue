@@ -5,13 +5,11 @@
 
 <script>
   import bus from '@/config/bus_event'
-
-
   export default {
     methods: {
       findMessage(code) {
         switch(code){
-          case "UNSIGNED": 
+          case "UNSIGNED":
             return "you need to sign in to perform this action";
           case "NOT_ALLOWED":
             return "you're not allowed to perform this";

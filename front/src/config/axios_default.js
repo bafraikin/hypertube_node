@@ -9,10 +9,12 @@ const axiosInstance = axios.create({
 	withCredentials: true,
 });
 
+
 axiosInstance.interceptors.response.use(
    response => {
 		 if (response.status === 201)
 			 bus.$emit('alert', {type: 'success', code: 'CREATED'})
+			 bus.$emit('alert', {type: 'success', code: 'CREATED'});
        return (response);
    },
    (error) => {
@@ -20,9 +22,11 @@ axiosInstance.interceptors.response.use(
 		 if (status === 403)
 			 bus.$emit('alert', {type: 'error', code: "NOT_ALLOWED"})
 		 if (status === 401)
-			 bus.$emit('alert', {type: 'error', code: "UNSIGNED"})
-		 if (status === 400)
 			 bus.$emit('alert', {type: 'error', code: "BAD_INPUT"})
+		 if (status === 400)
+			 bus.$emit('alert', {type: 'error', code: "ERROR"});
+		 if (status === 406)
+			 bus.$emit('alert', {type: 'error', code: "UNSIGNED"});
      return Promise.reject(error)
    });
 
@@ -33,5 +37,4 @@ axiosInstance.interceptors.request.use(
    (error) => {
     return Promise.reject(error)
    });
-
 export default axiosInstance;
