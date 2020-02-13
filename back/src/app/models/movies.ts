@@ -1,4 +1,5 @@
-import {BaseEntity, Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinTable} from "typeorm";
+import {Comment} from '@app/models/comment'
 let torrentStream = require('torrent-stream');
 const fs = require('fs')
 
@@ -8,72 +9,53 @@ export class Movie extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
-	@Column()
-	title!: string;
-
-	@Column()
-	url!: string;
-
-	@Column()
-	hash!: string;
-
-	@Column()
-	imageUrl!: string;
-
-	@Column()
-	magnetLink!: string;
-
-	@Column()
-	downloadStatus!: string;
+	@OneToMany(type => Comment, comment => comment.movie,{
+		eager: true
+	})
+	@JoinTable()
+    comments: Comment[];
 
 	@Column()
 	imdbCode!: string;
 
 	size: number;
+	magnetLink!: string;
 
 	toJSON() {
 		return {
 			id: this.id,
-			title: this.title,
-			downloadStatus: this.downloadStatus,
 			imdbCode: this.imdbCode,
 		}
 	}
 
-	async getMovie(params: any) {
+	static async getMovie(params: any) {
+		console.log("params dans get movie");
 		console.log(params);
-		if (params.url == undefined || params.hash == undefined || params.imdbCode == undefined || params.title == undefined)
+		if (params == undefined || params.imdb_code == undefined)
 			throw "erreur dans get Movie";
 
-		params.hash = decodeURIComponent(params.hash);
-		params.url = decodeURIComponent(params.url);
-		params.imdbCode = decodeURIComponent(params.imdbCode);
-		params.title = decodeURIComponent(params.title);
+		params.imdb_code = decodeURIComponent(params.imdb_code);
 
-		const movieSearch = await Movie.findOne({ hash: params.hash, url: params.url, imdbCode: params.imdbCode});
-		let movie;
-		if (movieSearch == undefined){
+		let movie = await Movie.findOne({ imdbCode: params.imdb_code });
+		if (movie == undefined){
 			movie = new Movie;
-			movie.title = params.title;
-			movie.imdbCode = params.imdbCode;
-			movie.hash = params.hash;
-			movie.imageUrl = "la super image url du film";
-			movie.url = params.url;
-			movie.buildMagnetLink();
-			movie.downloadStatus = "notStarted";
-			movie.size = 0;
+			movie.imdbCode = params.imdb_code;
+			console.log("***********on va enregistrer***********");
+			console.log(movie);
 			await movie.save();
-		}
-		else{
-			movie = movieSearch;
 		}
 		return movie;
 	}
 
-	buildMagnetLink(){
+	buildMagnetLink(params: any){
+		if (params == undefined || params.hash == undefined || params.url == undefined)
+			throw "erreur dans build magnet link";
+
+		params.hash = decodeURIComponent(params.hash);
+		params.url = decodeURIComponent(params.url);
 		console.log("je construit le magnet link");
-		let torrent_hash = this.hash;  //"F976B434321C0FBE9027BB7B40386E0E40C23853";
-		let torrent_url = this.url;  // "/torrent/download/F976B434321C0FBE9027BB7B40386E0E40C23853";
+		let torrent_hash = params.hash;  //"F976B434321C0FBE9027BB7B40386E0E40C23853";
+		let torrent_url = params.url;  // "/torrent/download/F976B434321C0FBE9027BB7B40386E0E40C23853";
 		let tracker_1 =  "udp://glotorrents.pw:6969/announce";
 		let tracker_2 =  "udp://tracker.opentrackr.org:1337/announce";
 		let tracker_3 =  "udp://torrent.gresille.org:80/announce";

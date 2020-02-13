@@ -21,19 +21,22 @@
 				</tbody>
 			</template>
 		</v-simple-table>
+
+		<Comment :movie="movieDetail"></Comment>
+
 	</v-container>
 </template>
 
 
 <script>
+import Comment from '@/components/Comments.vue'
+
 export default {
 	props: {
 		movieDetail: { type: Object }
 	},
-	data() {
-		return {
-			//movieDetail: null,
-		}
+	components: {
+		"Comment": Comment
 	},
 	methods:{
 	download(movie, torrent){
@@ -41,7 +44,7 @@ export default {
 			},
 	},
 	mounted(){
-		console.log("hello Movies details");
+		console.log(this.movieDetail);
 	}
 }
 </script>

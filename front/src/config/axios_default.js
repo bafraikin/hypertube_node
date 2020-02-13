@@ -4,8 +4,9 @@ import store from "@/store/index"
 import bus from "@/config/bus_event"
 
 
+const baseURL = 'http://localhost:3000';
 const axiosInstance = axios.create({
-	baseURL: 'http://localhost:3000',
+	baseURL: baseURL,
 	withCredentials: true,
 });
 
@@ -36,4 +37,7 @@ axiosInstance.interceptors.request.use(
    (error) => {
     return Promise.reject(error)
    });
+
+
+export {baseURL};
 export default axiosInstance;
