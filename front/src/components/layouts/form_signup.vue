@@ -124,7 +124,6 @@
               console.log('it work');
           })
           .catch((error) => {
-            console.log(error);
           })
       },
     },
