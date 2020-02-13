@@ -13,7 +13,6 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
    response => {
 		 if (response.status === 201)
-			 bus.$emit('alert', {type: 'success', code: 'CREATED'})
 			 bus.$emit('alert', {type: 'success', code: 'CREATED'});
        return (response);
    },
