@@ -42,7 +42,7 @@
 <script> 
 
   import axios from '@/config/axios_default'
-  import oauth from '@/components/layouts/oauth.vue'
+  import oauth from '@/components/layouts/oauth.vue';
 
   export default {
     data: () => ({
