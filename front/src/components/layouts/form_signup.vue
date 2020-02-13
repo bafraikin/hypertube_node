@@ -68,6 +68,7 @@
         Reset Form
       </v-btn>
     </v-form>
+    <oauth> </oauth>
   </div>
 
 </template>
@@ -75,6 +76,7 @@
 <script>
 
   import axios from '@/config/axios_default';
+  import oauth from '@/components/layouts/oauth.vue';
 
 
   export default {
@@ -99,6 +101,9 @@
         v => !!v || 'this field is required',
         v => v.length > 0 && v.length < 251 || 'a name should be inside 1 and 250 charactere'],
     }),
+    components: {
+		"oauth": oauth,
+	},
 
     methods: {
       validate() {
