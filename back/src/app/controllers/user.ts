@@ -3,6 +3,12 @@ import {Request, Response} from 'express'
 
 export default class userController {
 
+	static async userProfile(req: Request, res: Response) {
+		let userId = req.query.userId;
+		let user = await  User.findOne({ id: userId });
+		res.send(user);
+	}
+
 	static async create(req: Request, res: Response) {
 		const user = new User();
 		user.email = req.body.email;
@@ -20,7 +26,6 @@ export default class userController {
 		}
 		res.status(400).send("false");
 	}
-
 
 	static async updatePassword(req: Request, res: Response) {
 		let user = await  User.findOne({ email: req.body.email });
@@ -57,7 +62,7 @@ export default class userController {
 
 	}
 
-	static test(req: Request, res: Response) {
-		res.send("all good");
+	static getUser(req: Request, res: Response) {
+		res.send(req.user);
 	}
 }
