@@ -1,5 +1,5 @@
 <template>
-	<v-container >
+  <v-container >
 		<h1 class="white-text">Movies list</h1>
 		<v-form  v-show="isConnected" >
 			<v-text-field class="white" v-model="researchText" label="Research"></v-text-field>
@@ -13,33 +13,24 @@
 		:watchList="watchList"
 		></MoviesList>
 		<MovieDetails class="back-black"  v-if="showMovieDetails" :movieDetail="movieDetail"></MovieDetails>
-	</v-container>
+  <pagination/>
+  </v-container>
 </template>
 
-<style lang="scss">
-.white {
-	background-color:white;
-}
-.white-text {
-	color:white;
-}
-.back-black {
-	color:white;
-	background-color:black;
-}
-</style>
 
 <script>
 
 import axios from  '@/config/axios_default';
 import MoviesList from '@/components/MovieResearch.vue'
 import MovieDetails from '@/components/MovieDetails.vue'
+import pagination from '@/components/utils/pagination.vue'
 
 export default {
 	name: 'home',
 	components: {
 		"MoviesList": MoviesList,
 		"MovieDetails": MovieDetails,
+		pagination,
 	},
 	data() {
 		return {
@@ -50,6 +41,8 @@ export default {
 			movieDetail: null,
 			getConnected: null,
 			watchList: [],
+      page: 0
+
 		}
 	},
 	methods:{
@@ -115,3 +108,16 @@ export default {
 }
 
 </script>
+
+<style lang="scss">
+  .white {
+    background-color:white;
+  }
+  .white-text {
+    color:white;
+  }
+  .back-black {
+    color:white;
+    background-color:black;
+  }
+</style>

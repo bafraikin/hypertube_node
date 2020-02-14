@@ -22,6 +22,12 @@ const router = new VueRouter({
 			meta: {layout: "layout"}
 		},
 		{
+			path: '/oauth42/callback',
+			name: 'oauth42',
+			component: () => import('../views/oauth42.vue'),
+    			meta: {layout: "layout"}
+		},
+    {
 			path: '/user',
 			name: 'userProfile',
 			component: () => import('../views/Profile.vue'),

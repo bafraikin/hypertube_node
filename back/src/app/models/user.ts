@@ -99,4 +99,13 @@ export class User extends BaseEntity {
 			return true;
 		return false;
 	}
+
+	createOAuth(profile: any){
+		this.email = profile.emails[0].value;
+		this.login = profile.thisname;
+		this.firstName = profile.name.givenName;
+		this.lastName = profile.name.familyName;
+		this.imageUrl = profile.image_url
+		this.oauth = true;
+	}
 }

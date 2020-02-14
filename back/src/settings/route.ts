@@ -25,6 +25,11 @@ export default function setRoute(connection: Connection, app: Express) {
 
 	userNotAuthenticated.post('/authentication', passport.authenticate('local'), controller.authenticate.afterAuth);
 	userNotAuthenticated.post("/user", controller.user.create);
+	userNotAuthenticated.get('/oauth42', passport.authenticate('42'), controller.authenticate.afterAuth);
+	userNotAuthenticated.post('/oauth42/callback', passport.authenticate('42'), controller.authenticate.afterAuth);
+
+
+
 	userAuthenticated.get("/user", controller.user.getUser);
 	userAuthenticated.route("/authentication").delete(controller.authenticate.logout);
 	userAuthenticated.post('/film-info', controller.filmInfo.searchInfo);

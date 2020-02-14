@@ -8,26 +8,26 @@
       <h2>Hypertubulaire</h2>
       <div class="navbar">
 
-        <div v-show="!isConnected" class="navbar" data-app="true"> 
-          <sign-up/>
-          <sign-in/>
+        <div v-if="!isConnected" class="navbar"> 
+          <sign-up data-app="true"/>
+          <sign-in data-app="true"/>
         </div>
 
-        <div v-show="isConnected" data-app='true'> 
-          <v-menu>
+        <div v-else data-app="true"> 
+          <v-menu light bottom left nudge-bottom="35"    v-model="showMenu">
             <template v-slot:activator="{ on }">
               <v-btn icon  v-on="on">
                 <v-icon>mdi-account</v-icon>
               </v-btn>
             </template>
 
-            <v-list>
+            <v-list data-app="true">
               <v-list-item
                 v-for="n in arr"
                 :key="n.message"
                 @click="() => {}"
               >
-                <v-list-item-title @click="n.method">Option {{ n.message }}</v-list-item-title>
+                <v-list-item-title @click="n.method">{{ n.message }}</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -47,15 +47,16 @@
   export default {
     data() {
       return {
+        showMenu: false,
         arr: [{message: 'logout', method: this.logout}]
       }
     },
     methods: {
-      logout() {
-        console.log("aaaaaa");
-        axios.delete("/😂/authentication").then((response) => {
-          this.$store.commit('disconnectUser')
-        }) 
+      async logout() {
+        const response = await axios.delete("/😂/authentication").then((response) => {
+          return true;
+        }); 
+        this.$store.commit('disconnectUser')
       }
     },
     computed: {
@@ -81,5 +82,9 @@
       justify-content: space-around;
       width: 15%;
     }
+  }
+  .v-menu__content {
+    left: 0;
+    max-width: 100%;
   }
 </style>
