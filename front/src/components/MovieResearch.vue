@@ -4,6 +4,9 @@
 			<v-flex xs12 sm6 md4 lg3   v-for="movie in movies" :key="movie.id"  >
 				<v-card  dark class="black-black">
 					<v-img  height="200px" v-bind:src="movie.medium_cover_image" > </v-img>
+
+					<v-icon large v-if="isInWatchList(movie.imdb_code)">mdi-play-circle</v-icon>
+
 					<v-card-subtitle style="color: white">{{ movie.title }}</v-card-subtitle>
 					<v-card-text >
 						<div  style="color: white">{{ movie.year }}</div>
@@ -28,14 +31,20 @@ import axios from 'axios';
 export default {
 	props: {
 		movies: { type: Array },
+		watchList: { type: Array },
 	},
 	methods:{
 		showMovieDetailsFun(movie){
 			this.$emit('selectMovie', movie);
 		},
-	},
-	mounted(){
-		console.log("hello Movie Vignette");
+		isInWatchList(imdbCode){
+			const found = this.watchList.find(element => element == imdbCode);
+			if (found == undefined){
+				return false;
+			}else{
+				return true;
+			}
+		}
 	}
 }
 </script>

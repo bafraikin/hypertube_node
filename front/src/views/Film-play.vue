@@ -24,6 +24,13 @@ export default {
 		}
 	},
 	methods:{
+		postWatchList(){
+			axios.post('😂/watch', { imdbCode: this.imdbCode })
+				.then(response => {
+					console.log(response);
+					this.watch = response;
+				})
+		},
 		downloadMovies(movie, torrent){
 			console.log(movie);
 			if (movie === undefined){
@@ -59,6 +66,7 @@ export default {
 		var torrent = this.$route.params.torrent
 		console.log(movie);
 		this.downloadMovies(movie, torrent);
+		this.postWatchList();
 	}
 }
 </script>
