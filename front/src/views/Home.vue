@@ -1,5 +1,5 @@
 <template>
-	<v-container >
+  <v-container >
 		<h1 class="white-text">Movies list</h1>
 		<v-form  v-show="isConnected" >
 			<v-text-field class="white" v-model="researchText" label="Research"></v-text-field>
@@ -11,18 +11,6 @@
   </v-container>
 </template>
 
-<style lang="scss">
-.white {
-	background-color:white;
-}
-.white-text {
-	color:white;
-}
-.back-black {
-	color:white;
-	background-color:black;
-}
-</style>
 
 <script>
 
@@ -103,3 +91,16 @@ export default {
 }
 
 </script>
+
+<style lang="scss">
+  .white {
+    background-color:white;
+  }
+  .white-text {
+    color:white;
+  }
+  .back-black {
+    color:white;
+    background-color:black;
+  }
+</style>
