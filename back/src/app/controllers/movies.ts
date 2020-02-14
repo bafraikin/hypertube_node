@@ -17,6 +17,57 @@ export default class moviesController {
 		res.send("movies delete")
 	}
 
+	static async theMovieDByear() {
+		let firstYear = "&primary_release_date.gte=2014-09-15";
+		let lastYear = "&primary_release_date.lte=2014-10-22";
+		let query = firstYear + lastYear;
+		return query;
+	}
+
+	static getDefaultUrl(){
+		let url = "https://api.themoviedb.org/3/";
+		let service = "discover/movie";
+		let apiKey = "?api_key=985a541e7e320d19caa17c030cec0d8d";
+		let language = "&language=en-US";
+		let sorting = "&sort_by=popularity.desc";
+		let adult = "&include_adult=false";
+		let video = "&include_video=true";
+		let page = "&page=1";
+		let query = url + service + apiKey + language + sorting + adult + video + page;;
+		return query;
+	}
+
+	static performQuery(req: Request, res: Response, url: string){
+		console.log("************perform***************");
+		console.log(url);
+		axios .get(url)
+		.then((response: any) => {
+			if (response.status == 200){
+				console.log(response);
+				console.log(response.data);
+				res.send(response.data);
+			}
+			else{
+				console.log("erro in api");
+				res.send("error");
+			}
+		})
+	}
+
+	static async theMovieDB(req: Request, res: Response) {
+		let query = moviesController.getDefaultUrl();
+		// if (req.query.searchType == "year-range"){
+			let firstYear = req.query.firstYear;
+			let lastYear = req.query.lastYear;
+			query += moviesController.theMovieDByear();
+		moviesController.performQuery(req, res, query);
+		// }
+		// else{
+			// console.log("erreur ici");
+		// }
+	}
+
+
 	static ytsApiQueryString(req: Request, res: Response) {
 		var stringResearch = req.body.queryString;
 		stringResearch = encodeURI(stringResearch);
