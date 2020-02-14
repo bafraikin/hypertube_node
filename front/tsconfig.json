@@ -18,6 +18,7 @@
 			"vuetify"
     ],
     "paths": {
+			"img/*": ["public/img/*"],
       "@/*": [
         "src/*"
       ]
