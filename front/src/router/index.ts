@@ -39,6 +39,12 @@ const router = new VueRouter({
 			component: () => import('../../src/components/ResearchBar.vue'),
     		meta: {layout: "layout"}
 		},
+		{
+			path: '/newHome',
+			name: 'newHome',
+			component: () => import('../../src/components/NewHome.vue'),
+    		meta: {layout: "layout"}
+		},
 	]
 })
 

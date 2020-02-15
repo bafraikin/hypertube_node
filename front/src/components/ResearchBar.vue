@@ -42,6 +42,13 @@
     </v-card-text>
   </v-card>
 
+ 	 	 <v-btn
+        color="success"
+        class="mr-4"
+        @click="validate"
+      >
+        Validate
+      </v-btn>
 
 
 
@@ -59,7 +66,7 @@ color:white;
 </style>
 
 <script>
-import Comment from '@/components/Comments.vue'
+import axios from  '@/config/axios_default';
 
 export default {
 data () {
@@ -67,6 +74,7 @@ data () {
         min: 1980,
         max: 2020,
         range: [2005, 2018],
+          movies: null,
       }
 	} ,
 	props: {
@@ -74,6 +82,17 @@ data () {
 	components: {
 	},
 	methods:{
+		validate(){
+			console.log("On valide");
+			console.log(this.range);
+			console.log(this.range[0]);
+			console.log(this.range[1]);
+			let research = {};
+			research.firstYear = this.range[0];
+			research.lastYear = this.range[1];
+
+			this.$emit('moviesResearch', research);
+		}
 	},
 	mounted(){
 	}
