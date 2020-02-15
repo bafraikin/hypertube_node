@@ -55,10 +55,17 @@ export default {
 	methods:{
 		researchMovieFun(research){
 			console.log("Dans researchMovieFun");
-			axios.get('/research', { params: { firstYear: research.firstYear, lastYear: research.lastYear }
+			axios.get('/research', { params: { 
+												firstYear: research.firstYear,
+												lastYear: research.lastYear,
+												firstNote: research.firstNote,
+												lastNote: research.lastNote,
+												queryString: research.queryString,
+												genre: research.genre,
+												}
 				}) .then(response => {
-				console.log(response.data.results);
-				this.movies = response.data.results;
+				console.log(response.data);
+				this.movies = response.data;
 				this.showMovieVignette = true;
 				})
 		},

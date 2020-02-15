@@ -1,5 +1,6 @@
 import {Request, Response} from 'express';
 import { Movie } from '@app/models/movies';
+var moment = require('moment');
 const fs = require('fs');
 const axios = require('axios');
 
@@ -17,14 +18,7 @@ export default class moviesController {
 		res.send("movies delete")
 	}
 
-	static async theMovieDByear() {
-		let firstYear = "&primary_release_date.gte=2014-09-15";
-		let lastYear = "&primary_release_date.lte=2014-10-22";
-		let query = firstYear + lastYear;
-		return query;
-	}
-
-	static getDefaultUrl(){
+	static getDefaultUrl_filter(filter: any){
 		let url = "https://api.themoviedb.org/3/";
 		let service = "discover/movie";
 		let apiKey = "?api_key=985a541e7e320d19caa17c030cec0d8d";
@@ -33,38 +27,89 @@ export default class moviesController {
 		let adult = "&include_adult=false";
 		let video = "&include_video=true";
 		let page = "&page=1";
-		let query = url + service + apiKey + language + sorting + adult + video + page;;
+		let firstYear = "&primary_release_date.gte=2014-09-15";
+		let lastYear = "&primary_release_date.lte=2014-10-22";
+		let firstNote = "&vote_average.gte=5";
+		let lastNote = "&vote_average.lte=7";
+		let query = url + service + apiKey + language + sorting + adult + video + page + firstYear + lastYear + firstNote + lastNote;
 		return query;
 	}
 
-	static performQuery(req: Request, res: Response, url: string){
-		console.log("************perform***************");
-		console.log(url);
-		axios .get(url)
-		.then((response: any) => {
-			if (response.status == 200){
-				console.log(response);
-				console.log(response.data);
-				res.send(response.data);
-			}
-			else{
-				console.log("erro in api");
-				res.send("error");
-			}
-		})
+	static getDefaultUrl_query_string(query_string: any){
+		let url = "https://api.themoviedb.org/3/";
+		let service = "search/movie";
+		let apiKey = "?api_key=985a541e7e320d19caa17c030cec0d8d";
+		let language = "&language=en-US";
+		let queryString = "&query=" + encodeURI(query_string);
+		let page = "&page=1";
+		let adulte = "&include_adult=false";
+		let query = url + service + apiKey + language + queryString + page + adulte;
+		return query;
+	}
+
+	static async performQuery(url: string){
+
+
+		return (response.data.results);
+
+
+		// axios.get(url).then((response: any) => {
+		// 	if (response.status == 200){
+		// // return resolve(response.data.results);
+		// 		console.log("Dans la perform >>>>>>>>>>>>>>>>>");
+		// 		console.log(response.data.results);
+		// return (response.data.results);
+		// 	}
+		// 	else{
+		// 		console.log("erro in api");
+		// 		throw "erOr icici";
+		// 	}
+		// })
+	}
+
+	static filter(movies: any, filter: any) {
+		filter.genre = filter.genre.map(x=>+x);
+		console.log("11******************%%%%%%%%%%%%%*****************");
+		console.log(typeof movies);
+			console.log(movies);
+		movies = movies.filter((movie: any) => (movie.vote_average >= filter.firstNote && movie.vote_average <= filter.lastNote));
+		console.log("22******************%%%%%%%%%%%%%*****************");
+		console.log(typeof movies);
+			console.log(movies);
+		movies = movies.filter((movie: any) => (moment(movie.release_date).isBefore(filter.lastYear) &&  moment(movie.release_date).isAfter(filter.firstYear)));
+		console.log("33******************%%%%%%%%%%%%%*****************");
+		console.log(typeof movies);
+			console.log(movies);
+		movies = movies.filter((movie: any) => (movie.genre_ids.some(r=> filter.genre.indexOf(r) >= 0)));
+		console.log("44******************%%%%%%%%%%%%%*****************");
+		console.log(typeof movies);
+			console.log(movies);
+		return movies;
 	}
 
 	static async theMovieDB(req: Request, res: Response) {
-		let query = moviesController.getDefaultUrl();
-		// if (req.query.searchType == "year-range"){
-			let firstYear = req.query.firstYear;
-			let lastYear = req.query.lastYear;
-			query += moviesController.theMovieDByear();
-		moviesController.performQuery(req, res, query);
-		// }
-		// else{
-			// console.log("erreur ici");
-		// }
+		let url: string;
+		let movies;
+		if (req.query.queryString == undefined){
+			url = moviesController.getDefaultUrl_filter(req.query);
+			movies = await moviesController.performQuery(url);
+		}
+		else{
+			url = moviesController.getDefaultUrl_query_string(req.query.queryString);
+			let response = await axios.get(url);
+			movies = response.data.results;
+			// movies = moviesController.performQuery(url);
+			console.log("******************%%%%%%%%%%%%%*****************");
+			console.log(typeof movies);
+			console.log(movies);
+			movies = moviesController.filter(movies, req.query);
+		}
+		console.log("******************%%%%%%%%%%%%%*****************");
+		console.log(typeof movies);
+		console.log(movies);
+
+
+		res.send(movies)
 	}
 
 
@@ -73,30 +118,30 @@ export default class moviesController {
 		stringResearch = encodeURI(stringResearch);
 		var url = 'http://yts.mx/api/v2/list_movies.json?query_term='+ stringResearch;
 		axios .get(url)
-		.then((response: any) => {
-			if (response.status == 200){
-				res.send(response.data);
-			}
-			else{
-				console.log("erro in api");
-				res.send("error");
-			}
-		})
+			.then((response: any) => {
+				if (response.status == 200){
+					res.send(response.data);
+				}
+				else{
+					console.log("erro in api");
+					res.send("error");
+				}
+			})
 	}
 
 	static ytsApiDefaultList(req: Request, res: Response) {
 		const url = 'https://yts.mx/api/v2/list_movies.json';
 		axios
-		.get(url)
-		.then((response: any) => {
-			if (response.status == 200){
-				res.send(response.data);
-			}
-			else{
-				console.log("erro in api");
-				res.send("error");
-			}
-		})
+			.get(url)
+			.then((response: any) => {
+				if (response.status == 200){
+					res.send(response.data);
+				}
+				else{
+					console.log("erro in api");
+					res.send("error");
+				}
+			})
 	}
 
 	static async player(req: Request, res: Response) {
@@ -124,20 +169,20 @@ export default class moviesController {
 					const end = parts[1]
 						? parseInt(parts[1], 10)
 						: fileSize-1
-						const chunksize = (end-start)+1
-						console.log("le end ==>", end);
-						console.log("le file size", fileSize);
-						const head = {
-							'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-							'Accept-Ranges': 'bytes',
-							'Content-Length': chunksize,
-							'Content-Type': 'video/mp4',
-						}
-						res.writeHead(206, head);
-						stream.pipe(res);
-						stream.on('error', function (err: any) {
-							res.status(416).send("error in stream");
-						})
+					const chunksize = (end-start)+1
+					console.log("le end ==>", end);
+					console.log("le file size", fileSize);
+					const head = {
+'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+'Accept-Ranges': 'bytes',
+'Content-Length': chunksize,
+'Content-Type': 'video/mp4',
+					}
+					res.writeHead(206, head);
+					stream.pipe(res);
+					stream.on('error', function (err: any) {
+						res.status(416).send("error in stream");
+					})
 				}
 				else {
 					// console.log("ce n'est pas un film");
