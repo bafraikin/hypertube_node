@@ -93,8 +93,8 @@ export default class moviesController {
 			.then((response: any) => {
 				if (response.status == 200){
 					console.log("***********TORRENT**************");
-					console.log(response.data.data.movies[0].torrents[0]);
-					res.send(response.data);
+					console.log(response.data.data.movies[0].torrents);
+					res.send(response.data.data.movies[0].torrents);
 				}
 				else{
 					console.log("erro in api");

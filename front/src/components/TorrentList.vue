@@ -3,20 +3,20 @@
 		<h1>Torrent List</h1>
 		<v-simple-table>
 			<template v-slot:default>
-				<!-- <thead> -->
-				<!-- 	<tr> -->
-				<!-- 		<th class="text-left">Quality</th> -->
-				<!-- 		<th class="text-left">Torrent link</th> -->
-				<!-- 	</tr> -->
-				<!-- </thead> -->
-				<!-- <tbody> -->
-				<!-- 	<tr v-for="torrent in movieDetail.torrents"> -->
-				<!-- 		<td>{{ torrent.quality }}</td> -->
-				<!-- 		<td> -->
-				<!-- 			<i v-on:click="download(movieDetail, torrent)" >Play</i> -->
-				<!-- 		</td> -->
-				<!-- 	</tr> -->
-				<!-- </tbody> -->
+				<thead>
+					<tr>
+						<th class="text-left">Quality</th>
+						<th class="text-left">Torrent link</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="torrent in torrents">
+						<td>{{ torrent.quality }}</td>
+						<td>
+							<i v-on:click="download(movieDetail, torrent)" >Play</i>
+						</td>
+					</tr>
+				</tbody>
 			</template>
 		</v-simple-table>
 	</v-container>
