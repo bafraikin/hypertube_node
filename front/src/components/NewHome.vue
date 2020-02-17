@@ -1,17 +1,3 @@
-		<!-- <v-form  v-show="isConnected" > -->
-		<!-- 	<v-text-field class="white" v-model="researchText" label="Research"></v-text-field> -->
-		<!-- 	<v-btn class="ici"  @click="searchForMovies" > Search </v-btn> -->
-		<!-- </v-form> -->
-
-		<!-- <MoviesList -->
-		<!-- dark -->
-		<!-- v-if="showResearchResult" -->
-		<!-- v-on:selectMovie="showMovieDetailsFun($event)" -->
-		<!-- :movies="movies" -->
-		<!-- :watchList="watchList" -->
-		<!-- ></MoviesList> -->
-		<!-- <MovieDetails class="back-black"  v-if="showMovieDetails" :movieDetail="movieDetail"></MovieDetails> -->
-
 <template>
   <v-container >
 		<h1 class="white-text">New Home</h1>
@@ -51,15 +37,13 @@ export default {
 	},
 	methods:{
 		showMovieDetailsFun(movie){
-			console.log(movie);
 			this.OMDBid = movie.id;
 			this.showMovieVignette = false;
 			this.showResearchBar = false;
 			this.showMovieDetails = true;
 		},
 		researchMovieFun(research){
-			console.log("Dans researchMovieFun");
-			axios.get('/research', { params: {
+			axios.get('😂/research', { params: {
 												firstYear: research.firstYear,
 												lastYear: research.lastYear,
 												minMark: research.firstNote,
@@ -68,7 +52,6 @@ export default {
 												genre: research.genre,
 												}
 				}) .then(response => {
-				console.log(response.data);
 				this.movies = response.data;
 				this.showMovieVignette = true;
 				})

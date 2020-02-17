@@ -21,6 +21,7 @@ export default class moviesController {
 
 	static async theMovieDB	(req: Request, res: Response) {
 		let url: string;
+
 		let apiClient : any;
 		if (req.query.queryString == undefined || req.query.queryString == '') {
 			let filter = req.query;
@@ -33,13 +34,10 @@ export default class moviesController {
 		return;
 	}
 
-
 	static async getMovieDetail(req: Request, res: Response){
-		console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 		let OMDBid = req.query.OMDBid;
 		let url = "https://api.themoviedb.org/3/movie/" + OMDBid + "?api_key=985a541e7e320d19caa17c030cec0d8d&language=en-US";
 		let response = await axios.get(url);
-		console.log(response);
 		let movieDetail = response.data;
 		res.send(movieDetail);
 	}
@@ -59,6 +57,20 @@ export default class moviesController {
 				res.send("error");
 			}
 		})
+
+	static getYtsTorrent(req: Request, res: Response) {
+		let imdbCode = req.query.imdbCode;
+		let url = 'http://yts.mx/api/v2/list_movies.json?query_term='+ imdbCode;
+		axios .get(url)
+			.then((response: any) => {
+				if (response.status == 200){
+					res.send(response.data.data.movies[0].torrents);
+				}
+				else{
+					console.log("erro in api");
+					res.send("error");
+				}
+			})
 	}
 
 	static ytsApiDefaultList(req: Request, res: Response) {
@@ -77,16 +89,17 @@ export default class moviesController {
 	}
 
 	static async player(req: Request, res: Response) {
-		console.log("params dans player");
-		console.log(req.params);
-		let movie = await Movie.getMovie(req.params);
-		movie.buildMagnetLink(req.params);
+		let imdbCode = req.params.imdbCode;
+		let hash = req.params.hash;
+		let url = req.params.url;
+
+		let movie = await Movie.getMovie(imdbCode);
+		movie.buildMagnetLink(hash, url);
 
 		const range = req.headers.range;
 		if (range) {
 			const parts = range.replace(/bytes=/, "").split("-");
 			const start = parseInt(parts[0], 10);
-			console.log("le start ==>", start);
 			let engine: any = await movie.downloadMovie(start);
 			engine.files.forEach( (file: any) => {
 				let regex = /mp4/;

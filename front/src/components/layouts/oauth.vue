@@ -18,7 +18,6 @@ export default {
       axios
         .post("😱/test")
         .then(response => {
-          console.log(response);
           this.$emit("connected");
           this.$store.commit("connectUser", response);
         })
