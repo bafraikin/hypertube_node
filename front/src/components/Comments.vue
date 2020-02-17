@@ -1,26 +1,21 @@
 <template>
-	<div>
+	<div class="ici">
 		<h2>Comments</h2>
-		<div v-for="comment in comments">
-			<p v-on:click="displayUserProfile(comment.user.id)">{{ comment.user.login }}</p>
-			<p>{{ comment.content }}</p>
+		<div class="ici" v-for="comment in comments">
+			<p class="ici" style="color:white;" v-on:click="displayUserProfile(comment.user.id)">{{ comment.user.login }}</p>
+			<p class="ici" >{{ comment.content }}</p>
 		</div>
 		<v-form>
 			<v-textarea
 			v-model="textarea"
-			background-color="white"
 			label="Please enter your comment"
+   dark
 			></v-textarea>
 			<v-btn class="mr-4" @click="submit">submit</v-btn>
 		</v-form>
 	</div>
 </template>
 
-<style>
-#ici{
-	background-color: white;
-}
-</style>
 
 
 <script>

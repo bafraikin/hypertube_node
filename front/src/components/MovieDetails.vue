@@ -1,5 +1,5 @@
 <template>
-	<v-container v-if="onMontre" dark>
+	<v-container v-if="onMontre" class="ici">
 		<v-img  max-height="300" v-bind:src="buildImg(movie)" contain ></v-img>
 		<h1>{{ movie.title  }}</h1>
 		<p>{{  movie.overview }}</p>
@@ -8,6 +8,12 @@
 	</v-container>
 </template>
 
+<style>
+.ici{
+	background-color: black;
+	color:white;
+}
+</style>
 
 <script>
 import axios from  '@/config/axios_default';
