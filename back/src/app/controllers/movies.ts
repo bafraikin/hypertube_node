@@ -19,8 +19,6 @@ export default class moviesController {
 	}
 
 	static getDefaultUrl_filter(filter: any){
-
-
 		let url = "https://api.themoviedb.org/3/";
 		let service = "discover/movie";
 		let apiKey = "?api_key=985a541e7e320d19caa17c030cec0d8d";
