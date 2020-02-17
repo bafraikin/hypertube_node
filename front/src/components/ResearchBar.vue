@@ -203,6 +203,7 @@ data () {
 	},
 	methods:{
 		validate(){
+			console.log("ON RESEARCH!!!!");
 			let research = {};
 			research.queryString = this.queryString;
 			research.firstYear = this.range[0];

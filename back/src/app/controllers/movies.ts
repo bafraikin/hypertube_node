@@ -63,13 +63,11 @@ export default class moviesController {
 		console.log(req.query);
 		if (req.query.queryString == undefined || req.query.queryString == ''){
 			url = moviesController.getDefaultUrl_filter(req.query);
-			console.log("***************999*************");
 			console.log(url);
 			let response = await axios.get(url);
 			movies = response.data.results;
 		}
 		else{
-			console.log("******************8888*************");
 			url = moviesController.getDefaultUrl_query_string(req.query.queryString);
 			console.log(url);
 			let response = await axios.get(url);
@@ -79,11 +77,7 @@ export default class moviesController {
 		res.send(movies)
 	}
 
-
-
-
 	static async getMovieDetail(req: Request, res: Response){
-		console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 		let OMDBid = req.query.OMDBid;
 		let url = "https://api.themoviedb.org/3/movie/" + OMDBid + "?api_key=985a541e7e320d19caa17c030cec0d8d&language=en-US";
 		let response = await axios.get(url);
@@ -92,18 +86,14 @@ export default class moviesController {
 		res.send(movieDetail);
 	}
 
-
-
-
-
-
-	static ytsApiQueryString(req: Request, res: Response) {
-		var stringResearch = req.body.queryString;
-		stringResearch = encodeURI(stringResearch);
-		var url = 'http://yts.mx/api/v2/list_movies.json?query_term='+ stringResearch;
+	static getYtsTorrent(req: Request, res: Response) {
+		let imdbCode = req.query.imdbCode;
+		let url = 'http://yts.mx/api/v2/list_movies.json?query_term='+ imdbCode;
 		axios .get(url)
 			.then((response: any) => {
 				if (response.status == 200){
+					console.log("***********TORRENT**************");
+					console.log(response.data.data.movies[0].torrents[0]);
 					res.send(response.data);
 				}
 				else{

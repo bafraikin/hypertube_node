@@ -1,0 +1,65 @@
+<template>
+	<v-container v-if="onMontre" dark>
+		<h1>Torrent List</h1>
+		<v-simple-table>
+			<template v-slot:default>
+				<!-- <thead> -->
+				<!-- 	<tr> -->
+				<!-- 		<th class="text-left">Quality</th> -->
+				<!-- 		<th class="text-left">Torrent link</th> -->
+				<!-- 	</tr> -->
+				<!-- </thead> -->
+				<!-- <tbody> -->
+				<!-- 	<tr v-for="torrent in movieDetail.torrents"> -->
+				<!-- 		<td>{{ torrent.quality }}</td> -->
+				<!-- 		<td> -->
+				<!-- 			<i v-on:click="download(movieDetail, torrent)" >Play</i> -->
+				<!-- 		</td> -->
+				<!-- 	</tr> -->
+				<!-- </tbody> -->
+			</template>
+		</v-simple-table>
+	</v-container>
+</template>
+
+
+<script>
+import axios from  '@/config/axios_default';
+import Comment from '@/components/Comments.vue'
+
+export default {
+	props: {
+		imdbCode: { type: String }
+	},
+	components: {
+		"Comment": Comment
+	},
+	data() {
+		return {
+			onMontre: false,
+			torrents: null,
+		}
+	},
+	methods:{
+		download(imdbCode, torrent){
+			this.$router.push({ name: "player-film", params:{imdbCode: imdbCode, torrent: torrent}});
+		},
+		buildImg(movie){
+			return "https://image.tmdb.org/t/p/w500/"+ movie.poster_path;
+		},
+		getMovieTorrent(){
+			console.log("Dans get movie detail");
+			axios.get('😂/yts-torrent', { params: { imdbCode: this.imdbCode } })
+			.then(response => {
+				console.log(response.data);
+				this.torrents = response.data;
+				this.onMontre = true;
+			})
+		},
+	},
+	mounted(){
+		this.getMovieTorrent(this.imdbCode);
+	}
+}
+</script>
+
