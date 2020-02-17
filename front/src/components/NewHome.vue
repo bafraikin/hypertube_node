@@ -1,17 +1,3 @@
-		<!-- <v-form  v-show="isConnected" > -->
-		<!-- 	<v-text-field class="white" v-model="researchText" label="Research"></v-text-field> -->
-		<!-- 	<v-btn class="ici"  @click="searchForMovies" > Search </v-btn> -->
-		<!-- </v-form> -->
-
-		<!-- <MoviesList -->
-		<!-- dark -->
-		<!-- v-if="showResearchResult" -->
-		<!-- v-on:selectMovie="showMovieDetailsFun($event)" -->
-		<!-- :movies="movies" -->
-		<!-- :watchList="watchList" -->
-		<!-- ></MoviesList> -->
-		<!-- <MovieDetails class="back-black"  v-if="showMovieDetails" :movieDetail="movieDetail"></MovieDetails> -->
-
 <template>
   <v-container >
 		<h1 class="white-text">New Home</h1>

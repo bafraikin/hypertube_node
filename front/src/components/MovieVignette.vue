@@ -18,12 +18,6 @@
 	</v-container>
 </template>
 
-<style lang="scss">
-.black-black {
-	background-color: black;
-	margin: 30px;
-}
-</style>
 
 <script>
 import axios from  '@/config/axios_default';
@@ -66,3 +60,9 @@ export default {
 }
 </script>
 
+<style lang="scss">
+.black-black {
+	background-color: black;
+	margin: 30px;
+}
+</style>

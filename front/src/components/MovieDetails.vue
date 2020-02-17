@@ -8,12 +8,6 @@
 	</v-container>
 </template>
 
-<style>
-.ici{
-	background-color: black;
-	color:white;
-}
-</style>
 
 <script>
 import axios from  '@/config/axios_default';
@@ -51,3 +45,9 @@ export default {
 	}
 }
 </script>
+<style>
+.ici{
+	background-color: black;
+	color:white;
+}
+</style>

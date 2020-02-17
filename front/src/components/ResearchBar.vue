@@ -173,14 +173,6 @@
 </v-container>
 </template>
 
-<style>
-.ici{
-color:white;
-}
-.other{
-	background-color:white;
-}
-</style>
 
 <script>
 import axios from  '@/config/axios_default';
@@ -218,3 +210,11 @@ data () {
 }
 </script>
 
+<style>
+.ici{
+color:white;
+}
+.other{
+	background-color:white;
+}
+</style>
