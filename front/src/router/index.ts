@@ -25,14 +25,26 @@ const router = new VueRouter({
 			path: '/oauth42/callback',
 			name: 'oauth42',
 			component: () => import('../views/oauth42.vue'),
-    			meta: {layout: "layout"}
+    		meta: {layout: "layout"}
 		},
-    {
+    	{
 			path: '/user',
 			name: 'userProfile',
 			component: () => import('../views/Profile.vue'),
 			meta: {layout: "layout"}
-		}
+		},
+		{
+			path: '/research',
+			name: 'researchBar',
+			component: () => import('../../src/components/ResearchBar.vue'),
+    		meta: {layout: "layout"}
+		},
+		{
+			path: '/newHome',
+			name: 'newHome',
+			component: () => import('../../src/components/NewHome.vue'),
+    		meta: {layout: "layout"}
+		},
 	]
 })
 

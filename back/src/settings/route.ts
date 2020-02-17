@@ -42,10 +42,17 @@ export default function setRoute(connection: Connection, app: Express) {
 
 	userAuthenticated.get('/watch', controller.watch.getWatch);
 	userAuthenticated.post('/watch', controller.watch.postWatch);
+
 	userAuthenticated.get('/comment', controller.comments.getComment);
 	userAuthenticated.post('/comment', controller.comments.postComment);
+
+
+	userAuthenticated.get('/movie-detail', controller.movies.getMovieDetail);
+
+
 	userAuthenticated.get("/userProfile", controller.user.userProfile);
 	app.get('/ytsApiDefaultList', controller.movies.ytsApiDefaultList);
+	app.get('/research', controller.movies.theMovieDB);
 
 
 	app.use(`/${encodeURI("😱")}`, userNotAuthenticated);

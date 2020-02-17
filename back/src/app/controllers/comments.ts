@@ -23,11 +23,11 @@ export default class commentController {
 		let userrr : any = req.user;
 
 		params.userId = userrr.id;
-		params.movie = req.body.movie;
+		params.imdbCode = req.body.imdbCode;
 		params.content = req.body.content;
 		//verifs des params  ==> plus tard
 
-		let movie = await Movie.getMovie(params.movie);
+		let movie = await Movie.getMovie(params.imdbCode);
 		const user = await User.findOne({ id: params.userId })
 		let comment = new Comment;
 		comment.date = "la date bebe";
