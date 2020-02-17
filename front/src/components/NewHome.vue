@@ -1,5 +1,3 @@
-<template>
-
 		<!-- <v-form  v-show="isConnected" > -->
 		<!-- 	<v-text-field class="white" v-model="researchText" label="Research"></v-text-field> -->
 		<!-- 	<v-btn class="ici"  @click="searchForMovies" > Search </v-btn> -->
@@ -14,11 +12,12 @@
 		<!-- ></MoviesList> -->
 		<!-- <MovieDetails class="back-black"  v-if="showMovieDetails" :movieDetail="movieDetail"></MovieDetails> -->
 
+<template>
   <v-container >
 		<h1 class="white-text">New Home</h1>
 		<ResearchBar v-if="showResearchBar" v-on:moviesResearch="researchMovieFun($event)" ></ResearchBar>
 		<MovieVignette :movies="movies" v-if="showMovieVignette" v-on:selectMovie="showMovieDetailsFun($event)" ></MovieVignette>
-		<MovieDetails class="back-black"  v-if="showMovieDetails" :movieDetail="movieDetail"></MovieDetails>
+		<MovieDetails class="back-black"  v-if="showMovieDetails" :OMDBid="OMDBid"></MovieDetails>
 		<pagination/>
   </v-container>
 </template>
@@ -47,13 +46,13 @@ export default {
 			showResearchBar: true,
 			movies: null,
 			page: 0,
-			movieDetail: null,
+			OMDBid: null,
 		}
 	},
 	methods:{
 		showMovieDetailsFun(movie){
 			console.log(movie);
-			this.movieDetail = movie;
+			this.OMDBid = movie.id;
 			this.showMovieVignette = false;
 			this.showResearchBar = false;
 			this.showMovieDetails = true;

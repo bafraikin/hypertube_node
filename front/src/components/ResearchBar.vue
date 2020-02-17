@@ -1,5 +1,6 @@
 <template>
-<v-container>
+<v-container light>
+	<v-card>
 <v-card flat color="transparent">
 
 
@@ -157,6 +158,7 @@
 
 
  	 	 <v-btn
+ 	 	 dark
         color="success"
         class="mr-4"
         @click="validate"
@@ -167,6 +169,7 @@
 
 
 
+			 </v-card>
 </v-container>
 </template>
 

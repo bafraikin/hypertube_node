@@ -79,6 +79,24 @@ export default class moviesController {
 		res.send(movies)
 	}
 
+
+
+
+	static async getMovieDetail(req: Request, res: Response){
+		console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+		let OMDBid = req.query.OMDBid;
+		let url = "https://api.themoviedb.org/3/movie/" + OMDBid + "?api_key=985a541e7e320d19caa17c030cec0d8d&language=en-US";
+		let response = await axios.get(url);
+		console.log(response);
+		let movieDetail = response.data;
+		res.send(movieDetail);
+	}
+
+
+
+
+
+
 	static ytsApiQueryString(req: Request, res: Response) {
 		var stringResearch = req.body.queryString;
 		stringResearch = encodeURI(stringResearch);

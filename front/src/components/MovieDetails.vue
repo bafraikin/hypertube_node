@@ -1,8 +1,8 @@
 <template>
-	<v-container dark>
-		<v-img  max-height="300" v-bind:src="buildImg(movieDetail)" contain ></v-img>
-		<h1>{{ movieDetail.title  }}</h1>
-		<p>{{  movieDetail.overview }}</p>
+	<v-container v-if="onMontre" dark>
+		<v-img  max-height="300" v-bind:src="buildImg(movie)" contain ></v-img>
+		<h1>{{ movie.title  }}</h1>
+		<p>{{  movie.overview }}</p>
 		<v-simple-table>
 			<template v-slot:default>
 				<!-- <thead> -->
@@ -22,21 +22,28 @@
 			</template>
 		</v-simple-table>
 
-		<Comment :movie="movieDetail"></Comment>
+		<Comment :imdbCode="movie.imdb_id"></Comment>
 
 	</v-container>
 </template>
 
 
 <script>
+import axios from  '@/config/axios_default';
 import Comment from '@/components/Comments.vue'
 
 export default {
 	props: {
-		movieDetail: { type: Object }
+		OMDBid: { type: Number }
 	},
 	components: {
 		"Comment": Comment
+	},
+	data() {
+		return {
+			onMontre: false,
+			movie: null,
+		}
 	},
 	methods:{
 		download(movie, torrent){
@@ -45,9 +52,19 @@ export default {
 		buildImg(movie){
 			return "https://image.tmdb.org/t/p/w500/"+ movie.poster_path;
 		},
+		getMovieDetails(research){
+			console.log("Dans get movie detail");
+			axios.get('😂/movie-detail', { params: { OMDBid: this.OMDBid } })
+			.then(response => {
+				console.log(response.data);
+				this.movie = response.data;
+				this.onMontre = true;
+			})
+		},
 	},
 	mounted(){
-		console.log(this.movieDetail);
+		console.log(this.OMDBid);
+		this.getMovieDetails(this.OMDBid);
 	}
 }
 </script>
