@@ -1,18 +1,15 @@
 <template>
 	<v-container >
 		<h1 class="white-text">Movie Vignette</h1>
-		<v-layout row wrap  >
+		<v-layout row wrap v-if="onMontre" >
 			<v-flex xs12 sm6 md4 lg3   v-for="movie in movies" :key="movie.id"  >
 				<v-card  dark class="black-black">
 					<v-img  height="200px" v-bind:src="buildImg(movie)" > </v-img>
-
-					<!-- <v-icon large v-if="isInWatchList(movie.imdb_code)">mdi-play-circle</v-icon> -->
-
+					<v-icon large v-if="isInWatchList(movie.id)">mdi-play-circle</v-icon>
 					<v-card-subtitle style="color: white">{{ movie.title }}</v-card-subtitle>
 					<v-card-text >
 						<div  style="color: white">{{ movie.release_date }}</div>
 						<div  style="color: white">Note : {{ movie.vote_average }}</div>
-						<!-- <div><span v-for="torrent in movie.torrents"  style="color: white"  >{{torrent.quality}} </span></div> -->
 					</v-card-text>
 					<v-btn  v-on:click="showMovieDetailsFun(movie)" style="color: pink;"   > Watch </v-btn>
 				</v-card>
@@ -29,11 +26,16 @@
 </style>
 
 <script>
-import axios from 'axios';
+import axios from  '@/config/axios_default';
 export default {
 	props: {
 		movies: { type: Array },
-		//watchList: { type: Array },
+	},
+	data () {
+      	return {
+        	onMontre: false,
+        	watchList: []
+      	}
 	},
 	methods:{
 		buildImg(movie){
@@ -42,14 +44,24 @@ export default {
 		showMovieDetailsFun(movie){
 			this.$emit('selectMovie', movie);
 		},
-		isInWatchList(imdbCode){
-			const found = this.watchList.find(element => element == imdbCode);
+		isInWatchList(idOMDB){
+			const found = this.watchList.find(element => element == idOMDB);
 			if (found == undefined){
 				return false;
 			}else{
 				return true;
 			}
+		},
+		getWatchList(){
+			axios.get('😂/watch')
+				.then(response => {
+					this.watchList = response.data;
+					this.onMontre = true;
+				})
 		}
+	},
+	mounted(){
+		this.getWatchList();
 	}
 }
 </script>

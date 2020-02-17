@@ -29,7 +29,8 @@ import Comment from '@/components/Comments.vue'
 
 export default {
 	props: {
-		imdbCode: { type: String }
+		imdbCode: { type: String },
+		idOMDB: { type: Number },
 	},
 	components: {
 		"Comment": Comment
@@ -42,7 +43,7 @@ export default {
 	},
 	methods:{
 		play(torrent){
-			this.$router.push({ name: "player-film", params:{imdbCode: this.imdbCode, torrent: torrent}});
+			this.$router.push({ name: "player-film", params:{imdbCode: this.imdbCode, torrent: torrent, idOMDB: this.idOMDB}});
 		},
 		buildImg(movie){
 			return "https://image.tmdb.org/t/p/w500/"+ movie.poster_path;

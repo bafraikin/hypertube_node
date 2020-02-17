@@ -34,10 +34,6 @@ export default function setRoute(connection: Connection, app: Express) {
 	userAuthenticated.route("/authentication").delete(controller.authenticate.logout);
 	userAuthenticated.get('/player/:url/:hash/:imdbCode', controller.movies.player);
 
-
-
-
-
 	userAuthenticated.get('/watch', controller.watch.getWatch);
 	userAuthenticated.post('/watch', controller.watch.postWatch);
 	userAuthenticated.get('/comment', controller.comments.getComment);

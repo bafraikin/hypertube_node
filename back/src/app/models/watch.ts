@@ -8,7 +8,7 @@ export class Watch extends BaseEntity {
 	id!: number;
 
 	@Column()
-	imdbCode!: string;
+	idOMDB!: string;
 
     @ManyToOne(type => User, user => user.watchs)
     user: User | undefined;
@@ -16,7 +16,7 @@ export class Watch extends BaseEntity {
 	toJSON() {
 		return {
 			id: this.id,
-			imdbCode: this.imdbCode,
+			idOMDB: this.idOMDB,
 			user: this.user,
 		}
 	}

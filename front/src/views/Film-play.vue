@@ -20,19 +20,17 @@ export default {
 			title: '',
 			showFilm: false,
 			filmPath: null,
-			imdbCode:null,
 		}
 	},
 	methods:{
-		postWatchList(){
+		postWatchList(idOMDB){
 		console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-		console.log(this.imdbCode);
+		console.log(idOMDB);
 		console.log("imdb code dans post Watch");
 
-			axios.post('😂/watch', { imdbCode: this.imdbCode })
+			axios.post('😂/watch', { idOMDB: idOMDB})
 				.then(response => {
 					console.log(response);
-					this.watch = response;
 				})
 		},
 		downloadMovies(imdbCode, torrent){
@@ -58,8 +56,9 @@ export default {
 		console.log("imdb code dans post Watch");
 		var imdbCode = this.$route.params.imdbCode;
 		var torrent = this.$route.params.torrent
+		var idOMDB = this.$route.params.idOMDB
 		this.downloadMovies(imdbCode, torrent);
-		this.postWatchList();
+		this.postWatchList(idOMDB);
 	}
 }
 </script>

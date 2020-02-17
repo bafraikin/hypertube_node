@@ -3,7 +3,7 @@
 		<v-img  max-height="300" v-bind:src="buildImg(movie)" contain ></v-img>
 		<h1>{{ movie.title  }}</h1>
 		<p>{{  movie.overview }}</p>
-		<TorrentList :imdbCode="movie.imdb_id"></TorrentList>
+		<TorrentList :imdbCode="movie.imdb_id" :idOMDB="movie.id"></TorrentList>
 		<Comment :imdbCode="movie.imdb_id"></Comment>
 	</v-container>
 </template>

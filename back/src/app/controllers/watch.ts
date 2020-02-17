@@ -7,6 +7,8 @@ const axios = require('axios');
 export default class watchController {
 
 	static async getWatch(req: Request, res: Response) {
+		console.log("***********************************");
+		console.log("GET watch");
 		let userrr : any = req.user;
 		let userId = userrr!.id;
 		let user = await User.findOne({ id: userId});
@@ -17,7 +19,7 @@ export default class watchController {
 		else{
 			let i = 0;
 			while(i < user!.watchs.length){
-				watchs.push(user!.watchs[i].imdbCode);
+				watchs.push(user!.watchs[i].idOMDB);
 				i++;
 			}
 			res.send(watchs);
@@ -28,17 +30,16 @@ export default class watchController {
 		let userrr : any = req.user;
 
 		let userId = userrr.id;
-		let imdbCode = req.body.imdbCode;
+		let idOMDB = req.body.idOMDB;
 
 		console.log("***********************************");
 		console.log("imdb code dans post Watch");
 		console.log(req.body);
 
 		//verifs des params  ==> plus tard
-		let movie = await Movie.getMovie(imdbCode);
 		const user : User | undefined = await User.findOne({ id: userId })
 		let watch = new Watch;
-		watch.imdbCode = imdbCode;
+		watch.idOMDB = idOMDB;
 		watch.user = user;
 		watch.save();
 		res.status(201).json(watch);
