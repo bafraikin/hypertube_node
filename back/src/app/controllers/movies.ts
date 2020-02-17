@@ -121,8 +121,12 @@ export default class moviesController {
 	static async player(req: Request, res: Response) {
 		console.log("params dans player");
 		console.log(req.params);
-		let movie = await Movie.getMovie(req.params);
-		movie.buildMagnetLink(req.params);
+		let imdbCode = req.params.imdbCode;
+		let hash = req.params.hash;
+		let url = req.params.url;
+
+		let movie = await Movie.getMovie(imdbCode);
+		movie.buildMagnetLink(hash, url);
 
 		const range = req.headers.range;
 		if (range) {

@@ -33,7 +33,7 @@ export default function setRoute(connection: Connection, app: Express) {
 	userAuthenticated.get("/user", controller.user.getUser);
 	userAuthenticated.route("/authentication").delete(controller.authenticate.logout);
 	userAuthenticated.post('/film-info', controller.filmInfo.searchInfo);
-	userAuthenticated.get('/player/:url/:hash/:imdb_code', controller.movies.player);
+	userAuthenticated.get('/player/:url/:hash/:imdbCode', controller.movies.player);
 
 
 

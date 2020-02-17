@@ -13,7 +13,7 @@
 					<tr v-for="torrent in torrents">
 						<td>{{ torrent.quality }}</td>
 						<td>
-							<i v-on:click="play(movieDetail, torrent)" >Play</i>
+							<i v-on:click="play(imdbCode, torrent)" >Play</i>
 						</td>
 					</tr>
 				</tbody>

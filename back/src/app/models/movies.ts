@@ -40,15 +40,12 @@ export class Movie extends BaseEntity {
 		return movie;
 	}
 
-	buildMagnetLink(params: any){
-		if (params == undefined || params.hash == undefined || params.url == undefined)
-			throw "erreur dans build magnet link";
-
-		params.hash = decodeURIComponent(params.hash);
-		params.url = decodeURIComponent(params.url);
+	buildMagnetLink(hash: any, url: any){
+		hash = decodeURIComponent(hash);
+		url = decodeURIComponent(url);
 		console.log("je construit le magnet link");
-		let torrent_hash = params.hash;  //"F976B434321C0FBE9027BB7B40386E0E40C23853";
-		let torrent_url = params.url;  // "/torrent/download/F976B434321C0FBE9027BB7B40386E0E40C23853";
+		let torrent_hash = hash;
+		let torrent_url = url;
 		let tracker_1 =  "udp://glotorrents.pw:6969/announce";
 		let tracker_2 =  "udp://tracker.opentrackr.org:1337/announce";
 		let tracker_3 =  "udp://torrent.gresille.org:80/announce";
