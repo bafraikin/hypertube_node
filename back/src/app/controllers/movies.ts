@@ -19,6 +19,8 @@ export default class moviesController {
 	}
 
 	static getDefaultUrl_filter(filter: any){
+
+
 		let url = "https://api.themoviedb.org/3/";
 		let service = "discover/movie";
 		let apiKey = "?api_key=985a541e7e320d19caa17c030cec0d8d";
@@ -27,10 +29,10 @@ export default class moviesController {
 		let adult = "&include_adult=false";
 		let video = "&include_video=true";
 		let page = "&page=1";
-		let firstYear = "&primary_release_date.gte=2014-09-15";
-		let lastYear = "&primary_release_date.lte=2014-10-22";
-		let firstNote = "&vote_average.gte=5";
-		let lastNote = "&vote_average.lte=7";
+		let firstYear = "&primary_release_date.gte=" + filter.firstYear + "-01-01";
+		let lastYear = "&primary_release_date.lte=" + filter.lastYear + "-01-01";
+		let firstNote = "&vote_average.gte=" + filter.firstNote;
+		let lastNote = "&vote_average.lte=" + filter.lastNote;
 		let query = url + service + apiKey + language + sorting + adult + video + page + firstYear + lastYear + firstNote + lastNote;
 		return query;
 	}
@@ -47,71 +49,37 @@ export default class moviesController {
 		return query;
 	}
 
-	static async performQuery(url: string){
-
-
-		return (response.data.results);
-
-
-		// axios.get(url).then((response: any) => {
-		// 	if (response.status == 200){
-		// // return resolve(response.data.results);
-		// 		console.log("Dans la perform >>>>>>>>>>>>>>>>>");
-		// 		console.log(response.data.results);
-		// return (response.data.results);
-		// 	}
-		// 	else{
-		// 		console.log("erro in api");
-		// 		throw "erOr icici";
-		// 	}
-		// })
-	}
-
 	static filter(movies: any, filter: any) {
-		filter.genre = filter.genre.map(x=>+x);
-		console.log("11******************%%%%%%%%%%%%%*****************");
-		console.log(typeof movies);
-			console.log(movies);
 		movies = movies.filter((movie: any) => (movie.vote_average >= filter.firstNote && movie.vote_average <= filter.lastNote));
-		console.log("22******************%%%%%%%%%%%%%*****************");
-		console.log(typeof movies);
-			console.log(movies);
 		movies = movies.filter((movie: any) => (moment(movie.release_date).isBefore(filter.lastYear) &&  moment(movie.release_date).isAfter(filter.firstYear)));
-		console.log("33******************%%%%%%%%%%%%%*****************");
-		console.log(typeof movies);
-			console.log(movies);
-		movies = movies.filter((movie: any) => (movie.genre_ids.some(r=> filter.genre.indexOf(r) >= 0)));
-		console.log("44******************%%%%%%%%%%%%%*****************");
-		console.log(typeof movies);
-			console.log(movies);
+		if (filter.genre != undefined){
+			filter.genre = filter.genre.map((x: any)=>+x);
+			movies = movies.filter((movie: any) => (movie.genre_ids.some((r: any)=> filter.genre.indexOf(r) >= 0)));
+		}
 		return movies;
 	}
 
 	static async theMovieDB(req: Request, res: Response) {
 		let url: string;
 		let movies;
-		if (req.query.queryString == undefined){
+		console.log(req.query);
+		if (req.query.queryString == undefined || req.query.queryString == ''){
 			url = moviesController.getDefaultUrl_filter(req.query);
-			movies = await moviesController.performQuery(url);
-		}
-		else{
-			url = moviesController.getDefaultUrl_query_string(req.query.queryString);
+			console.log("***************999*************");
+			console.log(url);
 			let response = await axios.get(url);
 			movies = response.data.results;
-			// movies = moviesController.performQuery(url);
-			console.log("******************%%%%%%%%%%%%%*****************");
-			console.log(typeof movies);
-			console.log(movies);
+		}
+		else{
+			console.log("******************8888*************");
+			url = moviesController.getDefaultUrl_query_string(req.query.queryString);
+			console.log(url);
+			let response = await axios.get(url);
+			movies = response.data.results;
 			movies = moviesController.filter(movies, req.query);
 		}
-		console.log("******************%%%%%%%%%%%%%*****************");
-		console.log(typeof movies);
-		console.log(movies);
-
-
 		res.send(movies)
 	}
-
 
 	static ytsApiQueryString(req: Request, res: Response) {
 		var stringResearch = req.body.queryString;

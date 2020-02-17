@@ -34,7 +34,6 @@
 import axios from  '@/config/axios_default';
 import ResearchBar from '@/components/ResearchBar.vue'
 import MovieVignette from '@/components/MovieVignette.vue'
-
 import pagination from '@/components/utils/pagination.vue'
 
 export default {
