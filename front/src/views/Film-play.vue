@@ -31,16 +31,7 @@ export default {
 					this.watch = response;
 				})
 		},
-		downloadMovies(movie, torrent){
-			console.log(movie);
-			if (movie === undefined){
-				var imdbCode = undefined;
-				this.imdbCode = undefined
-			}
-			else{
-				var imdbCode = movie.imdb_code;
-				this.imdbCode = movie.imdb_code;
-			}
+		downloadMovies(imdbCode, torrent){
 			if (torrent != undefined){
 				var url = torrent.url;
 				var hash = torrent.hash;
@@ -52,20 +43,14 @@ export default {
 			url = encodeURIComponent(url);
 			hash = encodeURIComponent(hash);
 			imdbCode = encodeURIComponent(imdbCode);
-			console.log(movie);
-			console.log(movie.title);
-			this.title = movie.title;
-			let title = encodeURIComponent(movie.title);
-
 			this.filmPath = "http://localhost:3000/😂/player/" + url + "/"+ hash + "/"+ imdbCode;
 			this.showFilm = true;
 		},
 	},
 	mounted(){
-		var movie = this.$route.params.movie;
+		var imdbCode = this.$route.params.imdbCode;
 		var torrent = this.$route.params.torrent
-		console.log(movie);
-		this.downloadMovies(movie, torrent);
+		this.downloadMovies(imdbCode, torrent);
 		this.postWatchList();
 	}
 }
