@@ -21,6 +21,7 @@
 <script>
 
 import axios from  '@/config/axios_default';
+  import bus from "@/config/bus_event";
 import MoviesList from '@/components/MovieResearch.vue'
 import MovieDetails from '@/components/MovieDetails.vue'
 import pagination from '@/components/utils/pagination.vue'
@@ -76,8 +77,8 @@ export default {
 				this.showMovieDetails = true;
 				this.showResearchResult = false;
 			}
-			else{
-				console.log("please sign in first");
+			else {
+        bus.$emit("alert", {type: "error", code: "UNSIGNED"});
 			}
 		},
 		defaultMoviesList(){
