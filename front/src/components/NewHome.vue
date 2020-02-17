@@ -51,14 +51,12 @@ export default {
 	},
 	methods:{
 		showMovieDetailsFun(movie){
-			console.log(movie);
 			this.OMDBid = movie.id;
 			this.showMovieVignette = false;
 			this.showResearchBar = false;
 			this.showMovieDetails = true;
 		},
 		researchMovieFun(research){
-			console.log("Dans researchMovieFun");
 			axios.get('😂/research', { params: {
 												firstYear: research.firstYear,
 												lastYear: research.lastYear,
@@ -68,7 +66,6 @@ export default {
 												genre: research.genre,
 												}
 				}) .then(response => {
-				console.log(response.data);
 				this.movies = response.data;
 				this.showMovieVignette = true;
 				})

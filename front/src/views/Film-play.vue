@@ -24,13 +24,10 @@ export default {
 	},
 	methods:{
 		postWatchList(idOMDB){
-		console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-		console.log(idOMDB);
-		console.log("imdb code dans post Watch");
-
 			axios.post('😂/watch', { idOMDB: idOMDB})
 				.then(response => {
-					console.log(response);
+					;
+					//console.log(response);
 				})
 		},
 		downloadMovies(imdbCode, torrent){
@@ -50,10 +47,6 @@ export default {
 		},
 	},
 	mounted(){
-		console.log("&&&&&&&&&&    mounted  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-		console.log(this.imdbCode);
-		console.log(this.$route.params);
-		console.log("imdb code dans post Watch");
 		var imdbCode = this.$route.params.imdbCode;
 		var torrent = this.$route.params.torrent
 		var idOMDB = this.$route.params.idOMDB

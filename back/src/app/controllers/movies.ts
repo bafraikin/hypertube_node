@@ -60,16 +60,13 @@ export default class moviesController {
 	static async theMovieDB(req: Request, res: Response) {
 		let url: string;
 		let movies;
-		console.log(req.query);
 		if (req.query.queryString == undefined || req.query.queryString == ''){
 			url = moviesController.getDefaultUrl_filter(req.query);
-			console.log(url);
 			let response = await axios.get(url);
 			movies = response.data.results;
 		}
 		else{
 			url = moviesController.getDefaultUrl_query_string(req.query.queryString);
-			console.log(url);
 			let response = await axios.get(url);
 			movies = response.data.results;
 			movies = moviesController.filter(movies, req.query);
@@ -81,7 +78,6 @@ export default class moviesController {
 		let OMDBid = req.query.OMDBid;
 		let url = "https://api.themoviedb.org/3/movie/" + OMDBid + "?api_key=985a541e7e320d19caa17c030cec0d8d&language=en-US";
 		let response = await axios.get(url);
-		console.log(response);
 		let movieDetail = response.data;
 		res.send(movieDetail);
 	}
@@ -92,8 +88,6 @@ export default class moviesController {
 		axios .get(url)
 			.then((response: any) => {
 				if (response.status == 200){
-					console.log("***********TORRENT**************");
-					console.log(response.data.data.movies[0].torrents);
 					res.send(response.data.data.movies[0].torrents);
 				}
 				else{
@@ -119,8 +113,6 @@ export default class moviesController {
 	}
 
 	static async player(req: Request, res: Response) {
-		console.log("params dans player");
-		console.log(req.params);
 		let imdbCode = req.params.imdbCode;
 		let hash = req.params.hash;
 		let url = req.params.url;
@@ -132,7 +124,6 @@ export default class moviesController {
 		if (range) {
 			const parts = range.replace(/bytes=/, "").split("-");
 			const start = parseInt(parts[0], 10);
-			console.log("le start ==>", start);
 			let engine: any = await movie.downloadMovie(start);
 			engine.files.forEach( (file: any) => {
 				let regex = /mp4/;
@@ -148,8 +139,6 @@ export default class moviesController {
 						? parseInt(parts[1], 10)
 						: fileSize-1
 					const chunksize = (end-start)+1
-					console.log("le end ==>", end);
-					console.log("le file size", fileSize);
 					const head = {
 'Content-Range': `bytes ${start}-${end}/${fileSize}`,
 'Accept-Ranges': 'bytes',

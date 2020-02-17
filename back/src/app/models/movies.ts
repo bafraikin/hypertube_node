@@ -33,8 +33,6 @@ export class Movie extends BaseEntity {
 		if (movie == undefined){
 			movie = new Movie;
 			movie.imdbCode = imdbCode;
-			console.log("***********on va enregistrer***********");
-			console.log(movie);
 			await movie.save();
 		}
 		return movie;
@@ -43,7 +41,6 @@ export class Movie extends BaseEntity {
 	buildMagnetLink(hash: any, url: any){
 		hash = decodeURIComponent(hash);
 		url = decodeURIComponent(url);
-		console.log("je construit le magnet link");
 		let torrent_hash = hash;
 		let torrent_url = url;
 		let tracker_1 =  "udp://glotorrents.pw:6969/announce";

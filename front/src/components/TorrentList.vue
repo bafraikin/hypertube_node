@@ -49,10 +49,8 @@ export default {
 			return "https://image.tmdb.org/t/p/w500/"+ movie.poster_path;
 		},
 		getMovieTorrent(){
-			console.log("Dans get movie detail");
 			axios.get('😂/yts-torrent', { params: { imdbCode: this.imdbCode } })
 			.then(response => {
-				console.log(response.data);
 				this.torrents = response.data;
 				this.onMontre = true;
 			})

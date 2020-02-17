@@ -33,17 +33,14 @@ export default {
 			return "https://image.tmdb.org/t/p/w500/"+ movie.poster_path;
 		},
 		getMovieDetails(research){
-			console.log("Dans get movie detail");
 			axios.get('😂/movie-detail', { params: { OMDBid: this.OMDBid } })
 			.then(response => {
-				console.log(response.data);
 				this.movie = response.data;
 				this.onMontre = true;
 			})
 		},
 	},
 	mounted(){
-		console.log(this.OMDBid);
 		this.getMovieDetails(this.OMDBid);
 	}
 }

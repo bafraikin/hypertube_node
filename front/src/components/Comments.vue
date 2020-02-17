@@ -39,18 +39,13 @@ export default {
 	},
 	methods:{
 		displayUserProfile(userId){
-			console.log("ici");
-			console.log(userId);
 				this.$router.push({ name: "userProfile", params:{userId: userId}});
 		},
 		getComments(){
-			console.log("*************Comment*****************");
-			console.log(this.imdbCode);
 			axios.get('😂/comment', { params: { imdbCode: this.imdbCode }
 				}) .then(response => { this.comments = response.data; })
 		},
 		submit(event){
-			//controle cote client==> plus tard
 			event.preventDefault();
 			this.postComment();
 		},
