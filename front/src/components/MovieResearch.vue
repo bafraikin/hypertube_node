@@ -35,8 +35,6 @@ export default {
 	},
 	methods:{
 		showMovieDetailsFun(movie){
-			console.log("**************le movie detail*****************");
-			console.log(movie);
 			this.$emit('selectMovie', movie);
 		},
 		isInWatchList(imdbCode){

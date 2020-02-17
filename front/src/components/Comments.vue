@@ -28,7 +28,7 @@ import axios from  '@/config/axios_default';
 
 export default {
 	props: {
-		imdbCode: { type: String },
+		movie: { type: Object },
 	},
 	data() {
 		return {
@@ -43,10 +43,8 @@ export default {
 			console.log(userId);
 				this.$router.push({ name: "userProfile", params:{userId: userId}});
 		},
-		getComments(){
-			console.log("*************Comment*****************");
-			console.log(this.imdbCode);
-			axios.get('😂/comment', { params: { imdbCode: this.imdbCode }
+		getComments(imdbCode, title){
+			axios.get('😂/comment', { params: { imdbCode: this.movie.imdb_code }
 				}) .then(response => { this.comments = response.data; })
 		},
 		submit(event){
@@ -55,7 +53,7 @@ export default {
 			this.postComment();
 		},
 		postComment(){
-			axios.post('😂/comment', { imdbCode: this.imdbCode, content: this.textarea,
+			axios.post('😂/comment', { movie: this.movie, content: this.textarea,
 				}) .then(response => { this.getComments(); })
 			this.textarea = null;
 		},

@@ -28,11 +28,18 @@ export class Movie extends BaseEntity {
 		}
 	}
 
-	static async getMovie(imdbCode: any) {
-		let movie = await Movie.findOne({ imdbCode: imdbCode });
+	static async getMovie(params: any) {
+		console.log("params dans get movie");
+		console.log(params);
+		if (params == undefined || params.imdb_code == undefined)
+			throw "erreur dans get Movie";
+
+		params.imdb_code = decodeURIComponent(params.imdb_code);
+
+		let movie = await Movie.findOne({ imdbCode: params.imdb_code });
 		if (movie == undefined){
 			movie = new Movie;
-			movie.imdbCode = imdbCode;
+			movie.imdbCode = params.imdb_code;
 			console.log("***********on va enregistrer***********");
 			console.log(movie);
 			await movie.save();
