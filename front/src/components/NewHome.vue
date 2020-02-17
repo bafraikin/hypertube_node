@@ -62,8 +62,8 @@ export default {
 			axios.get('/research', { params: {
 												firstYear: research.firstYear,
 												lastYear: research.lastYear,
-												firstNote: research.firstNote,
-												lastNote: research.lastNote,
+												minMark: research.firstNote,
+												maxMark: research.lastNote,
 												queryString: research.queryString,
 												genre: research.genre,
 												}
