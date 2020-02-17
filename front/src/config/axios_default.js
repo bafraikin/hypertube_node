@@ -4,7 +4,7 @@ import store from "@/store/index"
 import bus from "@/config/bus_event"
 
 
-const baseURL = 'http://localhost:3000';
+const baseURL = 'http://127.0.0.1:3000';
 const axiosInstance = axios.create({
 	baseURL: baseURL,
 	withCredentials: true,

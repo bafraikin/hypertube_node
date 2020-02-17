@@ -27,6 +27,13 @@ const router = new VueRouter({
 			component: () => import('../views/oauth42.vue'),
     			meta: {layout: "layout"}
 		},
+		{
+			path: '/oauthGoogle/callback',
+			name: 'oauthGoogle',
+			component: () => import('../views/oauthGoogle.vue'),
+    			meta: {layout: "layout"}
+		},
+
     {
 			path: '/user',
 			name: 'userProfile',

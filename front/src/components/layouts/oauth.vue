@@ -12,19 +12,10 @@ export default {
   name: "oauth",
   methods: {
     connectFortytwo() {
-    window.location= baseURL + "/😱/oauth42"
+   	 window.location= baseURL + "/😱/oauth42"
     },
     connectGoogle() {
-      axios
-        .post("😱/test")
-        .then(response => {
-          console.log(response);
-          this.$emit("connected");
-          this.$store.commit("connectUser", response);
-        })
-        .catch(err => {
-          console.log(err.response);
-        });
+    	window.location= baseURL + "/😱/oauthGoogle"
     }
   }
 };

@@ -19,15 +19,18 @@ export default class authenticateController {
 	}
 
 	static async oAuthStrategyFortyTwo(accessToken: any , refreshToken: any , profile: any, done: Function) {
-		const user: User | undefined = await User.findOne({ email: profile.email });
+		console.log("Oath42 ",profile);
+		const user: User | undefined = await User.findOne({ email: profile.emails[0].value });
+		console.log("AAAAAAAAAAAAAAAAAAA", user);
 		if (user instanceof User) {
 			return done(null, user);
 		}
 		if (user === undefined){
 			let newUser = new User();
 			newUser.createOAuth(profile);
+			console.log("User = ", newUser);
 			try{
-				newUser.save;
+				await newUser.save();
 				return done(null, newUser);
 			}
 			catch{
@@ -50,6 +53,7 @@ export default class authenticateController {
 	}
 
 	static afterAuth(req: Request, res: Response) {
+		console.log("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
 		// If this function gets called, authentication was successful.
 		res.json({type: "success", user: req.user})
 	}
