@@ -13,7 +13,7 @@
 					<tr v-for="torrent in torrents">
 						<td>{{ torrent.quality }}</td>
 						<td>
-							<i v-on:click="play(imdbCode, torrent)" >Play</i>
+							<i v-on:click="play(torrent)" >Play</i>
 						</td>
 					</tr>
 				</tbody>
@@ -41,8 +41,8 @@ export default {
 		}
 	},
 	methods:{
-		play(imdbCode, torrent){
-			this.$router.push({ name: "player-film", params:{imdbCode: imdbCode, torrent: torrent}});
+		play(torrent){
+			this.$router.push({ name: "player-film", params:{imdbCode: this.imdbCode, torrent: torrent}});
 		},
 		buildImg(movie){
 			return "https://image.tmdb.org/t/p/w500/"+ movie.poster_path;

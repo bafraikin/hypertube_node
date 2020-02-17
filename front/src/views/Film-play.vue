@@ -25,6 +25,10 @@ export default {
 	},
 	methods:{
 		postWatchList(){
+		console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+		console.log(this.imdbCode);
+		console.log("imdb code dans post Watch");
+
 			axios.post('😂/watch', { imdbCode: this.imdbCode })
 				.then(response => {
 					console.log(response);
@@ -48,6 +52,10 @@ export default {
 		},
 	},
 	mounted(){
+		console.log("&&&&&&&&&&    mounted  &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+		console.log(this.imdbCode);
+		console.log(this.$route.params);
+		console.log("imdb code dans post Watch");
 		var imdbCode = this.$route.params.imdbCode;
 		var torrent = this.$route.params.torrent
 		this.downloadMovies(imdbCode, torrent);

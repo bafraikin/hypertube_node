@@ -25,16 +25,20 @@ export default class watchController {
 	}
 
 	static async postWatch(req: Request, res: Response) {
-		let params: any = {};
 		let userrr : any = req.user;
-		params.userId = userrr.id;
-		params.imdbCode = req.body.imdbCode;
-		params.imdb_code = req.body.imdbCode;
+
+		let userId = userrr.id;
+		let imdbCode = req.body.imdbCode;
+
+		console.log("***********************************");
+		console.log("imdb code dans post Watch");
+		console.log(req.body);
+
 		//verifs des params  ==> plus tard
-		let movie = await Movie.getMovie(params);
-		const user : User | undefined = await User.findOne({ id: params.userId })
+		let movie = await Movie.getMovie(imdbCode);
+		const user : User | undefined = await User.findOne({ id: userId })
 		let watch = new Watch;
-		watch.imdbCode = params.imdbCode;
+		watch.imdbCode = imdbCode;
 		watch.user = user;
 		watch.save();
 		res.status(201).json(watch);
