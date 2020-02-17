@@ -1,6 +1,6 @@
 
 <template>
-  <div id="toPaginate">
+  <div id="toPaginate" v-if="isConnected">
     <img src="img/loader.gif"/>
   </div>
 </template>
@@ -11,8 +11,8 @@
   export default {
     methods: {
     isVisibleOnScreen(el) {
-        const top = el.offsetTop;
-        const left = el.offsetLeft;
+        let top = el.offsetTop;
+        let left = el.offsetLeft;
         const width = el.offsetWidth;
         const height = el.offsetHeight;
 
@@ -30,10 +30,17 @@
         );
       }
     },
+    computed: {
+      isConnected() {
+        return this.$store.getters.connected;
+      }
+    },
     mounted() {
-      window.onscroll= () => {console.log(this.elementInViewport(this.$el))};
+      window.onscroll= () => {
+        if (this.isVisibleOnScreen(this.$el))
+          this.$emit("displayNewResults");
+      };
     }
-
   }
 
 </script>
