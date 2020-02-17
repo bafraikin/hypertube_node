@@ -59,7 +59,7 @@ export default {
 		},
 		researchMovieFun(research){
 			console.log("Dans researchMovieFun");
-			axios.get('/research', { params: {
+			axios.get('😂/research', { params: {
 												firstYear: research.firstYear,
 												lastYear: research.lastYear,
 												firstNote: research.firstNote,

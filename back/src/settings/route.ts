@@ -27,28 +27,19 @@ export default function setRoute(connection: Connection, app: Express) {
 	userNotAuthenticated.post("/user", controller.user.create);
 	userNotAuthenticated.get('/oauth42', passport.authenticate('42'), controller.authenticate.afterAuth);
 	userNotAuthenticated.post('/oauth42/callback', passport.authenticate('42'), controller.authenticate.afterAuth);
-
-
-
 	userAuthenticated.get("/user", controller.user.getUser);
 	userAuthenticated.route("/authentication").delete(controller.authenticate.logout);
 	userAuthenticated.get('/player/:url/:hash/:imdbCode', controller.movies.player);
-
 	userAuthenticated.get('/watch', controller.watch.getWatch);
 	userAuthenticated.post('/watch', controller.watch.postWatch);
 	userAuthenticated.get('/comment', controller.comments.getComment);
 	userAuthenticated.post('/comment', controller.comments.postComment);
 	userAuthenticated.get('/movie-detail', controller.movies.getMovieDetail);
 	userAuthenticated.get('/yts-torrent', controller.movies.getYtsTorrent);
-
-
-
+	userAuthenticated.get('/research', controller.movies.theMovieDB);
+	userAuthenticated.get("/userProfile", controller.user.userProfile);
 
 	app.get('/ytsApiDefaultList', controller.movies.ytsApiDefaultList);
-
-
-	userAuthenticated.get("/userProfile", controller.user.userProfile);
-	app.get('/research', controller.movies.theMovieDB);
 
 
 	app.use(`/${encodeURI("😱")}`, userNotAuthenticated);
