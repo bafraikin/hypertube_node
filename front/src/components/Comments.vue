@@ -1,9 +1,9 @@
 <template>
-	<div class="ici">
+	<div style="color: white">
 		<h2>Comments</h2>
-		<div class="ici" v-for="comment in comments">
-			<p class="ici" style="color:white;" v-on:click="displayUserProfile(comment.user.id)">{{ comment.user.login }}</p>
-			<p class="ici" >{{ comment.content }}</p>
+		<div v-for="comment in comments">
+			<p v-on:click="displayUserProfile(comment.user.id)">{{ comment.user.login }}</p>
+			<p>{{ comment.content }}</p>
 		</div>
 		<v-form>
 			<v-textarea

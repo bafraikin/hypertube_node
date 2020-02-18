@@ -1,9 +1,9 @@
 <template>
   <v-container >
-		<h1 class="white-text">New Home</h1>
+		<h1>New Home</h1>
 		<ResearchBar v-if="showResearchBar" v-on:moviesResearch="researchMovieFun($event)" ></ResearchBar>
 		<MovieVignette :movies="movies" v-if="showMovieVignette" v-on:selectMovie="showMovieDetailsFun($event)" ></MovieVignette>
-		<MovieDetails class="back-black"  v-if="showMovieDetails" :OMDBid="OMDBid"></MovieDetails>
+		<MovieDetails  v-if="showMovieDetails" :OMDBid="OMDBid"></MovieDetails>
 		<pagination/>
   </v-container>
 </template>

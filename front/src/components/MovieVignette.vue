@@ -1,17 +1,17 @@
 <template>
 	<v-container >
-		<h1 class="white-text">Movie Vignette</h1>
-		<v-layout row wrap v-if="onMontre" >
+		<h1 >Movie Vignette</h1>
+		<v-layout row wrap>
 			<v-flex xs12 sm6 md4 lg3   v-for="movie in movies" :key="movie.id"  >
-				<v-card  dark class="black-black">
+				<v-card >
 					<v-img  height="200px" v-bind:src="buildImg(movie)" > </v-img>
 					<v-icon large v-if="isInWatchList(movie.id)">mdi-play-circle</v-icon>
-					<v-card-subtitle style="color: white">{{ movie.title }}</v-card-subtitle>
+					<v-card-subtitle >{{ movie.title }}</v-card-subtitle>
 					<v-card-text >
-						<div  style="color: white">{{ movie.release_date }}</div>
-						<div  style="color: white">Note : {{ movie.vote_average }}</div>
+						<div>{{ movie.release_date }}</div>
+						<div>Note : {{ movie.vote_average }}</div>
 					</v-card-text>
-					<v-btn  v-on:click="showMovieDetailsFun(movie)" style="color: pink;"   > Watch </v-btn>
+					<v-btn  v-on:click="showMovieDetailsFun(movie)" > Detail </v-btn>
 				</v-card>
 			</v-flex>
 		</v-layout>
@@ -27,7 +27,6 @@ export default {
 	},
 	data () {
       	return {
-        	onMontre: false,
         	watchList: []
       	}
 	},
@@ -50,7 +49,6 @@ export default {
 			axios.get('😂/watch')
 				.then(response => {
 					this.watchList = response.data;
-					this.onMontre = true;
 				})
 		}
 	},
@@ -59,10 +57,3 @@ export default {
 	}
 }
 </script>
-
-<style lang="scss">
-.black-black {
-	background-color: black;
-	margin: 30px;
-}
-</style>

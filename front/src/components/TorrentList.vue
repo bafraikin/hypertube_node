@@ -1,6 +1,6 @@
 <template>
 	<v-container v-if="onMontre" dark>
-		<h1>Torrent List</h1>
+		<h1 style="color:white;">Torrent List</h1>
 		<v-simple-table>
 			<template v-slot:default>
 				<thead>

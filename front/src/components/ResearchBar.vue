@@ -92,8 +92,7 @@
     </v-card-text>
   </v-card>
 
- <v-container class="ici other" dark fluid>
-    <p>{{ genre }}</p>
+ <v-container dark fluid>
 <v-row dark >
 <v-col cols="2">
     <v-checkbox  v-model="genre" label="Action" value="28"></v-checkbox>
@@ -167,8 +166,6 @@
       </v-btn>
 
 
-
-
 			 </v-card>
 </v-container>
 </template>
@@ -178,21 +175,17 @@
 import axios from  '@/config/axios_default';
 
 export default {
-data () {
-      return {
-        min: 1980,
-        max: 2020,
-        range: [2005, 2018],
-        note: [6, 10],
-        movies: null,
-        queryString: null,
-          genre: ['37', '10752', '28', '12', '16', '35', '80', '99', '18', '10751', '14', '36', '27', '10402', '9648', '10749', '878', '10770', '53'],
-      }
+	data () {
+		return {
+			min: 1980,
+			max: 2020,
+			range: [2005, 2018],
+			note: [6, 10],
+			movies: null,
+			queryString: null,
+			genre: ['37', '10752', '28', '12', '16', '35', '80', '99', '18', '10751', '14', '36', '27', '10402', '9648', '10749', '878', '10770', '53'],
+		}
 	} ,
-	props: {
-	},
-	components: {
-	},
 	methods:{
 		validate(){
 			let research = {};
@@ -206,15 +199,7 @@ data () {
 		}
 	},
 	mounted(){
+		this.validate();
 	}
 }
 </script>
-
-<style>
-.ici{
-color:white;
-}
-.other{
-	background-color:white;
-}
-</style>
