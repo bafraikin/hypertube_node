@@ -30,12 +30,7 @@ export default class moviesController {
 		}
 		else
 			apiClient = new TMDBClientSearch(req.query.queryString);
-		apiClient.getPage(1).then((response: any)  => {res.send(response.data.results)}).catch((err:any)  => {
-			console.log("***********************************************");
-			console.log(err);
-			console.log("***********************************************");
-			res.status(401).send("error")
-		});
+			apiClient.getPage(1).then((response: any)  => {res.send(response.data.results)}).catch((err:any)  => { res.status(401).send("error") });
 		return;
 	}
 

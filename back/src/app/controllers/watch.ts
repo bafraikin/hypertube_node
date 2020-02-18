@@ -16,6 +16,7 @@ export default class watchController {
 		}
 		else{
 			let i = 0;
+			console.log(user.watchs);
 			while(i < user!.watchs.length){
 				watchs.push(user!.watchs[i].idOMDB);
 				i++;
