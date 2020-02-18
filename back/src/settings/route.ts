@@ -39,7 +39,6 @@ export default function setRoute(connection: Connection, app: Express) {
 	userAuthenticated.get('/research', controller.movies.theMovieDB);
 	userAuthenticated.get("/userProfile", controller.user.userProfile);
 
-	app.get('/ytsApiDefaultList', controller.movies.ytsApiDefaultList);
 
 
 	app.use(`/${encodeURI("😱")}`, userNotAuthenticated);

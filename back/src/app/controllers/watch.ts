@@ -10,7 +10,7 @@ export default class watchController {
 		let userrr : any = req.user;
 		let userId = userrr!.id;
 		let user = await User.findOne({ id: userId});
-		let watchs: any= [];
+		let watchs: any = [];
 		if (user!.watchs == undefined){
 			res.json(watchs)
 		}

@@ -97,21 +97,6 @@ export default class moviesController {
 			})
 	}
 
-	static ytsApiDefaultList(req: Request, res: Response) {
-		const url = 'https://yts.mx/api/v2/list_movies.json';
-		axios
-			.get(url)
-			.then((response: any) => {
-				if (response.status == 200){
-					res.send(response.data);
-				}
-				else{
-					console.log("erro in api");
-					res.send("error");
-				}
-			})
-	}
-
 	static async player(req: Request, res: Response) {
 		let imdbCode = req.params.imdbCode;
 		let hash = req.params.hash;
