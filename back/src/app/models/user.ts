@@ -1,5 +1,6 @@
-import {BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
+import {BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, JoinTable} from "typeorm";
 import {Comment} from '@app/models/comment'
+import {Watch} from '@app/models/watch'
 import validator from 'validator';
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -34,6 +35,11 @@ export class User extends BaseEntity {
 	@OneToMany(type => Comment, comment => comment.user)
     comments: Comment[];
 
+	@OneToMany(type => Watch, watch => watch.user, {
+		eager: true
+	})
+	@JoinTable()
+    watchs: Watch[];
 
 	async setPassword(pw: string) {
 		const hash = await bcrypt.hash(pw, saltRounds);

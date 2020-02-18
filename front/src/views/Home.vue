@@ -1,39 +1,36 @@
 <template>
-	<v-container >
+  <v-container >
 		<h1 class="white-text">Movies list</h1>
 		<v-form  v-show="isConnected" >
 			<v-text-field class="white" v-model="researchText" label="Research"></v-text-field>
 			<v-btn class="ici"  @click="searchForMovies" > Search </v-btn>
 		</v-form>
-		<MoviesList dark v-if="showResearchResult" v-on:selectMovie="showMovieDetailsFun($event)" :movies="movies"  ></MoviesList>
+		<MoviesList
+		dark
+		v-if="showResearchResult"
+		v-on:selectMovie="showMovieDetailsFun($event)"
+		:movies="movies" 
+		:watchList="watchList"
+		></MoviesList>
 		<MovieDetails class="back-black"  v-if="showMovieDetails" :movieDetail="movieDetail"></MovieDetails>
-	</v-container>
+  <pagination/>
+  </v-container>
 </template>
 
-<style lang="scss">
-.white {
-	background-color:white;
-}
-.white-text {
-	color:white;
-}
-.back-black {
-	color:white;
-	background-color:black;
-}
-</style>
 
 <script>
 
 import axios from  '@/config/axios_default';
 import MoviesList from '@/components/MovieResearch.vue'
 import MovieDetails from '@/components/MovieDetails.vue'
+import pagination from '@/components/utils/pagination.vue'
 
 export default {
 	name: 'home',
 	components: {
 		"MoviesList": MoviesList,
 		"MovieDetails": MovieDetails,
+		pagination,
 	},
 	data() {
 		return {
@@ -43,9 +40,20 @@ export default {
 			researchText: null,
 			movieDetail: null,
 			getConnected: null,
+			watchList: [],
+      page: 0
+
 		}
 	},
 	methods:{
+		getWatchList(){
+			if (this.getConnected){
+				axios.get('😂/watch')
+					.then(response => {
+						this.watchList = response.data;
+					})
+			}
+		},
 		searchForMovies(event){
 			event.preventDefault();
 			axios.post('😂/film-search-api-query-string', { queryString: this.researchText })
@@ -95,7 +103,21 @@ export default {
 	},
 	mounted(){
 		this.defaultMoviesList();
+		this.getWatchList();
 	}
 }
 
 </script>
+
+<style lang="scss">
+  .white {
+    background-color:white;
+  }
+  .white-text {
+    color:white;
+  }
+  .back-black {
+    color:white;
+    background-color:black;
+  }
+</style>

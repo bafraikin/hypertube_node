@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import { Movie } from '../../app/models/movies';
+import { Movie } from '@app/models/movies';
 const fs = require('fs');
 const axios = require('axios');
 

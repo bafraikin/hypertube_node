@@ -1,4 +1,4 @@
-import { User } from '../../app/models/user'
+import { User } from '@app/models/user'
 import {Request, Response} from 'express'
 
 export default class userController {

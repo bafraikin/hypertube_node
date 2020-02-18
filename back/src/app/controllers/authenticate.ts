@@ -9,7 +9,7 @@ export default class authenticateController {
 			return done(null, false)
 		else {
 			const passwordIsCorrect = await user.validatePassword(password)
-				if (passwordIsCorrect){
+				if (passwordIsCorrect) {
 					return done(null, user);
 				}
 				else {
@@ -74,7 +74,7 @@ export default class authenticateController {
 	static checkAuth(req: Request, res: Response, next: Function) {
 		if (!req.user && req.method != "OPTIONS")
 		{
-			res.status(401).json({type: "error", data: "a user should be authenticated to acces this path"});
+			res.status(406).json({type: "error", data: "a user should be authenticated to acces this path"});
 			return;
 		}
 		next();
