@@ -20,7 +20,7 @@ export default class authenticateController {
 
 	static async oAuthStrategyFortyTwo(accessToken: string , refreshToken: string , profile: any, done: Function) {
 		const user: User | undefined = await User.findOne({ email: profile.emails[0].value });
-		if (user instanceof User) {
+		if (user instanceof User && user.oauth === true) {
 			return done(null, user);
 		}
 		if (user === undefined){
@@ -51,7 +51,6 @@ export default class authenticateController {
 	}
 
 	static afterAuth(req: Request, res: Response) {
-		console.log("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
 		// If this function gets called, authentication was successful.
 		res.json({type: "success", user: req.user})
 	}
