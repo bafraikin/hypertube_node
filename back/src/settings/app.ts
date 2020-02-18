@@ -15,13 +15,13 @@ async function bootstrap() {
 	const port: number = 3000;
 	console.log('starting server...');
 
-	console.log(blue(`Starting ${env} server on port ${port}: http://localhost:${port}`))
+	console.log(blue(`Starting ${env} server on port ${port}: http://127.0.0.1:${port}`))
 		app.listen(port, (error: Error) => {
 		if (error) {
 			console.error(red('could not start server'))
 			console.error(red(error.message))
 		} else {
-			console.log(blue(`Server started, http://localhost:${port}`))
+			console.log(blue(`Server started, http://127.0.0.1:${port}`))
 		}
 	});
 }

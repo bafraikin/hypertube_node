@@ -17,17 +17,17 @@
           .then(response => {
             this.$emit("connected");
             this.$store.commit("connectUser", response);
-            window.location="http://localhost:8080";
+            window.location= process.env.VUE_APP_frontURL ;
           })
           .catch(err => {
             console.log(err.response);
             bus.$emit('alert', {type: 'error', msg: "No touching the code 🤬"});
-   //         setTimeout(function(){ window.location="http://localhost:8080";}, 700);
+            setTimeout(function(){ window.location= process.env.VUE_APP_frontURL ;}, 700);
           });
       }	
       else {
         bus.$emit('alert', {type: 'error', msg: "You have to click yes 🤣"});
-     //   setTimeout(function(){ window.location="http://localhost:8080";}, 700);
+        setTimeout(function(){ window.location= process.env.VUE_APP_frontURL ;}, 700);
       }
     },
     methods: {

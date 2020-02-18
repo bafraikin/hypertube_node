@@ -3,8 +3,8 @@ import axios from 'axios'
 import store from "@/store/index"
 import bus from "@/config/bus_event"
 
+const baseURL = process.env.VUE_APP_backURL;
 
-const baseURL = 'http://127.0.0.1:3000';
 const axiosInstance = axios.create({
 	baseURL: baseURL,
 	withCredentials: true,
