@@ -2,26 +2,19 @@ import {Request, Response} from 'express';
 import { User } from '@app/models/user';
 import { Watch } from '@app/models/watch';
 import { Movie } from '@app/models/movies';
-const axios = require('axios');
+import { connection } from "@settings/connect_pg";
+import axios from 'axios';
 
 export default class watchController {
 
 	static async getWatch(req: Request, res: Response) {
-		let userrr : any = req.user;
-		let userId = userrr!.id;
-		let user = await User.findOne({ id: userId});
-		let watchs: any = [];
-		if (user!.watchs == undefined){
-			res.json(watchs)
-		}
-		else{
-			let i = 0;
-			while(i < user!.watchs.length){
-				watchs.push(user!.watchs[i].idOMDB);
-				i++;
+		if (req.user instanceof User)
+			{
+				res.json(await connection.getRepository(Watch).find({select: ["idOMDB"], where: {user: req.user}}));
 			}
-			res.send(watchs);
-		}
+			else {
+				res.status(401).send("error");
+			}
 	}
 
 	static async postWatch(req: Request, res: Response) {

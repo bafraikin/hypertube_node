@@ -35,10 +35,7 @@ export class User extends BaseEntity {
 	@OneToMany(type => Comment, comment => comment.user)
     comments: Comment[];
 
-	@OneToMany(type => Watch, watch => watch.user, {
-		eager: true
-	})
-	@JoinTable()
+	@OneToMany(type => Watch, watch => watch.user)
     watchs: Watch[];
 
 	async setPassword(pw: string) {

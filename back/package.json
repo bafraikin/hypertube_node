@@ -4,7 +4,8 @@
 	"description": "stream torrent with node js",
 	"main": "app.js",
 	"_moduleAliases": {
-		"@app": "./dist/app"
+		"@app": "./dist/app",
+		"@settings": "./dist/settings"
 	},
 	"scripts": {
 		"dev": "concurrently -k \"npm run build:watch\"  \"npm run start:dev\"",

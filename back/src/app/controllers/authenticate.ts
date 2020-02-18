@@ -37,7 +37,6 @@ export default class authenticateController {
 	}
 
 	static async deserialize(userObject: User, done: Function) {
-		console.log(userObject);
 		let user: User | undefined = await User.findOne({id: userObject.id});
 		if (user instanceof User)
 			done(null, user);
