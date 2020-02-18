@@ -18,7 +18,7 @@ export default class authenticateController {
 		}
 	}
 
-	static async oAuthStrategyFortyTwo(accessToken: any , refreshToken: any , profile: any, done: Function) {
+	static async oAuthStrategyFortyTwo(accessToken: string , refreshToken: string , profile: any, done: Function) {
 		const user: User | undefined = await User.findOne({ email: profile.emails[0].value });
 		if (user instanceof User) {
 			return done(null, user);
