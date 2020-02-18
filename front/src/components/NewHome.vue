@@ -56,14 +56,6 @@ export default {
 				this.showMovieVignette = true;
 				})
 		},
-	},
-	computed: {
-		isConnected() {
-			this.getConnected = this.$store.getters.connected;
-			return this.$store.getters.connected;
-		}
-	},
-	mounted(){
 	}
 }
 

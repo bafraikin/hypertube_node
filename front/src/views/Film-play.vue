@@ -24,11 +24,7 @@ export default {
 	},
 	methods:{
 		postWatchList(idOMDB){
-			axios.post('😂/watch', { idOMDB: idOMDB})
-				.then(response => {
-					;
-					//console.log(response);
-				})
+			axios.post('😂/watch', { idOMDB: idOMDB}) .then(response => { })
 		},
 		downloadMovies(imdbCode, torrent){
 			if (torrent != undefined){
