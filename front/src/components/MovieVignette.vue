@@ -3,7 +3,7 @@
 		<h1 >Movie Vignette</h1>
 		<v-layout row wrap>
 			<v-flex xs12 sm6 md4 lg3   v-for="movie in movies" :key="movie.id"  >
-				<v-card >
+				<v-card dark>
 					<v-img  height="200px" v-bind:src="buildImg(movie)" > </v-img>
 					<v-icon large v-if="isInWatchList(movie.id)">mdi-play-circle</v-icon>
 					<v-card-subtitle >{{ movie.title }}</v-card-subtitle>
