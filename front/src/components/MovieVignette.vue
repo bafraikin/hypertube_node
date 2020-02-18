@@ -37,8 +37,8 @@ export default {
 		showMovieDetailsFun(movie){
 			this.$emit('selectMovie', movie);
 		},
-		isInWatchList(idOMDB){
-			const found = this.watchList.find(element => element == idOMDB);
+    isInWatchList(idOMDB){
+			const found = this.watchList.find(element => element.idOMDB == idOMDB);
 			if (found == undefined){
 				return false;
 			}else{
