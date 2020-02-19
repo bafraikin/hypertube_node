@@ -18,16 +18,17 @@ export default class authenticateController {
 		}
 	}
 
-	static async oAuthStrategyFortyTwo(accessToken: any , refreshToken: any , profile: any, done: Function) {
-		const user: User | undefined = await User.findOne({ email: profile.email });
-		if (user instanceof User) {
+	static async oAuthStrategyFortyTwo(accessToken: string , refreshToken: string , profile: any, done: Function) {
+		const user: User | undefined = await User.findOne({ email: profile.emails[0].value });
+		if (user instanceof User && user.oauth === true) {
 			return done(null, user);
 		}
 		if (user === undefined){
 			let newUser = new User();
 			newUser.createOAuth(profile);
+			console.log("User = ", newUser);
 			try{
-				newUser.save;
+				await newUser.save();
 				return done(null, newUser);
 			}
 			catch{

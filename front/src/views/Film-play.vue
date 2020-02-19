@@ -38,7 +38,12 @@ export default {
 			url = encodeURIComponent(url);
 			hash = encodeURIComponent(hash);
 			imdbCode = encodeURIComponent(imdbCode);
-			this.filmPath = "http://localhost:3000/😂/player/" + url + "/"+ hash + "/"+ imdbCode;
+			console.log(movie);
+			console.log(movie.title);
+			this.title = movie.title;
+			let title = encodeURIComponent(movie.title);
+
+			this.filmPath = baseURL +  "/😂/player/" + url + "/"+ hash + "/"+ imdbCode;
 			this.showFilm = true;
 		},
 	},
