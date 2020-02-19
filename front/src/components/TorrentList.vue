@@ -43,8 +43,6 @@ export default {
 	},
 	methods:{
 		play(torrent){
-			console.log("On play");
-			console.log(torrent);
 			this.$router.push({ name: "player-film", params:{imdbCode: this.imdbCode, torrent: torrent, idOMDB: this.idOMDB}});
 		},
 		buildImg(movie){

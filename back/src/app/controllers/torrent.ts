@@ -1,17 +1,24 @@
 import {Request, Response} from 'express';
-import axios from 'axios';
+import torrentClient from '@app/services/torrent'
 
 export default class torrentsController {
 
 	static async getTorrent(req: Request, res: Response) {
 		try {
-			let imdbCode = req.query.imdbCode;
-			let url = 'http://yts.mx/api/v2/list_movies.json?query_term='+ imdbCode;
-			let response: any = await axios.get(url);
-			res.status(201).send(response.data.data.movies[0].torrents);
+			let imdbCode: string;
+			imdbCode = req.query.imdbCode;
+			if (imdbCode == undefined)
+				throw "imdbcode missing in getTorrent";
+			let torrentYTS = torrentClient.torrentYts(imdbCode);
+			let torrentPOP = torrentClient.torrentPopCorn(imdbCode);
+			let promise = Promise.all([torrentYTS, torrentPOP]);
+			promise.then((response: any) => {
+				res.status(200).send(response.flat(Infinity));
+			})
 		} catch (err) {
+			console.error(err);
 			res.status(401).send("error");
 		}
 	}
-	// static async getYtsTorrent(req: Request, res: Response) {
+
 }

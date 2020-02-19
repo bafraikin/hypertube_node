@@ -1,21 +1,23 @@
 import {Request, Response} from 'express';
+import torrentClient from '@app/services/torrent'
 import { Movie } from '@app/models/movies';
 
 export default class playerController {
 
 	static async stream(req: Request, res: Response) {
 		let imdbCode = req.params.imdbCode;
-		let hash = req.params.hash;
-		let url = req.params.url;
+		//let hash = req.params.hash;
+		//let url = req.params.url;
+		let magnetLink = req.params.magnetLink;
 
 		let movie = await Movie.getMovie(imdbCode);
-		movie.buildMagnetLink(hash, url);
+		//movie.buildMagnetLink(hash, url);
 
 		const range = req.headers.range;
 		if (range) {
 			const parts = range.replace(/bytes=/, "").split("-");
 			const start = parseInt(parts[0], 10);
-			let engine: any = await movie.downloadMovie(start);
+			let engine: any = await torrentClient.downloadMovie(start, magnetLink);
 			engine.files.forEach( (file: any) => {
 				let regex = /mp4/;
 				let isMovie = regex.test(file.name);
