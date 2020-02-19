@@ -4,14 +4,14 @@ import { Movie } from '@app/models/movies';
 import { User } from '@app/models/user';
 const axios = require('axios');
 
-
 export default class commentController {
 
 	static async getComment(req: Request, res: Response) {
 		let movieImdbCode = req.query.imdbCode;
 		let movie = await Movie.findOne({ imdbCode: movieImdbCode});
+
 		if (movie == undefined){
-			res.send(undefined); //Baptiste cette ligne est pour toi
+			res.status(201).send(undefined);
 		}
 		else{
 			res.send(movie.comments);
@@ -19,19 +19,16 @@ export default class commentController {
 	}
 
 	static async postComment(req: Request, res: Response) {
-		let params: any = {};
 		let userrr : any = req.user;
+		let userId = userrr.id;
+		let imdbCode = req.body.imdbCode;
+		let content = req.body.content;
+		let movie = await Movie.getMovie(imdbCode);
+		const user = await User.findOne({ id: userId })
 
-		params.userId = userrr.id;
-		params.movie = req.body.movie;
-		params.content = req.body.content;
-		//verifs des params  ==> plus tard
-
-		let movie = await Movie.getMovie(params.movie);
-		const user = await User.findOne({ id: params.userId })
 		let comment = new Comment;
 		comment.date = "la date bebe";
-		comment.content = params.content;
+		comment.content = content;
 		comment.user = user;
 		comment.movie = movie;
 		await comment.save();

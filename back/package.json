@@ -4,7 +4,8 @@
 	"description": "stream torrent with node js",
 	"main": "app.js",
 	"_moduleAliases": {
-		"@app": "./dist/app"
+		"@app": "./dist/app",
+		"@settings": "./dist/settings"
 	},
 	"scripts": {
 		"dev": "concurrently -k \"npm run build:watch\"  \"npm run start:dev\"",
@@ -26,6 +27,7 @@
 		"dotenv": "^8.2.0",
 		"express": "^4.17.1",
 		"module-alias": "^2.2.2",
+		"moment": "^2.24.0",
 		"passport": "^0.4.1",
 		"passport-42": "^1.2.6",
 		"passport-google-oauth20": "^2.0.0",

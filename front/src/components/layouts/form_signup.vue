@@ -126,7 +126,6 @@
           })
           .then((response) => {
             this.$emit("created");
-              console.log('it work');
           })
           .catch((error) => {
           })

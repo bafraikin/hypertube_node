@@ -1,7 +1,9 @@
 import {Request, Response} from 'express';
 import { Movie } from '@app/models/movies';
+import {Filter, TMDBClientSearch, TMDBClientDiscover} from '@app/services/OMDB'
+var moment = require('moment');
 const fs = require('fs');
-const axios = require('axios');
+import axios from 'axios';
 
 export default class moviesController {
 
@@ -17,48 +19,56 @@ export default class moviesController {
 		res.send("movies delete")
 	}
 
-	static ytsApiQueryString(req: Request, res: Response) {
-		var stringResearch = req.body.queryString;
-		stringResearch = encodeURI(stringResearch);
-		var url = 'http://yts.mx/api/v2/list_movies.json?query_term='+ stringResearch;
-		axios .get(url)
-		.then((response: any) => {
-			if (response.status == 200){
-				res.send(response.data);
-			}
-			else{
-				console.log("erro in api");
-				res.send("error");
-			}
-		})
+	static async theMovieDB	(req: Request, res: Response) {
+		let url: string;
+
+		let apiClient : any;
+		if (req.query.queryString == undefined || req.query.queryString == '') {
+			let filter = req.query;
+			let movieFilter: Filter = {firstYear: Number(filter.firstYear), lastYear: Number(filter.lastYear), minMark: Number(filter.minMark), maxMark: Number(filter.maxMark)};
+			apiClient = new TMDBClientDiscover(movieFilter);
+		}
+		else
+			apiClient = new TMDBClientSearch(req.query.queryString);
+			apiClient.getPage(1).then((response: any)  => {res.send(response.data.results)}).catch((err:any)  => { res.status(401).send("error") });
+		return;
 	}
 
-	static ytsApiDefaultList(req: Request, res: Response) {
-		const url = 'https://yts.mx/api/v2/list_movies.json';
-		axios
-		.get(url)
-		.then((response: any) => {
-			if (response.status == 200){
-				res.send(response.data);
-			}
-			else{
-				console.log("erro in api");
-				res.send("error");
-			}
-		})
+	static async getMovieDetail(req: Request, res: Response){
+		let OMDBid = req.query.OMDBid;
+		let url = "https://api.themoviedb.org/3/movie/" + OMDBid + "?api_key=985a541e7e320d19caa17c030cec0d8d&language=en-US";
+		let response = await axios.get(url);
+		let movieDetail = response.data;
+		res.send(movieDetail);
+	}
+
+	static getYtsTorrent(req: Request, res: Response) {
+		let imdbCode = req.query.imdbCode;
+		let url = 'http://yts.mx/api/v2/list_movies.json?query_term='+ imdbCode;
+		axios .get(url)
+			.then((response: any) => {
+				if (response.status == 200){
+					res.send(response.data.data.movies[0].torrents);
+				}
+				else{
+					console.log("erro in api");
+					res.send("error");
+				}
+			})
 	}
 
 	static async player(req: Request, res: Response) {
-		console.log("params dans player");
-		console.log(req.params);
-		let movie = await Movie.getMovie(req.params);
-		movie.buildMagnetLink(req.params);
+		let imdbCode = req.params.imdbCode;
+		let hash = req.params.hash;
+		let url = req.params.url;
+
+		let movie = await Movie.getMovie(imdbCode);
+		movie.buildMagnetLink(hash, url);
 
 		const range = req.headers.range;
 		if (range) {
 			const parts = range.replace(/bytes=/, "").split("-");
 			const start = parseInt(parts[0], 10);
-			console.log("le start ==>", start);
 			let engine: any = await movie.downloadMovie(start);
 			engine.files.forEach( (file: any) => {
 				let regex = /mp4/;
