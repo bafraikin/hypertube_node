@@ -77,8 +77,8 @@ export default class moviesController {
 		// const path = '/back/films/copy.mp4'
 		const path = "./films/" + req.params.file;
 
-		console.log("********le path************");
-		console.log(path);
+		// console.log("********le path************");
+		// console.log(path);
 		const stat = fs.statSync(path);
 		const fileSize = stat.size;
 		const range = req.headers.range;
@@ -90,9 +90,9 @@ export default class moviesController {
 			: fileSize-1
 			const chunksize = (end-start)+1
 
-			console.log("le start ==>", start);
-			console.log("le end ==>", end);
-			console.log("le file size", fileSize);
+			// console.log("le start ==>", start);
+			// console.log("le end ==>", end);
+			// console.log("le file size", fileSize);
 			const stream = fs.createReadStream(path, {start, end})
 
 

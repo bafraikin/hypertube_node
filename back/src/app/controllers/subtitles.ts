@@ -2,62 +2,285 @@ import {Request, Response} from 'express';
 import { fstat } from 'fs';
 import { AdvancedConsoleLogger } from 'typeorm';
 import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS, SSL_OP_NETSCAPE_CA_DN_BUG } from 'constants';
-const axios = require('axios');
+
 const fs = require('fs');
-const crypto = require('crypto');
+const axios = require('axios');
+const OS = require('opensubtitles-api');
+const OpenSubtitles = new OS({
+    useragent:'TemporaryUserAgent',
+    ssl: true
+});
 
 export default class moviesController{
-    static async getSub(req: Request, res: Response){
-        let langTab: Array<string> = ['eng', 'fre', 'spa', 'ita'];
-        let pattern: RegExp = /[0-9]+/;
-        const fileId: string = req.body.imdbId.match(pattern)[0];
-        console.log("LE PAAAATH");
-        console.log(fileId);
 
-        moviesController.searchSub(langTab, fileId);
-        // langTab.forEach(language => {
-        //     var url = "https://rest.opensubtitles.org/search/imdbid-" + fileId + "/sublanguageid-" + language;
-        //     axios
-        //     .get(url, { headers: { 'User-Agent': "TemporaryUserAgent" } })
-        //     .then((response: any) => {
-        //         if (response.status == 200){
-        //             console.log("lalalalali");
-        //             console.log(response.data[0]);
-        //         }
-        //     })
-        //     .catch((error: any) => {
-        //         console.log(error.response);
-        //     })
-        // });
+    static getSub(req: Request, res: Response){
+        let imdb: string = req.body.imdbId;
+        console.log("IMDB ID");
+        console.log(imdb);
 
+        OpenSubtitles.search({
+            sublanguageid: 'eng, fre, chi',
+
+            extensions: ['srt', 'vtt'],
+            limit: 2,
+
+            imdbid: imdb
+        })
+        .then((subtitles: any) => {
+            let downSubTab = new Array;
+            if (subtitles.en != null){
+                console.log("anglais oui oui");
+                downSubTab.push("eng&" + subtitles.en[0].vtt);
+                downSubTab.push("eng&" + subtitles.en[1].vtt);
+            }
+            if (subtitles.fr != null){
+                downSubTab.push("fre&" + subtitles.fr[0].vtt);
+                downSubTab.push("fre&" + subtitles.fr[1].vtt);
+            }
+            if (subtitles.zh != null){
+                downSubTab.push("chi&" + subtitles.zh[0].vtt);
+                downSubTab.push("chi&" + subtitles.zh[1].vtt);
+            }
+            moviesController.downSub(downSubTab, imdb);
+        })
     }
 
-    static searchSub(langTab: Array<string>, fileId: string){
-        let downloadSub  = new Array;
-
-        langTab.forEach((language) => {
-            var url = "https://rest.opensubtitles.org/search/imdbid-" + fileId + "/sublanguageid-" + language;
-            axios
-            .get(url, { headers: { 'User-Agent': "TemporaryUserAgent" } })
-            .then((response: any) => {
-                if (response.status == 200){
-                    console.log("lalalalali");
-                    console.log(response.data[0]);
-                    if (language == response.data[0].SubLanguageID){
-                        downloadSub.push( language, response.data[0].SubDownloadLink);
-                    }
-                    if (downloadSub.length == 8){
-                        console.log("SSIIIIZEEEE");
-                        console.log(downloadSub);
-                    }
+    static async downSub(linkSubTab: Array<string>, fileId: string){
+        let countTab: Array<number> = [0, 0, 0, 0];
+        let i = 0;
+        while (i < linkSubTab.length){
+            let pattern: RegExp = /^[a-z]{3}/;
+            let language: Array<string> | null = linkSubTab[i].match(pattern);
+            if (language != null){
+                let url = linkSubTab[i].slice(4);
+                let path: string | null = null;
+                let isValid = await moviesController.testLink(url);
+                switch (language[0]){
+                    case 'eng':
+                        if (isValid === true && countTab[0] == 0){
+                            path = "sub/" + fileId + "-eng.vtt";
+                            countTab[0]++;
+                        }
+                        break;
+                    case 'fre':
+                        if (isValid === true && countTab[1] == 0){
+                            path = "sub/" + fileId + "-fre.vtt";
+                            countTab[1]++;
+                        }
+                        break;
+                    case 'chi':
+                        if (isValid === true && countTab[2] == 0){
+                            path = "sub/" + fileId + "-chi.vtt";
+                            countTab[2]++;
+                        }
+                        break;
                 }
-            })
-            .catch((error: any) => {
-                console.log("ERROR");
-                console.log(error);
-            })
-        });
+                if (path != null) {
+                    let isSave = await moviesController.getFile(url, path);
+                }
+            }
+            i++;
+        }
     }
+
+    static async getFile(url: string, path: string){
+        try{
+            let response: any = await axios.get(url, {responseType: 'blob'});
+            if (response.status == 200){
+                fs.writeFile(path, response.data, () => {
+                    console.log('The file has been saved!');
+                    return "ok";
+                });
+            }
+            return "bad status";
+        } catch (error){
+            return "error";
+        }
+    }
+
+    static async testLink(url: string){
+        try {
+            let response :any = await axios.get(url);
+            return (response.status == 200);
+        } catch (error) {
+            return "error";
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // static downloadSub(downSubTab: Array<string>){
+    //     let url = downSubTab[0].slice(4);
+    //     axios
+    //     .get(url)
+    //     .then()
+    // }
+    // static async getSub(req: Request, res: Response){
+    //     let pattern: RegExp = /[0-9]+/;
+    //     const fileId: string = req.body.imdbId.match(pattern)[0];
+    //     console.log("LE PAAAATH");
+    //     console.log(fileId);
+
+    //     moviesController.searchSub(fileId, (result: Array<string>) => {
+    //         let linkSubTab = result;
+    //         console.log(linkSubTab);
+    //         let pathTab = moviesController.downSub(linkSubTab, fileId);
+    //         // console.log('PATHTAAABB');
+    //         // console.log(pathTab);
+    //         // moviesController.getVtt(pathTab);      
+    //     });
+    // }
+
+    // static getVtt(pathTab: Array<string>){
+    //     pathTab.forEach((path) => {
+    //         let newPath: string = path.slice(0, path.length - 3);
+    //         console.log("NEW PAAATH");
+    //         console.log(newPath);
+    //         if (newPath != null){
+    //             try{
+    //                 // gunzip(path, newPath[0], function() {
+    //                 //     console.log('This is called when the extraction is completed.');
+    //                 // });
+    //             }
+    //             catch(e){
+    //                 console.log(e);
+    //             }
+    //         }
+    //     });
+    // }
+
+    // static downSub(linkSubTab: Array<string>, fileId: string){
+    //     let pathTab = new Array;
+    //     linkSubTab.forEach((link) => {
+    //         let pattern: RegExp = /^[a-z]{3}/;
+    //         let language: Array<string> | null = link.match(pattern);
+    //         if (language != null){
+    //             let url = link.slice(4);
+    //             let path: string = "none";
+    //             console.log("downLink");
+    //             console.log(url);
+    //             switch (language[0]){
+    //                 case 'eng':
+    //                     path = "sub/" + fileId + "-eng.srt.gz";
+    //                     pathTab.push(path);
+    //                     break;
+    //                 case 'fre':
+    //                     path = "sub/" + fileId + "-fre.srt.gz";
+    //                     pathTab.push(path);
+    //                     break;
+    //                 case 'spa':
+    //                     path = "sub/" + fileId + "-spa.srt.gz";
+    //                     pathTab.push(path);
+    //                     break;
+    //                 case 'ita':
+    //                     path = "sub/" + fileId + "-ita.srt.gz";
+    //                     pathTab.push(path);
+    //                     break;
+    //             }
+    //             axios.get(url, { "Accept-Encoding": "gzip", encoding: null})
+    //             .then((response: any) => {
+    //                 var data = response.data;                                 // base64 encoded string recieved from OpenSubtitles
+    //                 var buf = new Buffer.from(data, 'base64');             // read the base64 string
+    //                 zlib.unzip(buf, { windowBits: zlib.Z_MAX_WBITS }, function (err: any, buffer: any) {          // decompress the content
+    //                     if (err) throw err;                             // handle decompression error
+    //                     console.log("BFFFEEEEEERRRR");
+    //                     console.log(buffer);
+    //                     var content = buffer.toString('utf8');          // encode in utf-8
+    //                     fs.writeFile(path, content, function (err: any) {    // write file to path
+    //                         if (err) throw err;                           // handle writing to file error
+    //                     });
+    //                 });
+    //             });
+    //             // axios.get(url, {responseType: 'blob', "Accept-Encoding" : "gzip"})
+    //             // .then((response: any) => {
+    //             //     if (response.status == 200){
+    //             //         fs.writeFile(path, response.data, () => {
+    //             //         console.log('The file has been saved!');
+    //             //        });
+    //             //     }
+    //             // })
+    //             // .catch((error: any) => {
+    //             //     console.log("NEW ERROR");
+    //             //     console.log(error);                   
+    //             // });
+    //         }
+    //     });
+    //     return pathTab;
+    // }
+
+    // static searchSub(fileId: string, callback: any){
+    //     let langTab: Array<string> = ['eng', 'fre', 'spa', 'ita'];
+    //     let downloadSub  = new Array;
+
+    //     langTab.forEach((language) => {
+    //         // console.log("ON COMMENCE");
+    //         // console.log(language);
+    //         var url = "https://rest.opensubtitles.org/search/imdbid-" + fileId + "/sublanguageid-" + language;
+    //         axios
+    //         .get(url, { headers: { 'User-Agent': "TemporaryUserAgent", "Accept-Encoding" : "gzip" } })
+    //         .then((response: any) => {
+    //             // console.log("TEEEST");
+    //             if (response.status == 200){
+    //                 // console.log("lalalalali");
+    //                 // console.log(response.data[0]);
+    //                 let dataLang = "undefined";
+    //                  if (response.data[0] != undefined){
+    //                      dataLang = response.data[0].SubLanguageID;
+    //                  }
+    //                 // console.log("DATALANG");
+    //                 // console.log(dataLang);
+    //                 switch (dataLang){
+    //                     case 'eng':
+    //                         downloadSub.push('eng&' + response.data[0].SubDownloadLink);
+    //                         break;
+    //                     case 'fre':
+    //                         downloadSub.push('fre&' + response.data[0].SubDownloadLink);
+    //                         break;
+    //                     case 'spa':
+    //                         downloadSub.push('spa&' + response.data[0].SubDownloadLink);
+    //                         break;
+    //                     case 'ita':
+    //                         downloadSub.push('ita&' + response.data[0].SubDownloadLink);
+    //                         break;
+    //                     case 'undefined':
+    //                         downloadSub.push('undefined');                           
+    //                 }
+    //                 // console.log(downloadSub.length);
+    //                 if (downloadSub.length == 4){
+    //                     // console.log("SSIIIIZEEEE");
+    //                     // console.log(downloadSub);
+    //                     callback(downloadSub);
+    //                 }
+    //             }
+    //         })
+    //         .catch((error: any) => {
+    //             console.log("ERROR");
+    //             console.log(error);
+    //         })
+    //     });
+    // }
 }
 
 
