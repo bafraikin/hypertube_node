@@ -11,7 +11,7 @@
 
 <script>
 
-import axios from  '@/config/axios_default';
+import axios, {baseURL} from  '@/config/axios_default';
 
 export default {
 	name: 'download',
@@ -38,16 +38,19 @@ export default {
 			url = encodeURIComponent(url);
 			hash = encodeURIComponent(hash);
 			imdbCode = encodeURIComponent(imdbCode);
-			console.log(movie);
-			console.log(movie.title);
-			this.title = movie.title;
-			let title = encodeURIComponent(movie.title);
+//			console.log(movie);
+//			console.log(movie.title);
+//			this.title = movie.title;
+//			let title = encodeURIComponent(movie.title);
+			console.log(process.env);
 
 			this.filmPath = baseURL +  "/😂/player/" + url + "/"+ hash + "/"+ imdbCode;
 			this.showFilm = true;
 		},
 	},
 	mounted(){
+		console.log("Dans Film play");
+		console.log(this.$route.params);
 		var imdbCode = this.$route.params.imdbCode;
 		var torrent = this.$route.params.torrent
 		var idOMDB = this.$route.params.idOMDB

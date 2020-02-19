@@ -43,13 +43,15 @@ export default {
 	},
 	methods:{
 		play(torrent){
+			console.log("On play");
+			console.log(torrent);
 			this.$router.push({ name: "player-film", params:{imdbCode: this.imdbCode, torrent: torrent, idOMDB: this.idOMDB}});
 		},
 		buildImg(movie){
 			return "https://image.tmdb.org/t/p/w500/"+ movie.poster_path;
 		},
 		getMovieTorrent(){
-			axios.get('😂/yts-torrent', { params: { imdbCode: this.imdbCode } })
+			axios.get('😂/torrent', { params: { imdbCode: this.imdbCode } })
 			.then(response => {
 				this.torrents = response.data;
 				this.onMontre = true;
