@@ -23,26 +23,30 @@ export default function setRoute(connection: Connection, app: Express) {
 		return next()
 	})
 
+	/*AUTHENTICATION*/
 	userNotAuthenticated.post('/authentication', passport.authenticate('local'), controller.authenticate.afterAuth);
-	userNotAuthenticated.post("/user", controller.user.create);
+	userAuthenticated.route("/authentication").delete(controller.authenticate.logout);
 	userNotAuthenticated.get('/oauth42', passport.authenticate('42'), controller.authenticate.afterAuth);
 	userNotAuthenticated.post('/oauth42/callback', passport.authenticate('42'), controller.authenticate.afterAuth);
 	userNotAuthenticated.get('/oauthGoogle', passport.authenticate('google', { scope: ['profile', 'email']  }));
 	userNotAuthenticated.post('/oauthGoogle/callback',passport.authenticate('google', { failureRedirect: '/login' }), controller.authenticate.afterAuth);
-
-
-
+	/*USER*/
 	userAuthenticated.get("/user", controller.user.getUser);
-	userAuthenticated.route("/authentication").delete(controller.authenticate.logout);
-	userAuthenticated.get('/player/:url/:hash/:imdbCode', controller.movies.player);
+	userNotAuthenticated.post("/user", controller.user.create);
+	userAuthenticated.get("/userProfile", controller.user.userProfile);
+	/*MOVIE*/
+	app.get('/research', controller.movies.theMovieDB);
+	userAuthenticated.get('/movie-detail', controller.movies.getMovieDetail);
+	/*PLAYER*/
+	userAuthenticated.get('/player/:url/:hash/:imdbCode', controller.player.stream);
+	/*WATCH*/
 	userAuthenticated.get('/watch', controller.watch.getWatch);
 	userAuthenticated.post('/watch', controller.watch.postWatch);
+	/*COMMENT*/
 	userAuthenticated.get('/comment', controller.comments.getComment);
 	userAuthenticated.post('/comment', controller.comments.postComment);
-	userAuthenticated.get('/movie-detail', controller.movies.getMovieDetail);
-	userAuthenticated.get('/yts-torrent', controller.movies.getYtsTorrent);
-	app.get('/research', controller.movies.theMovieDB);
-	userAuthenticated.get("/userProfile", controller.user.userProfile);
+	/*TORRENT*/
+	userAuthenticated.get('/yts-torrent', controller.torrent.getTorrent);
 
 
 
