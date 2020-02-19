@@ -25,12 +25,12 @@ export default class moviesController {
 		let apiClient : any;
 		if (req.query.queryString == undefined || req.query.queryString == '') {
 			let filter = req.query;
-			let movieFilter: Filter = {firstYear: Number(filter.firstYear), lastYear: Number(filter.lastYear), minMark: Number(filter.minMark), maxMark: Number(filter.maxMark)};
+			let movieFilter: Filter = {firstYear: Number(filter.firstYear), lastYear: Number(filter.lastYear), minMark: Number(filter.minMark), maxMark: Number(filter.maxMark), genders: filter.gender};
 			apiClient = new TMDBClientDiscover(movieFilter);
 		}
 		else
 			apiClient = new TMDBClientSearch(req.query.queryString);
-			apiClient.getPage(1).then((response: any)  => {res.send(response.data.results)}).catch((err:any)  => { res.status(401).send("error") });
+		apiClient.getPage(1).then((response: any)  => {res.send(response.data.results)}).catch((err:any)  => { res.status(401).send("error") });
 		return;
 	}
 
@@ -46,15 +46,15 @@ export default class moviesController {
 		let imdbCode = req.query.imdbCode;
 		let url = 'http://yts.mx/api/v2/list_movies.json?query_term='+ imdbCode;
 		axios .get(url)
-			.then((response: any) => {
-				if (response.status == 200){
-					res.send(response.data.data.movies[0].torrents);
-				}
-				else{
-					console.log("erro in api");
-					res.send("error");
-				}
-			})
+		.then((response: any) => {
+			if (response.status == 200){
+				res.send(response.data.data.movies[0].torrents);
+			}
+			else{
+				console.log("erro in api");
+				res.send("error");
+			}
+		})
 	}
 
 	static async player(req: Request, res: Response) {

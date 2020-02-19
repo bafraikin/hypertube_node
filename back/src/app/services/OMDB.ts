@@ -5,7 +5,8 @@ interface Filter {
 	firstYear: number, 
 	lastYear: number, 
 	minMark: number, 
-	maxMark: number
+	maxMark: number,
+	genders: Array<number>
 }
 
 class TMDBClient {
@@ -29,7 +30,15 @@ class TMDBClientDiscover extends TMDBClient {
 	constructor(movieFilter: Filter) {
 		super();
 		this.filter = movieFilter;
-		this.baseQuery = this.defaultGetQuery() + "&primary_release_date.gte=" + this.filter.firstYear + "-01-01"  + "&primary_release_date.lte=" + this.filter.lastYear + "-01-01" + "&vote_average.gte=" + this.filter.minMark + "&vote_average.lte=" + this.filter.maxMark + "&sort_by=popularity.desc";
+		this.baseQuery = this.defaultGetQuery() + "&primary_release_date.gte=" + this.filter.firstYear + "-01-01"  + "&primary_release_date.lte=" + this.filter.lastYear + "-01-01" + "&vote_average.gte=" + this.filter.minMark + "&vote_average.lte=" + this.filter.maxMark + "&sort_by=popularity.desc" +  this.withGenres();
+		console.log(this.baseQuery)
+	}
+
+	withGenres(): string {
+			if (this.filter instanceof Object && this.filter.genders && this.filter.genders.length > 0)
+				return "&with_genres=" + encodeURI(this.filter.genders.join(","));
+			else
+				return "";
 	}
 
 	async getPage(page: number = 1) {
@@ -48,7 +57,7 @@ class TMDBClientSearch extends TMDBClient {
 	}
 
 	async getPage(page: number = 1) {
-		 return axios.get(this.baseQuery + "&page=" + page);
+		return axios.get(this.baseQuery + "&page=" + page);
 	}
 }
 

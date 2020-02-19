@@ -1,16 +1,14 @@
-
 <template>
-  <div id="toPaginate" v-if="isConnected">
+  <div id="toPaginate">
     <img src="img/loader.gif"/>
   </div>
 </template>
 
 <script>
 
-
   export default {
     methods: {
-    isVisibleOnScreen(el) {
+      isVisibleOnScreen(el) {
         let top = el.offsetTop;
         let left = el.offsetLeft;
         const width = el.offsetWidth;
@@ -28,11 +26,6 @@
           (top + height) <= (window.pageYOffset + window.innerHeight) &&
           (left + width) <= (window.pageXOffset + window.innerWidth)
         );
-      }
-    },
-    computed: {
-      isConnected() {
-        return this.$store.getters.connected;
       }
     },
     mounted() {
