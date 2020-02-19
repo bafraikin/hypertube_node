@@ -40,6 +40,7 @@ l'interieure du ficher ressemble a ca :
 ```
 client_id_42=<votre id api >
 client_secret_42=<votre cle secrete>
+OMDB_KEY=<votre cle secrete>
 ```
 
 
