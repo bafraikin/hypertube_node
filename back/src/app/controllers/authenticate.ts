@@ -18,7 +18,7 @@ export default class authenticateController {
 		}
 	}
 
-	static async oAuthStrategyFortyTwo(accessToken: string , refreshToken: string , profile: any, done: Function) {
+	static async oAuthStrategy(accessToken: string , refreshToken: string , profile: any, done: Function) {
 		const user: User | undefined = await User.findOne({ email: profile.emails[0].value });
 		if (user instanceof User && user.oauth === true) {
 			return done(null, user);
@@ -26,7 +26,6 @@ export default class authenticateController {
 		if (user === undefined){
 			let newUser = new User();
 			newUser.createOAuth(profile);
-			console.log("User = ", newUser);
 			try{
 				await newUser.save();
 				return done(null, newUser);

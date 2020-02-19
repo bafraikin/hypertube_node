@@ -11,7 +11,7 @@
 
 <script>
 
-import axios from  '@/config/axios_default';
+import axios, {baseURL} from  '@/config/axios_default';
 
 export default {
 	name: 'download',
