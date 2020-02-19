@@ -33,16 +33,23 @@ setup_docker () {
  il vous faudra cree un fichier back/.env avec vos token 42
 Que vous pouvez trouver ici : https://profile.intra.42.fr/oauth/applications/new
 
- avec  http://localhost:8080/oauth42/callback en redirect
+ avec  http://127.0.0.1:8080/oauth42/callback en redirect
  
 et localhost:8080 en site web
 l'interieure du ficher ressemble a ca :
 ```
 client_id_42=<votre id api >
 client_secret_42=<votre cle secrete>
+OMDB_KEY=<votre cle secrete>
+client_id_google=< votre id api>
+client_secret_google=<votre cle secrete>
 ```
+pour google il faut cree un compte sur google console
+cree un projet et aller ici https://console.cloud.google.com/apis/dashboard
+puis venez voir adejbakh et je vous aide.
 
 
 ![alt text](https://i.pinimg.com/originals/a4/db/17/a4db1751b10fff03d2eaf915a9cd2de9.gif  "YEAAAH")
 
 ![alt text](https://upload.wikimedia.org/wikipedia/en/thumb/f/f7/Aigle_Azur_logo.svg/250px-Aigle_Azur_logo.svg.png "....")
+![alt text](https://i.pinimg.com/originals/ff/b2/d2/ffb2d2f77c47563c30f95b4732403851.jpg "api bleu")

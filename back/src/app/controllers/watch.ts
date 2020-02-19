@@ -2,42 +2,31 @@ import {Request, Response} from 'express';
 import { User } from '@app/models/user';
 import { Watch } from '@app/models/watch';
 import { Movie } from '@app/models/movies';
-const axios = require('axios');
+import { connection } from "@settings/connect_pg";
+import axios from 'axios';
 
 export default class watchController {
 
 	static async getWatch(req: Request, res: Response) {
-		let userrr : any = req.user;
-		let userId = userrr!.id;
-		let user = await User.findOne({ id: userId});
-		let watchs: any= [];
-		if (user!.watchs == undefined){
-			res.json(watchs)
-		}
-		else{
-			let i = 0;
-			while(i < user!.watchs.length){
-				watchs.push(user!.watchs[i].imdbCode);
-				i++;
-			}
-			res.send(watchs);
+		if (req.user instanceof User)
+			connection.getRepository(Watch).find({select: ["idOMDB"], where: {user: req.user}}).then((response: any) => {res.json(response)}).catch((err) => {
+				res.status(401).send(`error in query in ${__filename}`);
+			});
+		else {
+			res.status(401).send(`error req.user not a user in ${__filename}`);
 		}
 	}
 
-	static async postWatch(req: Request, res: Response) {
-		let params: any = {};
-		let userrr : any = req.user;
-		params.userId = userrr.id;
-		params.imdbCode = req.body.imdbCode;
-		params.imdb_code = req.body.imdbCode;
-		//verifs des params  ==> plus tard
-		let movie = await Movie.getMovie(params);
-		const user : User | undefined = await User.findOne({ id: params.userId })
-		let watch = new Watch;
-		watch.imdbCode = params.imdbCode;
-		watch.user = user;
-		watch.save();
-		res.status(201).json(watch);
-	}
+		static async postWatch(req: Request, res: Response) {
+			let userrr : any = req.user;
+			let userId = userrr.id;
+			let idOMDB = req.body.idOMDB;
+			const user : User | undefined = await User.findOne({ id: userId })
+			let watch = new Watch;
+			watch.idOMDB = idOMDB;
+			watch.user = user;
+			watch.save();
+			res.status(201).json(watch);
+		}
 
-}
+	}

@@ -35,10 +35,7 @@ export class User extends BaseEntity {
 	@OneToMany(type => Comment, comment => comment.user)
     comments: Comment[];
 
-	@OneToMany(type => Watch, watch => watch.user, {
-		eager: true
-	})
-	@JoinTable()
+	@OneToMany(type => Watch, watch => watch.user)
     watchs: Watch[];
 
 	async setPassword(pw: string) {
@@ -102,10 +99,20 @@ export class User extends BaseEntity {
 
 	createOAuth(profile: any){
 		this.email = profile.emails[0].value;
-		this.login = profile.thisname;
-		this.firstName = profile.name.givenName;
-		this.lastName = profile.name.familyName;
-		this.imageUrl = profile.image_url
+		this.password = "bcrypt";
+		if (profile.thisname === undefined)
+		{
+			this.login = profile.displayName;
+			this.firstName = profile.displayName;
+			this.lastName = profile.displayName;
+			this.imageUrl = profile.photos[0].value;
+		}
+		else{
+			this.login = profile.thisname;
+			this.firstName = profile.name.givenName;
+			this.lastName = profile.name.familyName;
+			this.imageUrl = profile.image_url
+		}
 		this.oauth = true;
 	}
 }

@@ -1,8 +1,9 @@
 import {Request, Response} from 'express';
 import { Movie } from '@app/models/movies';
+import {Filter, TMDBClientSearch, TMDBClientDiscover} from '@app/services/OMDB'
 var moment = require('moment');
 const fs = require('fs');
-const axios = require('axios');
+import axios from 'axios';
 
 export default class moviesController {
 
@@ -18,90 +19,36 @@ export default class moviesController {
 		res.send("movies delete")
 	}
 
-	static getDefaultUrl_filter(filter: any){
-		let url = "https://api.themoviedb.org/3/";
-		let service = "discover/movie";
-		let apiKey = "?api_key=985a541e7e320d19caa17c030cec0d8d";
-		let language = "&language=en-US";
-		let sorting = "&sort_by=popularity.desc";
-		let adult = "&include_adult=false";
-		let video = "&include_video=true";
-		let page = "&page=1";
-		let firstYear = "&primary_release_date.gte=" + filter.firstYear + "-01-01";
-		let lastYear = "&primary_release_date.lte=" + filter.lastYear + "-01-01";
-		let firstNote = "&vote_average.gte=" + filter.firstNote;
-		let lastNote = "&vote_average.lte=" + filter.lastNote;
-		let query = url + service + apiKey + language + sorting + adult + video + page + firstYear + lastYear + firstNote + lastNote;
-		return query;
-	}
-
-	static getDefaultUrl_query_string(query_string: any){
-		let url = "https://api.themoviedb.org/3/";
-		let service = "search/movie";
-		let apiKey = "?api_key=985a541e7e320d19caa17c030cec0d8d";
-		let language = "&language=en-US";
-		let queryString = "&query=" + encodeURI(query_string);
-		let page = "&page=1";
-		let adulte = "&include_adult=false";
-		let query = url + service + apiKey + language + queryString + page + adulte;
-		return query;
-	}
-
-	static filter(movies: any, filter: any) {
-		movies = movies.filter((movie: any) => (movie.vote_average >= filter.firstNote && movie.vote_average <= filter.lastNote));
-		movies = movies.filter((movie: any) => (moment(movie.release_date).isBefore(filter.lastYear) &&  moment(movie.release_date).isAfter(filter.firstYear)));
-		if (filter.genre != undefined){
-			filter.genre = filter.genre.map((x: any)=>+x);
-			movies = movies.filter((movie: any) => (movie.genre_ids.some((r: any)=> filter.genre.indexOf(r) >= 0)));
-		}
-		return movies;
-	}
-
-	static async theMovieDB(req: Request, res: Response) {
+	static async theMovieDB	(req: Request, res: Response) {
 		let url: string;
-		let movies;
-		console.log(req.query);
-		if (req.query.queryString == undefined || req.query.queryString == ''){
-			url = moviesController.getDefaultUrl_filter(req.query);
-			console.log("***************999*************");
-			console.log(url);
-			let response = await axios.get(url);
-			movies = response.data.results;
+
+		let apiClient : any;
+		if (req.query.queryString == undefined || req.query.queryString == '') {
+			let filter = req.query;
+			let movieFilter: Filter = {firstYear: Number(filter.firstYear), lastYear: Number(filter.lastYear), minMark: Number(filter.minMark), maxMark: Number(filter.maxMark)};
+			apiClient = new TMDBClientDiscover(movieFilter);
 		}
-		else{
-			console.log("******************8888*************");
-			url = moviesController.getDefaultUrl_query_string(req.query.queryString);
-			console.log(url);
-			let response = await axios.get(url);
-			movies = response.data.results;
-			movies = moviesController.filter(movies, req.query);
-		}
-		res.send(movies)
+		else
+			apiClient = new TMDBClientSearch(req.query.queryString);
+			apiClient.getPage(1).then((response: any)  => {res.send(response.data.results)}).catch((err:any)  => { res.status(401).send("error") });
+		return;
 	}
 
-	static ytsApiQueryString(req: Request, res: Response) {
-		var stringResearch = req.body.queryString;
-		stringResearch = encodeURI(stringResearch);
-		var url = 'http://yts.mx/api/v2/list_movies.json?query_term='+ stringResearch;
+	static async getMovieDetail(req: Request, res: Response){
+		let OMDBid = req.query.OMDBid;
+		let url = "https://api.themoviedb.org/3/movie/" + OMDBid + "?api_key=985a541e7e320d19caa17c030cec0d8d&language=en-US";
+		let response = await axios.get(url);
+		let movieDetail = response.data;
+		res.send(movieDetail);
+	}
+
+	static getYtsTorrent(req: Request, res: Response) {
+		let imdbCode = req.query.imdbCode;
+		let url = 'http://yts.mx/api/v2/list_movies.json?query_term='+ imdbCode;
 		axios .get(url)
 			.then((response: any) => {
 				if (response.status == 200){
-					res.send(response.data);
-				}
-				else{
-					console.log("erro in api");
-					res.send("error");
-				}
-			})
-	}
-
-	static ytsApiDefaultList(req: Request, res: Response) {
-		const url = 'https://yts.mx/api/v2/list_movies.json';
-		axios
-			.get(url)
-			.then((response: any) => {
-				if (response.status == 200){
-					res.send(response.data);
+					res.send(response.data.data.movies[0].torrents);
 				}
 				else{
 					console.log("erro in api");
@@ -111,16 +58,17 @@ export default class moviesController {
 	}
 
 	static async player(req: Request, res: Response) {
-		console.log("params dans player");
-		console.log(req.params);
-		let movie = await Movie.getMovie(req.params);
-		movie.buildMagnetLink(req.params);
+		let imdbCode = req.params.imdbCode;
+		let hash = req.params.hash;
+		let url = req.params.url;
+
+		let movie = await Movie.getMovie(imdbCode);
+		movie.buildMagnetLink(hash, url);
 
 		const range = req.headers.range;
 		if (range) {
 			const parts = range.replace(/bytes=/, "").split("-");
 			const start = parseInt(parts[0], 10);
-			console.log("le start ==>", start);
 			let engine: any = await movie.downloadMovie(start);
 			engine.files.forEach( (file: any) => {
 				let regex = /mp4/;
@@ -135,20 +83,20 @@ export default class moviesController {
 					const end = parts[1]
 						? parseInt(parts[1], 10)
 						: fileSize-1
-					const chunksize = (end-start)+1
-					console.log("le end ==>", end);
-					console.log("le file size", fileSize);
-					const head = {
-'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-'Accept-Ranges': 'bytes',
-'Content-Length': chunksize,
-'Content-Type': 'video/mp4',
-					}
-					res.writeHead(206, head);
-					stream.pipe(res);
-					stream.on('error', function (err: any) {
-						res.status(416).send("error in stream");
-					})
+						const chunksize = (end-start)+1
+						console.log("le end ==>", end);
+						console.log("le file size", fileSize);
+						const head = {
+							'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+							'Accept-Ranges': 'bytes',
+							'Content-Length': chunksize,
+							'Content-Type': 'video/mp4',
+						}
+						res.writeHead(206, head);
+						stream.pipe(res);
+						stream.on('error', function (err: any) {
+							res.status(416).send("error in stream");
+						})
 				}
 				else {
 					// console.log("ce n'est pas un film");

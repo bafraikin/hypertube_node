@@ -10,12 +10,6 @@ const router = new VueRouter({
 	mode: 'history',
 	routes: [
 		{
-			path: '/',
-			name: 'home',
-			component: Home,
-			meta: {layout: "layout"}
-		},
-		{
 			path: '/film-player/',
 			name: 'player-film',
 			component: () => import('../views/Film-play.vue'),
@@ -27,7 +21,14 @@ const router = new VueRouter({
 			component: () => import('../views/oauth42.vue'),
     		meta: {layout: "layout"}
 		},
-    	{
+		{
+			path: '/oauthGoogle/callback',
+			name: 'oauthGoogle',
+			component: () => import('../views/oauthGoogle.vue'),
+    			meta: {layout: "layout"}
+		},
+
+    {
 			path: '/user',
 			name: 'userProfile',
 			component: () => import('../views/Profile.vue'),
@@ -40,8 +41,8 @@ const router = new VueRouter({
     		meta: {layout: "layout"}
 		},
 		{
-			path: '/newHome',
-			name: 'newHome',
+			path: '/',
+			name: 'Home',
 			component: () => import('../../src/components/NewHome.vue'),
     		meta: {layout: "layout"}
 		},

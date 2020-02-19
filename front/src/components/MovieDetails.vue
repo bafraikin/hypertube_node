@@ -1,53 +1,49 @@
 <template>
 	<v-container dark>
-		<v-img  max-height="300" v-bind:src="buildImg(movieDetail)" contain ></v-img>
-		<h1>{{ movieDetail.title  }}</h1>
-		<p>{{  movieDetail.overview }}</p>
-		<v-simple-table>
-			<template v-slot:default>
-				<!-- <thead> -->
-				<!-- 	<tr> -->
-				<!-- 		<th class="text-left">Quality</th> -->
-				<!-- 		<th class="text-left">Torrent link</th> -->
-				<!-- 	</tr> -->
-				<!-- </thead> -->
-				<!-- <tbody> -->
-				<!-- 	<tr v-for="torrent in movieDetail.torrents"> -->
-				<!-- 		<td>{{ torrent.quality }}</td> -->
-				<!-- 		<td> -->
-				<!-- 			<i v-on:click="download(movieDetail, torrent)" >Play</i> -->
-				<!-- 		</td> -->
-				<!-- 	</tr> -->
-				<!-- </tbody> -->
-			</template>
-		</v-simple-table>
-
-		<Comment :movie="movieDetail"></Comment>
-
+		<div v-if="movie" style="color:white;">
+		<v-img  max-height="300" v-bind:src="buildImg(movie)" contain ></v-img>
+		<h1>{{ movie.title  }}</h1>
+		<p>{{  movie.overview }}</p>
+		<TorrentList :imdbCode="movie.imdb_id" :idOMDB="movie.id"></TorrentList>
+		<Comment :imdbCode="movie.imdb_id"></Comment>
+		</div>
 	</v-container>
 </template>
 
 
 <script>
-import Comment from '@/components/Comments.vue'
+import axios from  '@/config/axios_default';
+import Comment from '@/components/Comments.vue';
+import TorrentList from '@/components/TorrentList.vue';
 
 export default {
+	data() {
+		return {
+			movie: null
+		}
+	},
 	props: {
-		movieDetail: { type: Object }
+		OMDBid: { type: Number }
 	},
 	components: {
-		"Comment": Comment
+		"Comment": Comment,
+		"TorrentList": TorrentList
 	},
 	methods:{
-		download(movie, torrent){
-			this.$router.push({ name: "player-film", params:{movie: movie, torrent: torrent}});
-		},
 		buildImg(movie){
 			return "https://image.tmdb.org/t/p/w500/"+ movie.poster_path;
 		},
+		getMovieDetails(research){
+			axios.get('😂/movie-detail', { params: { OMDBid: this.OMDBid } })
+				.then(response => {
+					console.log(response);
+					this.movie = response.data;
+				})
+		}
 	},
 	mounted(){
-		console.log(this.movieDetail);
+		this.getMovieDetails(this.OMDBid);
 	}
 }
+
 </script>

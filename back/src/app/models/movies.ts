@@ -28,34 +28,21 @@ export class Movie extends BaseEntity {
 		}
 	}
 
-	static async getMovie(params: any) {
-		console.log("params dans get movie");
-		console.log(params);
-		if (params == undefined || params.imdb_code == undefined)
-			throw "erreur dans get Movie";
-
-		params.imdb_code = decodeURIComponent(params.imdb_code);
-
-		let movie = await Movie.findOne({ imdbCode: params.imdb_code });
+	static async getMovie(imdbCode: any) {
+		let movie = await Movie.findOne({ imdbCode: imdbCode });
 		if (movie == undefined){
 			movie = new Movie;
-			movie.imdbCode = params.imdb_code;
-			console.log("***********on va enregistrer***********");
-			console.log(movie);
+			movie.imdbCode = imdbCode;
 			await movie.save();
 		}
 		return movie;
 	}
 
-	buildMagnetLink(params: any){
-		if (params == undefined || params.hash == undefined || params.url == undefined)
-			throw "erreur dans build magnet link";
-
-		params.hash = decodeURIComponent(params.hash);
-		params.url = decodeURIComponent(params.url);
-		console.log("je construit le magnet link");
-		let torrent_hash = params.hash;  //"F976B434321C0FBE9027BB7B40386E0E40C23853";
-		let torrent_url = params.url;  // "/torrent/download/F976B434321C0FBE9027BB7B40386E0E40C23853";
+	buildMagnetLink(hash: any, url: any){
+		hash = decodeURIComponent(hash);
+		url = decodeURIComponent(url);
+		let torrent_hash = hash;
+		let torrent_url = url;
 		let tracker_1 =  "udp://glotorrents.pw:6969/announce";
 		let tracker_2 =  "udp://tracker.opentrackr.org:1337/announce";
 		let tracker_3 =  "udp://torrent.gresille.org:80/announce";
