@@ -35,7 +35,7 @@ const router = new VueRouter({
 		},
 		{
 			path: '/',
-			name: 'newHome',
+			name: 'Home',
 			component: () => import('../../src/components/NewHome.vue'),
     		meta: {layout: "layout"}
 		},

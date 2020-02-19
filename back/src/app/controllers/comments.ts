@@ -11,7 +11,7 @@ export default class commentController {
 		let movie = await Movie.findOne({ imdbCode: movieImdbCode});
 
 		if (movie == undefined){
-			res.status(401).send(undefined);
+			res.status(201).send(undefined);
 		}
 		else{
 			res.send(movie.comments);

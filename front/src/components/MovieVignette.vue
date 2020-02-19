@@ -37,7 +37,7 @@ export default {
 		showMovieDetailsFun(movie){
 			this.$emit('selectMovie', movie);
 		},
-    isInWatchList(idOMDB){
+    	isInWatchList(idOMDB){
 			const found = this.watchList.find(element => element.idOMDB == idOMDB);
 			if (found == undefined){
 				return false;
@@ -46,10 +46,13 @@ export default {
 			}
 		},
 		getWatchList(){
-			axios.get('😂/watch')
-				.then(response => {
-					this.watchList = response.data;
-				})
+			if (this.$store.getters.connected)
+			{
+				axios.get('😂/watch')
+					.then(response => {
+						this.watchList = response.data;
+					})
+			}
 		}
 	},
 	mounted(){

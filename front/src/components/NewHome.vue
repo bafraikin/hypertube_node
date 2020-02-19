@@ -43,7 +43,7 @@ export default {
 			this.showMovieDetails = true;
 		},
 		researchMovieFun(research){
-			axios.get('😂/research', { params: {
+			axios.get('/research', { params: {
 												firstYear: research.firstYear,
 												lastYear: research.lastYear,
 												minMark: research.firstNote,

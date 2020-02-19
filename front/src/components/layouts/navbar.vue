@@ -5,7 +5,7 @@
     :elevation="5"
   >
     <div class="navbar">
-      <h2>Hypertubulaire</h2>
+       <h2>Hypertubulaire</h2>
       <div class="navbar">
 
         <div v-if="!isConnected" class="navbar"> 
@@ -55,9 +55,9 @@
       async logout() {
         const response = await axios.delete("/😂/authentication").then((response) => {
           return true;
-        }); 
+        });
         this.$store.commit('disconnectUser')
-      }
+      },
     },
     computed: {
       isConnected() {
