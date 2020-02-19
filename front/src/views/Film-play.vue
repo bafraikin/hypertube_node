@@ -11,7 +11,7 @@
 
 <script>
 
-import axios from  '@/config/axios_default';
+import axios, {baseURL} from  '@/config/axios_default';
 
 export default {
 	name: 'download',
@@ -38,7 +38,7 @@ export default {
 			url = encodeURIComponent(url);
 			hash = encodeURIComponent(hash);
 			imdbCode = encodeURIComponent(imdbCode);
-			this.filmPath = "http://localhost:3000/😂/player/" + url + "/"+ hash + "/"+ imdbCode;
+			this.filmPath =  baseURL + "/😂/player/" + url + "/"+ hash + "/"+ imdbCode;
 			this.showFilm = true;
 		},
 	},
