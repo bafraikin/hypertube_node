@@ -29,4 +29,12 @@ export default class moviesController {
 		res.send(movieDetail);
 	}
 
+	static async getMovieCasting(req: Request, res: Response) {
+		let OMDBid = req.query.OMDBid;
+		let url = "https://api.themoviedb.org/3/movie/" + OMDBid + "/credits" + "?api_key=" + process.env.OMDB_KEY;
+		let response = await axios.get(url);
+		let movieDetail = response.data;
+		res.send(movieDetail);
+	}
+
 }
