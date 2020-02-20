@@ -29,7 +29,8 @@ export default function setRoute(connection: Connection, app: Express) {
 	userNotAuthenticated.post('/oauth42/callback', passport.authenticate('42'), controller.authenticate.afterAuth);
 	userNotAuthenticated.get('/oauthGoogle', passport.authenticate('google', { scope: ['profile', 'email']  }));
 	userNotAuthenticated.post('/oauthGoogle/callback',passport.authenticate('google', { failureRedirect: '/login' }), controller.authenticate.afterAuth);
-
+	userNotAuthenticated.get('/resetPassword', controller.user.endResetPassword);
+	userNotAuthenticated.get('/forgotPassword', controller.user.startResetPassword);
 
 
 	userAuthenticated.get("/user", controller.user.getUser);
