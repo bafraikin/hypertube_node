@@ -90,15 +90,13 @@
       justify-content: space-around;
       width: 15%;
     }
+    h2 a {
+      text-decoration: none;
+      color: inherit;
+    }
   }
   .v-menu__content {
     left: 0;
     max-width: 100%;
-  }
-  h2 {
-    text-decoration: none;
-    color: inherit;
-
-
   }
 </style>
