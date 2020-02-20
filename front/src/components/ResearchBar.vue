@@ -195,7 +195,6 @@ export default {
 			research.firstNote = this.note[0];
 			research.lastNote = this.note[1];
 			research.gender = this.gender;
-      console.log("🤕", research, "😀");
 			this.$emit('moviesResearch', research);
 		}
 	},
