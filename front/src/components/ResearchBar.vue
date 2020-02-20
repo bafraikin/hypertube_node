@@ -95,61 +95,61 @@
  <v-container dark fluid>
 <v-row dark >
 <v-col cols="2">
-    <v-checkbox  v-model="genre" label="Action" value="28"></v-checkbox>
+    <v-checkbox  v-model="gender" label="Action" value="28"></v-checkbox>
 </v-col>
 <v-col cols="2">
-    <v-checkbox v-model="genre" label="Adventure" value="12"></v-checkbox>
+    <v-checkbox v-model="gender" label="Adventure" value="12"></v-checkbox>
 </v-col>
 <v-col cols="2">
-    <v-checkbox v-model="genre" label="Animation" value="16"></v-checkbox>
+    <v-checkbox v-model="gender" label="Animation" value="16"></v-checkbox>
 </v-col>
 <v-col cols="2">
-    <v-checkbox v-model="genre" label="Comedy" value="35"></v-checkbox>
+    <v-checkbox v-model="gender" label="Comedy" value="35"></v-checkbox>
 </v-col>
 <v-col cols="2">
-    <v-checkbox v-model="genre" label="Crime" value="80"></v-checkbox>
+    <v-checkbox v-model="gender" label="Crime" value="80"></v-checkbox>
 </v-col>
 <v-col cols="2">
-    <v-checkbox v-model="genre" label="Documentary" value="99"></v-checkbox>
+    <v-checkbox v-model="gender" label="Documentary" value="99"></v-checkbox>
 </v-col>
 <v-col cols="2">
-    <v-checkbox v-model="genre" label="Drama" value="18"></v-checkbox>
+    <v-checkbox v-model="gender" label="Drama" value="18"></v-checkbox>
 </v-col>
 <v-col cols="2">
-    <v-checkbox v-model="genre" label="Family" value="10751"></v-checkbox>
+    <v-checkbox v-model="gender" label="Family" value="10751"></v-checkbox>
 </v-col>
 <v-col cols="2">
-    <v-checkbox v-model="genre" label="Fantasy" value="14"></v-checkbox>
+    <v-checkbox v-model="gender" label="Fantasy" value="14"></v-checkbox>
 </v-col>
 <v-col cols="2">
-    <v-checkbox v-model="genre" label="History" value="36"></v-checkbox>
+    <v-checkbox v-model="gender" label="History" value="36"></v-checkbox>
 </v-col>
 <v-col cols="2">
-    <v-checkbox v-model="genre" label="Horror" value="27"></v-checkbox>
+    <v-checkbox v-model="gender" label="Horror" value="27"></v-checkbox>
 </v-col>
 <v-col cols="2">
-    <v-checkbox v-model="genre" label="Music" value="10402"></v-checkbox>
+    <v-checkbox v-model="gender" label="Music" value="10402"></v-checkbox>
 </v-col>
 <v-col cols="2">
-    <v-checkbox v-model="genre" label="Mystery" value="9648"></v-checkbox>
+    <v-checkbox v-model="gender" label="Mystery" value="9648"></v-checkbox>
 </v-col>
 <v-col cols="2">
-    <v-checkbox v-model="genre" label="Romance" value="10749"></v-checkbox>
+    <v-checkbox v-model="gender" label="Romance" value="10749"></v-checkbox>
 </v-col>
 <v-col cols="2">
-    <v-checkbox v-model="genre" label="Science Fiction" value="878"></v-checkbox>
+    <v-checkbox v-model="gender" label="Science Fiction" value="878"></v-checkbox>
 </v-col>
 <v-col cols="2">
-    <v-checkbox v-model="genre" label="TV Movie" value="10770"></v-checkbox>
+    <v-checkbox v-model="gender" label="TV Movie" value="10770"></v-checkbox>
 </v-col>
 <v-col cols="2">
-    <v-checkbox v-model="genre" label="Thriller" value="53"></v-checkbox>
+    <v-checkbox v-model="gender" label="Thriller" value="53"></v-checkbox>
 </v-col>
 <v-col cols="2">
-    <v-checkbox v-model="genre" label="War" value="10752"></v-checkbox>
+    <v-checkbox v-model="gender" label="War" value="10752"></v-checkbox>
 </v-col>
 <v-col cols="2">
-    <v-checkbox v-model="genre" label="Western" value="37"></v-checkbox>
+    <v-checkbox v-model="gender" label="Western" value="37"></v-checkbox>
 </v-col>
 </v-row>
   </v-container>
@@ -183,7 +183,7 @@ export default {
 			note: [6, 10],
 			movies: null,
 			queryString: null,
-			genre: ['37', '10752', '28', '12', '16', '35', '80', '99', '18', '10751', '14', '36', '27', '10402', '9648', '10749', '878', '10770', '53'],
+			gender: [],
 		}
 	} ,
 	methods:{
@@ -194,7 +194,7 @@ export default {
 			research.lastYear = this.range[1];
 			research.firstNote = this.note[0];
 			research.lastNote = this.note[1];
-			research.genre = this.genre;
+			research.gender = this.gender;
 			this.$emit('moviesResearch', research);
 		}
 	},

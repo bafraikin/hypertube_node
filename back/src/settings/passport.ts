@@ -27,12 +27,12 @@ export default async function setupPassport(server: Express) {
         'phoneNumbers.0.value': 'phone',
         'photos.0.value': 'image_url'
       }
-	}, authenticateController.oAuthStrategyFortyTwo));
+	}, authenticateController.oAuthStrategy));
 	passport.use(new GoogleStrategy({
 	clientID: process.env.client_id_google,
 	clientSecret: process.env.client_secret_google,
 	callbackURL: "http://127.0.0.1:8080/oauthGoogle/callback",
-  	}, authenticateController.oAuthStrategyFortyTwo));
+  	}, authenticateController.oAuthStrategy));
 	
 
 	passport.serializeUser(authenticateController.serialize);

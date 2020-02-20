@@ -1,7 +1,6 @@
 <template>
 	<div id="lala">
 		<div v-if="showFilm">
-			<!-- <h1>{{ title }}</h1> -->
 			<video  ref="myVid"  id="videoPlayer" controls >
 						<source v-bind:src="filmPath" type="video/mp4"   >
 			</video>
@@ -17,7 +16,6 @@ export default {
 	name: 'download',
 	data() {
 		return {
-			title: '',
 			showFilm: false,
 			filmPath: null,
 		}
@@ -38,12 +36,6 @@ export default {
 			url = encodeURIComponent(url);
 			hash = encodeURIComponent(hash);
 			imdbCode = encodeURIComponent(imdbCode);
-//			console.log(movie);
-//			console.log(movie.title);
-//			this.title = movie.title;
-//			let title = encodeURIComponent(movie.title);
-			console.log(process.env);
-
 			this.filmPath = baseURL +  "/😂/player/" + url + "/"+ hash + "/"+ imdbCode;
 			this.showFilm = true;
 		},

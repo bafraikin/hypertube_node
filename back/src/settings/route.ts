@@ -6,7 +6,6 @@ import logger from "./logger"
 
 export default function setRoute(connection: Connection, app: Express) {
 
-
 		let userNotAuthenticated: Router = Router().use(controller.authenticate.checkNotAuth);
 		let userAuthenticated: Router = Router().use(controller.authenticate.checkAuth);
 
@@ -48,8 +47,6 @@ export default function setRoute(connection: Connection, app: Express) {
 		userAuthenticated.post('/comment', controller.comments.postComment);
 		// /*TORRENT*/
 		userAuthenticated.get('/torrent', controller.torrent.getTorrent);
-
-
 
 		app.use(`/${encodeURI("😱")}`, userNotAuthenticated);
 		app.use(`/${encodeURI("😂")}`, userAuthenticated);
