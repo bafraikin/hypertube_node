@@ -52,7 +52,7 @@ export default class moviesController {
 			}
 			else{
 				console.log("erro in api");
-				res.send("error");
+				res.status(400).send("error");
 			}
 		})
 	}
