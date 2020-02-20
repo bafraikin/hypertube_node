@@ -41,7 +41,7 @@ export default function setRoute(connection: Connection, app: Express) {
 	userAuthenticated.post('/comment', controller.comments.postComment);
 	userAuthenticated.get('/movie-detail', controller.movies.getMovieDetail);
 	userAuthenticated.get('/yts-torrent', controller.movies.getYtsTorrent);
-	app.get('/research', controller.movies.theMovieDB);
+	app.get('/research', controller.movies.searchForMovies);
 	userAuthenticated.get("/userProfile", controller.user.userProfile);
 
 
