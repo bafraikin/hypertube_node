@@ -15,8 +15,6 @@ export default class moviesController{
 
     static getSub(req: Request, res: Response){
         let imdb: string = req.body.imdbId;
-        console.log("IMDB ID");
-        console.log(imdb);
 
         OpenSubtitles.search({
             sublanguageid: 'eng, fre, chi',
@@ -29,7 +27,6 @@ export default class moviesController{
         .then((subtitles: any) => {
             let downSubTab = new Array;
             if (subtitles.en != null){
-                console.log("anglais oui oui");
                 downSubTab.push("eng&" + subtitles.en[0].vtt);
                 downSubTab.push("eng&" + subtitles.en[1].vtt);
             }
