@@ -2,9 +2,9 @@
   <v-container >
     <h1>New Home</h1>
     <ResearchBar v-if="showResearchBar" v-on:moviesResearch="researchMovieFun($event)" ></ResearchBar>
-    <MovieVignette :movies="movies" v-if="showMovieVignette" v-on:selectMovie="showMovieDetailsFun($event)" ></MovieVignette>
+    <MovieVignette :movies="moviesToDisplay" v-if="showMovieVignette" v-on:selectMovie="showMovieDetailsFun($event)" ></MovieVignette>
     <MovieDetails  v-if="showMovieDetails" :OMDBid="OMDBid"></MovieDetails>
-    <pagination/>
+    <pagination  v-on:displayNewResults="popStackMovie()"/> 
   </v-container>
 </template>
 
@@ -30,8 +30,10 @@
         showMovieVignette: false,
         showMovieDetails: false,
         showResearchBar: true,
-        movies: null,
-        page: 0,
+        moviesToDisplay: [],
+        moviesStack: [],
+        page: 1,
+        lastResearch: {},
         OMDBid: null,
       }
     },
@@ -43,6 +45,7 @@
         this.showMovieDetails = true;
       },
       researchMovieFun(research){
+        this.lastResearch = research;
         axios.get('/research', { params: {
           firstYear: research.firstYear,
           lastYear: research.lastYear,
@@ -50,12 +53,35 @@
           maxMark: research.lastNote,
           queryString: research.queryString,
           gender: research.gender,
+          page: this.chooseResearchPage(research.page)
         }
-        }) .then(response => {
-          this.movies = response.data;
+        }).then(response => {
+          if (this.page != 1)
+          {
+            this.moviesToDisplay.push(...response.data.slice(0, 10));
+            this.moviesStack.push(...response.data.slice(10));
+          }
+          else
+          {
+            this.moviesToDisplay = response.data.slice(0, 10);
+            this.moviesStack =  response.data.slice(10);
+          }
           this.showMovieVignette = true;
         })
+        this.lastResearch.page = null;
       },
+      chooseResearchPage(pageNumber) {
+        if (pageNumber == null && this.page++)
+          return (this.page);
+        this.page = 1;
+        return pageNumber;
+      },
+      popStackMovie() {
+        if (this.moviesStack.length >= 10)
+          this.moviesToDisplay.push(...this.moviesStack.splice(0,10));
+        else
+          this.researchMovieFun(this.lastResearch);
+      }
     }
   }
 
