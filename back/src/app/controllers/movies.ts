@@ -17,13 +17,13 @@ export default class moviesController {
 		}
 		else
 			apiClient = new TMDBClientSearch(req.query.queryString);
-		apiClient.getPage(1).then((response: any)  => {res.send(response.data.results)}).catch((err:any)  => { res.status(401).send("error") });
+			apiClient.getPage(1).then((response: any)  => {res.send(response.data.results)}).catch((err:any)  => { res.status(401).send("error") });
 		return;
 	}
 
 	static async getMovieDetail(req: Request, res: Response) {
 		let OMDBid = req.query.OMDBid;
-		let url = "https://api.themoviedb.org/3/movie/" + OMDBid + "?api_key=" process.env.OMDB_KEY + "&language=en-US";
+		let url = "https://api.themoviedb.org/3/movie/" + OMDBid + "?api_key=" + process.env.OMDB_KEY + "&language=en-US";
 		let response = await axios.get(url);
 		let movieDetail = response.data;
 		res.send(movieDetail);

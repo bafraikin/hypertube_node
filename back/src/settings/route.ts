@@ -35,10 +35,10 @@ export default function setRoute(connection: Connection, app: Express) {
 		userNotAuthenticated.post("/user", controller.user.create);
 		userAuthenticated.get("/userProfile", controller.user.userProfile);
 		// /*MOVIE*/
-		app.get('/research', controller.movies.theMovieDB);
+		app.get('/research', controller.movies.searchForMovies);
 		userAuthenticated.get('/movie-detail', controller.movies.getMovieDetail);
 		// /*PLAYER*/
-		userAuthenticated.get('/player/:url/:hash/:imdbCode', controller.player.stream);
+		userAuthenticated.get('/player/:magnetLink', controller.player.stream);
 		// /*WATCH*/
 		userAuthenticated.get('/watch', controller.watch.getWatch);
 		userAuthenticated.post('/watch', controller.watch.postWatch);

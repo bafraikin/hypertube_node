@@ -15,7 +15,7 @@
 						<td>{{ torrent.quality }}</td>
 						<td>{{ torrent.provider }}</td>
 						<td>
-							<i v-on:click="play(torrent)" >Play</i>
+							<i v-on:click="play(torrent.magnetLink)" >Play</i>
 						</td>
 					</tr>
 				</tbody>
@@ -44,8 +44,8 @@ export default {
 		}
 	},
 	methods:{
-		play(torrent){
-			this.$router.push({ name: "player-film", params:{imdbCode: this.imdbCode, torrent: torrent, idOMDB: this.idOMDB}});
+		play(magnetLink){
+			this.$router.push({ name: "player-film", params:{magnetLink: magnetLink, idOMDB: this.idOMDB}});
 		},
 		buildImg(movie){
 			return "https://image.tmdb.org/t/p/w500/"+ movie.poster_path;

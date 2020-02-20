@@ -6,11 +6,9 @@ export default class playerController {
 
 	static async stream(req: Request, res: Response) {
 		try {
-			let imdbCode = req.params.imdbCode;
 			let magnetLink = req.params.magnetLink;
-			let movie = await Movie.getMovie(imdbCode);
 			const range = req.headers.range;
-			if (imdbCode == undefined || magnetLink == undefined || movie == undefined)
+			if (magnetLink == undefined || range == undefined)
 				throw "error in stream parameter";
 			const parts = range.replace(/bytes=/, "").split("-");
 			const start = parseInt(parts[0], 10);
@@ -29,6 +27,7 @@ export default class playerController {
 						? parseInt(parts[1], 10)
 						: fileSize-1
 						const chunksize = (end-start)+1
+						console.log("le start ==>", start);
 						console.log("le end ==>", end);
 						console.log("le file size", fileSize);
 						const head = {
@@ -50,7 +49,7 @@ export default class playerController {
 				}
 			});
 		} catch (err) {
-			conosle.error(err);
+			console.error(err);
 			res.status(416).send("error");
 		}
 	}

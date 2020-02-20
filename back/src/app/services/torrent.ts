@@ -7,8 +7,6 @@ export default class torrentClient {
 		try {
 			let url = 'http://yts.mx/api/v2/list_movies.json?query_term='+ imdbCode;
 			let response: any = await axios.get(url);
-			console.log(response.data.data.movies[0].torrents)
-
 			let torrents: Array<any> = [];
 			response.data.data.movies[0].torrents.forEach((torrent: any) => {
 				let entry = {
