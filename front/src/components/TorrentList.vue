@@ -7,11 +7,13 @@
 					<tr>
 						<th class="text-left">Quality</th>
 						<th class="text-left">Torrent link</th>
+						<th class="text-left"></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr v-for="torrent in torrents">
 						<td>{{ torrent.quality }}</td>
+						<td>{{ torrent.provider }}</td>
 						<td>
 							<i v-on:click="play(torrent)" >Play</i>
 						</td>

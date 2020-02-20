@@ -12,6 +12,7 @@ export default class torrentClient {
 			let torrents: Array<any> = [];
 			response.data.data.movies[0].torrents.forEach((torrent: any) => {
 				let entry = {
+					'provider': 'YTS',
 					'magnetLink': torrentClient.buildMagnetLink(torrent.hash, torrent.url),
 					'quality': torrent.quality
 				};
@@ -32,6 +33,7 @@ export default class torrentClient {
 			//jaimerai test qua chaque etape cela ne soit pas undefined
 			if (response.data.torrents.en['1080p'] != undefined){
 				let entry = {
+					'provider': 'Pop corn',
 					'magnetLink': response.data.torrents.en['1080p'].url,
 					'quality': '1080p'
 				};
@@ -39,6 +41,7 @@ export default class torrentClient {
 			}
 			if (response.data.torrents.en['720p'] != undefined){
 				let entry = {
+					'provider': 'Pop Corn',
 					'magnetLink': response.data.torrents.en['720p'].url,
 					'quality': '720p'
 				};
