@@ -1,52 +1,52 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Layout from '../../src/components/layouts/layout.vue'
 
 Vue.use(VueRouter)
-
-const routes = [
-	{
-		path: '/',
-		name: 'home',
-		component: Home
-	},
-	{
-		path: '/about',
-		name: 'about',
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
-		component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-	},
-	{
-		path: '/film-info',
-		name: 'film-info',
-		component: () => import('../views/Film-info.vue')
-	},
-	{
-		path: '/film-list',
-		name: 'film-list',
-		component: () => import('../views/Film-list.vue')
-	},
-	{
-		path: '/download/',
-		name: 'film-download',
-		component: () => import('../views/Film-download.vue')
-	},
-	{
-		path: '/download/',
-		name: 'film-download-seconde',
-		component: () => import('../views/Film-download.vue')
-	},
-	{
-		path: '/film-player/',
-		name: 'player-film',
-		component: () => import('../views/Film-play.vue')
-	},
-]
+Vue.component("layout", Layout)
 
 const router = new VueRouter({
-	routes
+	mode: 'history',
+	routes: [
+		{
+			path: '/film-player/',
+			name: 'player-film',
+			component: () => import('../views/Film-play.vue'),
+			meta: {layout: "layout"}
+		},
+		{
+			path: '/oauth42/callback',
+			name: 'oauth42',
+			component: () => import('../views/oauth42.vue'),
+    		meta: {layout: "layout"}
+		},
+		{
+			path: '/oauthGoogle/callback',
+			name: 'oauthGoogle',
+			component: () => import('../views/oauthGoogle.vue'),
+    			meta: {layout: "layout"}
+		},
+
+    {
+			path: '/user',
+			name: 'userProfile',
+			component: () => import('../views/Profile.vue'),
+			meta: {layout: "layout"}
+		},
+		{
+			path: '/research',
+			name: 'researchBar',
+			component: () => import('../../src/components/ResearchBar.vue'),
+    		meta: {layout: "layout"}
+		},
+		{
+			path: '/',
+			name: 'Home',
+			component: () => import('../../src/components/NewHome.vue'),
+    		meta: {layout: "layout"}
+		},
+	]
 })
 
 export default router

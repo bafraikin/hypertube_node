@@ -2,8 +2,10 @@ import {Request, Response} from 'express';
 import { fstat } from 'fs';
 import { AdvancedConsoleLogger } from 'typeorm';
 import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS, SSL_OP_NETSCAPE_CA_DN_BUG } from 'constants';
+import { EventListenerTypes } from 'typeorm/metadata/types/EventListenerTypes';
 
 const fs = require('fs');
+const srt2vtt = require('srt-to-vtt');
 const axios = require('axios');
 const OS = require('opensubtitles-api');
 const OpenSubtitles = new OS({
@@ -11,7 +13,7 @@ const OpenSubtitles = new OS({
     ssl: true
 });
 
-export default class moviesController{
+export default class subtitlesController{
 
     static getSub(req: Request, res: Response){
         let imdb: string = req.body.imdbId;
@@ -25,20 +27,34 @@ export default class moviesController{
             imdbid: imdb
         })
         .then((subtitles: any) => {
+            console.log("SUUUUUUUUUUUUBTITLES ////////////////////////////////////////////////////////////");
+            console.log(subtitles);
             let downSubTab = new Array;
             if (subtitles.en != null){
                 downSubTab.push("eng&" + subtitles.en[0].vtt);
-                downSubTab.push("eng&" + subtitles.en[1].vtt);
+                downSubTab.push("eng&" + subtitles.en[0].utf8);
+                if (subtitles.en[1] != null){
+                    downSubTab.push("eng&" + subtitles.en[1].vtt);
+                    downSubTab.push("eng&" + subtitles.en[1].utf8);
+                }
             }
             if (subtitles.fr != null){
                 downSubTab.push("fre&" + subtitles.fr[0].vtt);
-                downSubTab.push("fre&" + subtitles.fr[1].vtt);
+                downSubTab.push("fre&" + subtitles.fr[0].utf8);
+                if (subtitles.fr[1] != null){
+                    downSubTab.push("fre&" + subtitles.fr[1].vtt);
+                    downSubTab.push("fre&" + subtitles.fr[1].utf8);
+                }
             }
             if (subtitles.zh != null){
                 downSubTab.push("chi&" + subtitles.zh[0].vtt);
-                downSubTab.push("chi&" + subtitles.zh[1].vtt);
+                downSubTab.push("chi&" + subtitles.zh[0].utf8);
+                if (subtitles.zh[1] != null){
+                    downSubTab.push("chi&" + subtitles.zh[1].vtt);
+                    downSubTab.push("chi&" + subtitles.zh[1].utf8);
+                }
             }
-            moviesController.downSub(downSubTab, imdb);
+            subtitlesController.downSub(downSubTab, imdb);
         })
     }
 
@@ -51,29 +67,46 @@ export default class moviesController{
             if (language != null){
                 let url = linkSubTab[i].slice(4);
                 let path: string | null = null;
-                let isValid = await moviesController.testLink(url);
+                let isValid = await subtitlesController.testLink(url);
+                pattern = /.vtt./;
+                let isVtt: Array<string> | null = url.match(pattern);
                 switch (language[0]){
                     case 'eng':
                         if (isValid === true && countTab[0] == 0){
-                            path = "sub/" + fileId + "-eng.vtt";
+                            if (isVtt != null){
+                                path = "sub/" + fileId + "-eng.vtt";
+                            }
+                            else{
+                                path = "sub/" + fileId + "-eng.srt";
+                            }
                             countTab[0]++;
                         }
                         break;
                     case 'fre':
                         if (isValid === true && countTab[1] == 0){
-                            path = "sub/" + fileId + "-fre.vtt";
+                            if (isVtt != null){
+                                path = "sub/" + fileId + "-fre.vtt";
+                            }
+                            else{
+                                path = "sub/" + fileId + "-fre.srt";
+                            }
                             countTab[1]++;
                         }
                         break;
                     case 'chi':
                         if (isValid === true && countTab[2] == 0){
-                            path = "sub/" + fileId + "-chi.vtt";
+                            if (isVtt != null){
+                                path = "sub/" + fileId + "-chi.vtt";
+                            }
+                            else{
+                                path = "sub/" + fileId + "-chi.srt";
+                            }
                             countTab[2]++;
                         }
                         break;
                 }
                 if (path != null) {
-                    let isSave = await moviesController.getFile(url, path);
+                    let isSave = await subtitlesController.getFile(url, path);
                 }
             }
             i++;
@@ -82,10 +115,18 @@ export default class moviesController{
 
     static async getFile(url: string, path: string){
         try{
+            let pattern: RegExp = /.srt$/;
+            let isSrt: Array<string> | null = path.match(pattern);
+            let vttPath: string = path.slice(0, path.length - 3) + "vtt";
             let response: any = await axios.get(url, {responseType: 'blob'});
             if (response.status == 200){
                 fs.writeFile(path, response.data, () => {
                     console.log('The file has been saved!');
+                    if (isSrt != null){
+                        fs.createReadStream(path)
+                        .pipe(srt2vtt())
+                        .pipe(fs.createWriteStream(vttPath))
+                    } 
                     return "ok";
                 });
             }

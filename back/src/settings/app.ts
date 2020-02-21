@@ -1,3 +1,4 @@
+require('module-alias/register')
 import startServer from './start_server'
 import { join } from 'path'
 import {blue, red }from 'chalk'
@@ -10,21 +11,19 @@ const isTest = false;
 const env = (isDev && 'development') || (isTest && 'test') || 'production'
 
 async function bootstrap() {
-  const app = await startServer({ isDev, isTest });
-  const port: number = 3000;
+	const app = await startServer({ isDev, isTest });
+	const port: number = 3000;
+	console.log('starting server...');
 
-  console.log('starting server...');
-
-  console.log(blue(`Starting ${env} server on port ${port}: http://localhost:${port}`))
-
-  app.listen(port, (error: Error) => {
-    if (error) {
-      console.error(red('could not start server'))
-      console.error(red(error.message))
-    } else {
-      console.log(blue(`Server started, http://localhost:${port}`))
-    }
-  });
+	console.log(blue(`Starting ${env} server on port ${port}: http://127.0.0.1:${port}`))
+		app.listen(port, (error: Error) => {
+		if (error) {
+			console.error(red('could not start server'))
+			console.error(red(error.message))
+		} else {
+			console.log(blue(`Server started, http://127.0.0.1:${port}`))
+		}
+	});
 }
 
 bootstrap();

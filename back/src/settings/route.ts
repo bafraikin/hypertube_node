@@ -1,26 +1,52 @@
 import {Connection} from 'typeorm'
 import passport from 'passport';
-import {Express } from 'express'
-import * as controller from '../app/controllers/index'
-import {Request, Response} from "express";
-import { check} from 'express-validator'
-const fs = require('fs');
+import * as controller from '@app/controllers/index'
+import {Express, NextFunction ,Request, Response, Router} from "express";
+import logger from "./logger"
 
 export default function setRoute(connection: Connection, app: Express) {
 
-app.get('/test', (req: Request, res: Response) => {return res.send({coucou: 'salut'});})
+	let userNotAuthenticated: Router = Router().use(controller.authenticate.checkNotAuth);
+	let userAuthenticated: Router = Router().use(controller.authenticate.checkAuth);
 
-	app.route('/user').get([check('coucou').isLength({ min: 5 })], controller.user.test);
-	app.post('/login', passport.authenticate('local', controller.authenticate.authenticateObject()));
-	app.get('/logout', controller.authenticate.logout);
+	app.use((error: any, req: Request, res: Response, next: NextFunction) => {
+		if (error != null && error instanceof SyntaxError) {
+			return res.status(422).json({
+				error: 'invalid json'
+			})
+		}
+		return next()
+	})
+	app.use(function(req: Request, res: Response, next: NextFunction) {
+		res.removeHeader('X-Powered-By')
+		logger.info(`[Express] ${req.method} ${req.url} ${req.ip}`)
+		return next()
+	})
 
-	app.post('/film-info', controller.filmInfo.searchInfo);
-	
-	app.post('/film-search-api-query-string', controller.movies.ytsApiQueryString);
-	app.post('/download', controller.movies.getDownload);
-	app.get('/download/delete', controller.movies.deleteAllMovies);
-	app.get('/player/:file', controller.movies.player);
-	app.post('/subtitles', controller.subtitles.getSub);
-	
+	userNotAuthenticated.post('/authentication', passport.authenticate('local'), controller.authenticate.afterAuth);
+	userNotAuthenticated.post("/user", controller.user.create);
+	userNotAuthenticated.get('/oauth42', passport.authenticate('42'), controller.authenticate.afterAuth);
+	userNotAuthenticated.post('/oauth42/callback', passport.authenticate('42'), controller.authenticate.afterAuth);
+	userNotAuthenticated.get('/oauthGoogle', passport.authenticate('google', { scope: ['profile', 'email']  }));
+	userNotAuthenticated.post('/oauthGoogle/callback',passport.authenticate('google', { failureRedirect: '/login' }), controller.authenticate.afterAuth);
+
+
+
+	userAuthenticated.get("/user", controller.user.getUser);
+	userAuthenticated.route("/authentication").delete(controller.authenticate.logout);
+	userAuthenticated.get('/player/:url/:hash/:imdbCode', controller.movies.player);
+	userAuthenticated.get('/watch', controller.watch.getWatch);
+	userAuthenticated.post('/watch', controller.watch.postWatch);
+	userAuthenticated.get('/comment', controller.comments.getComment);
+	userAuthenticated.post('/comment', controller.comments.postComment);
+	userAuthenticated.get('/movie-detail', controller.movies.getMovieDetail);
+	userAuthenticated.get('/yts-torrent', controller.movies.getYtsTorrent);
+	app.get('/research', controller.movies.searchForMovies);
+	userAuthenticated.get("/userProfile", controller.user.userProfile);
+	userAuthenticated.post('/subtitles', controller.subtitles.getSub);
+
+
+	app.use(`/${encodeURI("😱")}`, userNotAuthenticated);
+	app.use(`/${encodeURI("😂")}`, userAuthenticated);
 	return app;
 }

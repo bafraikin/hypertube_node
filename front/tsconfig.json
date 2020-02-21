@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
+		"traceResolution": true,
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
@@ -13,9 +14,11 @@
     "baseUrl": ".",
     "types": [
       "webpack-env",
-      "jest"
+      "jest",
+			"vuetify"
     ],
     "paths": {
+			"img/*": ["public/img/*"],
       "@/*": [
         "src/*"
       ]
