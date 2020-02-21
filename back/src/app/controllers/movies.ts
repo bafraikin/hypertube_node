@@ -7,19 +7,21 @@ export default class moviesController {
 
 	static async searchForMovies(req: Request, res: Response) {
 		try {
-		let url: string;
+			let url: string;
 
-		let apiClient : any;
-		if (!req.query.page)
-			throw "error";
-		if (req.query.queryString == undefined || req.query.queryString == '') {
-			let filter = req.query;
-			let movieFilter: Filter = {firstYear: Number(filter.firstYear), lastYear: Number(filter.lastYear), minMark: Number(filter.minMark), maxMark: Number(filter.maxMark), genders: filter.gender};
-			apiClient = new TMDBClientDiscover(movieFilter);
-		}
-		else
-			apiClient = new TMDBClientSearch(req.query.queryString);
-			apiClient.getPage(req.query.page).then((response: any)  => {res.send(response.data.results)}).catch((err:any)  => { res.status(401).send("error") });
+			let apiClient : any;
+			if (!req.query.page)
+				throw "error";
+			if (req.query.queryString == undefined || req.query.queryString == '') {
+				let filter = req.query;
+				let movieFilter: Filter = {firstYear: Number(filter.firstYear), lastYear: Number(filter.lastYear), minMark: Number(filter.minMark), maxMark: Number(filter.maxMark), genders: filter.gender};
+				apiClient = new TMDBClientDiscover(movieFilter);
+			}
+			else{
+				apiClient = new TMDBClientSearch(req.query.queryString);
+			}
+			let response : any = apiClient.getPage(req.query.page);
+			res.send(response.data.results)
 		} catch (err) {
 			res.status(400).send("error")
 		}
