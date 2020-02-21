@@ -15,7 +15,6 @@ export default class torrentsController {
 				res.status(200).send(response.flat(Infinity));
 			})
 		} catch (err) {
-			console.error(err);
 			res.status(401).send("error");
 		}
 	}
