@@ -4,7 +4,6 @@
       <v-card flat color="transparent">
 
 
-        <v-subheader>Range year movie</v-subheader>
         <v-card-text>
           <v-text-field
             v-model="queryString"
