@@ -31,7 +31,7 @@ export default class authenticateController {
 				return done(null, newUser);
 			}
 			catch{
-				console.log("error l36 authenticat.ts");
+				console.error("error l36 authenticat.ts");
 			}
 		}
 	}
