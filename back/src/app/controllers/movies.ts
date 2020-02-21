@@ -10,6 +10,9 @@ export default class moviesController {
 		let url: string;
 
 		let apiClient : any;
+		if (!req.query.page)
+			return(res.status(400).send("error"));
+
 		if (req.query.queryString == undefined || req.query.queryString == '') {
 			let filter = req.query;
 			let movieFilter: Filter = {firstYear: Number(filter.firstYear), lastYear: Number(filter.lastYear), minMark: Number(filter.minMark), maxMark: Number(filter.maxMark), genders: filter.gender};
@@ -17,7 +20,7 @@ export default class moviesController {
 		}
 		else
 			apiClient = new TMDBClientSearch(req.query.queryString);
-			apiClient.getPage(1).then((response: any)  => {res.send(response.data.results)}).catch((err:any)  => { res.status(401).send("error") });
+			apiClient.getPage(req.query.page).then((response: any)  => {res.send(response.data.results)}).catch((err:any)  => { res.status(401).send("error") });
 		return;
 	}
 
