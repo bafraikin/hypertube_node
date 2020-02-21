@@ -1,7 +1,6 @@
 import {Request, Response} from 'express';
 import { Movie } from '@app/models/movies';
 import {Filter, TMDBClientSearch, TMDBClientDiscover} from '@app/services/OMDB'
-const fs = require('fs');
 import axios from 'axios';
 
 export default class moviesController {
