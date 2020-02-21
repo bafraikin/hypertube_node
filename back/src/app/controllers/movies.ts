@@ -20,7 +20,13 @@ export default class moviesController {
 		}
 		else
 			apiClient = new TMDBClientSearch(req.query.queryString);
-			apiClient.getPage(req.query.page).then((response: any)  => {res.send(response.data.results)}).catch((err:any)  => { res.status(401).send("error") });
+		apiClient.getPage(req.query.page).then((response: any)  => {
+			let valid_movie = response.data.results.filter((movie: any) => {return movie.poster_path != null})
+			res.send(valid_movie);
+		})
+		.catch((err:any)  => {
+			res.status(401).send("error") 
+		});
 		return;
 	}
 
