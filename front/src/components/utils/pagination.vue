@@ -7,6 +7,12 @@
 <script>
 
   export default {
+    data() {
+      return {
+        notOngoingTimeout: true,
+        timeoutToWait: 1500
+      }
+    },
     methods: {
       isVisibleOnScreen(el) {
         let top = el.offsetTop;
@@ -30,8 +36,17 @@
     },
     mounted() {
       window.onscroll= () => {
-        if (this.isVisibleOnScreen(this.$el))
-          this.$emit("displayNewResults");
+        if (this.isVisibleOnScreen(this.$el) && this.notOngoingTimeout)
+        {
+          this.notOngoingTimeout = false
+          setTimeout(() => { 
+            this.$emit("displayNewResults");
+            setTimeout(() => {
+              this.notOngoingTimeout = true;
+            }, this.timeoutToWait);
+          }, this.timeoutToWait);
+         
+        }
       };
     }
   }

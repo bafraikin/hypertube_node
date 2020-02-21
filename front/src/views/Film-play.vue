@@ -2,12 +2,8 @@
 	<div id="lala">
 
 		<div v-if="showFilm">
-			<!-- <h1>{{ title }}</h1> -->
 			<video  ref="myVid"  id="videoPlayer" controls  crossorigin="use-credentials" >
 				<source v-bind:src="filmPath" type="video/mp4"   >
-				<track label="English" kind="subtitles" srclang="en" v-bind:src="filmSubEn">
-				<track label="Français" kind="subtitles" srclang="fr" v-bind:src="filmSubFr">
-				<track label="中文" kind="subtitles" srclang="zh" v-bind:src="filmSubCh">
 			</video>
 		</div>
 	</div>
@@ -21,43 +17,64 @@ export default {
 	name: 'download',
 	data() {
 		return {
-			title: '',
 			showFilm: false,
 			filmPath: null,
-			filmSubEn: null,
-			filmSubFr: null,
-			filmSubCh: null,
 		}
 	},
 	methods:{
 		postWatchList(idOMDB){
 			axios.post('😂/watch', { idOMDB: idOMDB}) .then(response => { })
 		},
-		downloadMovies(imdbCode, torrent){
-			if (torrent != undefined){
-				var url = torrent.url;
-				var hash = torrent.hash;
-			}
-			else {
-				var url = undefined;
-				var hash = undefined;
-			}
-			url = encodeURIComponent(url);
-			hash = encodeURIComponent(hash);
-			imdbCode = encodeURIComponent(imdbCode);
-			this.filmPath =  baseURL + "/😂/player/" + url + "/"+ hash + "/"+ imdbCode;
+		downloadMovies(magnetLink){
+			magnetLink = encodeURIComponent(magnetLink);
+			this.filmPath = baseURL +  "/😂/player/" + magnetLink;
 			this.showFilm = true;
 		},
+		getSubtitles(code){
+			var url = "😂/subtitles";
+			axios
+			.post(url, {
+				imdbId: code
+			})
+			.then((response) => {
+				if (response != undefined){
+				let i = 0;
+					while (i < response.data.length){
+						if (response.data[i] == 'eng'){
+							this.addTrack("eng", "English", "en", code);
+						}
+						else if (response.data[i] == 'fre'){
+							this.addTrack("fre", "Français", "fr", code);
+						}
+						else if (response.data[i] == 'chi'){
+							this.addTrack("chi", "中文", "zh", code);
+						}
+						i++;
+					}
+				}
+			})
+			.catch(error => {
+				console.log("Error subtitles");
+				console.log(error);
+			})
+		},
+		addTrack(lang, label, srclang, code){
+			let video = document.getElementById("videoPlayer");
+			let track = document.createElement('track');
+			track.setAttribute("label", label);
+			track.setAttribute("kind", "subtitles");
+			track.setAttribute("srclang", srclang);
+			track.setAttribute("src", "http://127.0.0.1:3000/" + code + "-" + lang + ".vtt");
+			video.appendChild(track);
+		}
 	},
 	mounted(){
 		var imdbCode = this.$route.params.imdbCode;
-		var torrent = this.$route.params.torrent;
+		var magnetLink = this.$route.params.magnetLink;
 		var idOMDB = this.$route.params.idOMDB;
-		this.downloadMovies(imdbCode, torrent);
+		this.downloadMovies(magnetLink);
+		this.getSubtitles(imdbCode);
 		this.postWatchList(idOMDB);
-		this.filmSubEn = "http://127.0.0.1:3000/" + imdbCode + "-eng.vtt";
-		this.filmSubFr = "http://127.0.0.1:3000/" + imdbCode + "-fre.vtt";
-		this.filmSubCh = "http://127.0.0.1:3000/" + imdbCode + "-chi.vtt";
 	}
 }
 </script>

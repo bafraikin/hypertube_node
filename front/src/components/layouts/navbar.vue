@@ -5,7 +5,15 @@
     :elevation="5"
   >
     <div class="navbar">
-       <h2>Hypertubulaire</h2>
+      <h2>
+        <router-link
+          to="/"
+          v-slot="{ href, route, navigate, isActive, isExactActive }"
+        >
+          <a :href="href" @click="navigate">Hypertubulaire</a>
+        </router-link>
+      </h2>
+
       <div class="navbar">
 
         <div v-if="!isConnected" class="navbar"> 
@@ -81,6 +89,10 @@
     .navbar{
       justify-content: space-around;
       width: 15%;
+    }
+    h2 a {
+      text-decoration: none;
+      color: inherit;
     }
   }
   .v-menu__content {

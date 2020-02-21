@@ -7,13 +7,15 @@
 					<tr>
 						<th class="text-left">Quality</th>
 						<th class="text-left">Torrent link</th>
+						<th class="text-left"></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr v-for="torrent in torrents">
 						<td>{{ torrent.quality }}</td>
+						<td>{{ torrent.provider }}</td>
 						<td>
-							<i v-on:click="play(torrent)" >Play</i>
+							<i v-on:click="play(torrent.magnetLink)" >Play</i>
 						</td>
 					</tr>
 				</tbody>
@@ -42,32 +44,14 @@ export default {
 		}
 	},
 	methods:{
-		play(torrent){
-			this.getSubtitles(this.imdbCode);
-			this.$router.push({ name: "player-film", params:{imdbCode: this.imdbCode, torrent: torrent, idOMDB: this.idOMDB}});
-		},
-		getSubtitles(code){
-			console.log("OK SUBTITLES////////////////////////////////////////////////////////////////////////////////////");
-			var url = "😂/subtitles";
-			axios
-			.post(url, {
-				imdbId: code
-			})
-			.then(response => {
-				if(response.status == 200){
-					console.log("LA RESPONSE");
-					console.log(response.data);
-				}
-			})
-			.catch(error => {
-				console.log(error.response);
-			})
+		play(magnetLink){
+			this.$router.push({ name: "player-film", params:{magnetLink: magnetLink, idOMDB: this.idOMDB, imdbCode: this.imdbCode}});
 		},
 		buildImg(movie){
 			return "https://image.tmdb.org/t/p/w500/"+ movie.poster_path;
 		},
 		getMovieTorrent(){
-			axios.get('😂/yts-torrent', { params: { imdbCode: this.imdbCode } })
+			axios.get('😂/torrent', { params: { imdbCode: this.imdbCode } })
 			.then(response => {
 				this.torrents = response.data;
 				this.onMontre = true;
