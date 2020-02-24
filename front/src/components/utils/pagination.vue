@@ -1,4 +1,3 @@
-
 <template>
   <div id="toPaginate">
     <img src="img/loader.gif"/>
@@ -7,12 +6,17 @@
 
 <script>
 
-
   export default {
+    data() {
+      return {
+        notOngoingTimeout: true,
+        timeoutToWait: 1500
+      }
+    },
     methods: {
-    isVisibleOnScreen(el) {
-        const top = el.offsetTop;
-        const left = el.offsetLeft;
+      isVisibleOnScreen(el) {
+        let top = el.offsetTop;
+        let left = el.offsetLeft;
         const width = el.offsetWidth;
         const height = el.offsetHeight;
 
@@ -31,9 +35,20 @@
       }
     },
     mounted() {
-      window.onscroll= () => {console.log(this.elementInViewport(this.$el))};
+      window.onscroll= () => {
+        if (this.isVisibleOnScreen(this.$el) && this.notOngoingTimeout)
+        {
+          this.notOngoingTimeout = false
+          setTimeout(() => { 
+            this.$emit("displayNewResults");
+            setTimeout(() => {
+              this.notOngoingTimeout = true;
+            }, this.timeoutToWait);
+          }, this.timeoutToWait);
+         
+        }
+      };
     }
-
   }
 
 </script>

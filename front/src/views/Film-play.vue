@@ -1,7 +1,6 @@
 <template>
 	<div id="lala">
 		<div v-if="showFilm">
-			<!-- <h1>{{ title }}</h1> -->
 			<video  ref="myVid"  id="videoPlayer" controls >
 						<source v-bind:src="filmPath" type="video/mp4"   >
 			</video>
@@ -11,13 +10,12 @@
 
 <script>
 
-import axios from  '@/config/axios_default';
+import axios, {baseURL} from  '@/config/axios_default';
 
 export default {
 	name: 'download',
 	data() {
 		return {
-			title: '',
 			showFilm: false,
 			filmPath: null,
 		}
@@ -26,27 +24,16 @@ export default {
 		postWatchList(idOMDB){
 			axios.post('😂/watch', { idOMDB: idOMDB}) .then(response => { })
 		},
-		downloadMovies(imdbCode, torrent){
-			if (torrent != undefined){
-				var url = torrent.url;
-				var hash = torrent.hash;
-			}
-			else {
-				var url = undefined;
-				var hash = undefined;
-			}
-			url = encodeURIComponent(url);
-			hash = encodeURIComponent(hash);
-			imdbCode = encodeURIComponent(imdbCode);
-			this.filmPath =  baseURL + "/😂/player/" + url + "/"+ hash + "/"+ imdbCode;
+		downloadMovies(magnetLink){
+			magnetLink = encodeURIComponent(magnetLink);
+			this.filmPath = baseURL +  "/😂/player/" + magnetLink;
 			this.showFilm = true;
 		},
 	},
 	mounted(){
-		var imdbCode = this.$route.params.imdbCode;
-		var torrent = this.$route.params.torrent
+		var magnetLink = this.$route.params.magnetLink
 		var idOMDB = this.$route.params.idOMDB
-		this.downloadMovies(imdbCode, torrent);
+		this.downloadMovies(magnetLink);
 		this.postWatchList(idOMDB);
 	}
 }

@@ -7,7 +7,7 @@ import Vuetify from 'vuetify'
 import VuetifyToast from 'vuetify-toast-snackbar'
 import 'vuetify/dist/vuetify.min.css'
 
-Vue.use(Vuetify);
+Vue.use(Vuetify );
 Vue.use(VuetifyToast, {
 	y: 'top',
 	dismissable: false,
@@ -15,6 +15,12 @@ Vue.use(VuetifyToast, {
 	showClose: true,
 	closeIcon: 'X'
 });
+
+export default new Vuetify({
+  theme: {
+    dark: true,
+  },
+})
 
 Vue.config.productionTip = false
 
