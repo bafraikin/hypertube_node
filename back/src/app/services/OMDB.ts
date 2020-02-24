@@ -30,7 +30,7 @@ class TMDBClientDiscover extends TMDBClient {
 	constructor(movieFilter: Filter) {
 		super();
 		this.filter = movieFilter;
-		this.baseQuery = this.defaultGetQuery() + "&primary_release_date.gte=" + this.filter.firstYear + "-01-01"  + "&primary_release_date.lte=" + this.filter.lastYear + "-01-01" + "&vote_average.gte=" + this.filter.minMark + "&vote_average.lte=" + this.filter.maxMark + "&sort_by=vote_average.desc" +  this.withGenres();
+		this.baseQuery = this.defaultGetQuery() + "&primary_release_date.gte=" + this.filter.firstYear + "-01-01"  + "&primary_release_date.lte=" + this.filter.lastYear + "-01-01" + "&vote_average.gte=" + this.filter.minMark + "&vote_average.lte=" + this.filter.maxMark + "&sort_by=popularity.desc" +  this.withGenres();
 		console.log(this.baseQuery)
 	}
 
