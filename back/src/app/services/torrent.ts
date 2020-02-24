@@ -10,8 +10,9 @@ export default class torrentClient {
 			let url = 'http://yts.mx/api/v2/list_movies.json?query_term='+ imdbCode;
 			let response: any = await axios.get(url);
 			let torrents: Array<any> = [];
-			let list = ((((response || {}).data || {}).data || {}).movies[0] || {}).torrents;
-			if (list != undefined){
+			let getListOrUndefinedFromResponse = (response) => { return ((((response || {}).data || {}).data || {}).movies[0] || {}).torrents; }
+			let list = getListOrUndefinedFromResponse(response);
+			if (list != undefined) {
 				list.forEach((torrent: any) => {
 					let entry = {
 						'provider': 'YTS',
@@ -37,9 +38,6 @@ export default class torrentClient {
 			let data: object;
 
 			data = (((response || {}).data || {}).torrents || {}).en['1080p'];
-			console.log("&&&&*****************");
-			console.log(data);
-			console.log("&&&&*****************");
 			if (data != undefined){
 				console.log("Hello ici");
 				let entry = {
