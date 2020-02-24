@@ -10,7 +10,7 @@ export default class torrentClient {
 			let url = 'http://yts.mx/api/v2/list_movies.json?query_term='+ imdbCode;
 			let response: any = await axios.get(url);
 			let torrents: Array<any> = [];
-			let getListOrUndefinedFromResponse = (response) => { return ((((response || {}).data || {}).data || {}).movies[0] || {}).torrents; }
+			let getListOrUndefinedFromResponse = (response: any) => { return ((((response || {}).data || {}).data || {}).movies[0] || {}).torrents; }
 			let list = getListOrUndefinedFromResponse(response);
 			if (list != undefined) {
 				list.forEach((torrent: any) => {
@@ -35,22 +35,21 @@ export default class torrentClient {
 			let url = 'https://tv-v2.api-fetch.website/movie/'+ imdbCode;
 			let response: any = await axios.get(url);
 			let torrents: Array<any> = [];
-			let data: object;
 
-			data = (((response || {}).data || {}).torrents || {}).en['1080p'];
-			if (data != undefined){
+			let magnetLink = this.getMagnetLink(response, '1080p');
+			if (magnetLink != undefined){
 				let entry = {
 					'provider': 'Pop corn',
-					'magnetLink': response.data.torrents.en['1080p'].url,
+					'magnetLink': magnetLink,
 					'quality': '1080p'
 				};
 				torrents.push(entry);
 			}
-			data = (((response || {}).data || {}).torrents || {}).en['720p'];
-			if (data != undefined){
+			magnetLink = this.getMagnetLink(response, '720p');
+			if (magnetLink != undefined){
 				let entry = {
 					'provider': 'Pop Corn',
-					'magnetLink': response.data.torrents.en['720p'].url,
+					'magnetLink': magnetLink,
 					'quality': '720p'
 				};
 				torrents.push(entry);
@@ -60,6 +59,22 @@ export default class torrentClient {
 			return err;
 		}
 	}
+
+	static getMagnetLink(response: any, quality: string){
+		if (response == undefined)
+			return undefined;
+		if (response.data == undefined)
+			return undefined;
+		if (response.data.torrents.en == undefined)
+			return undefined;
+		if (response.data.torrents.en[quality] == undefined)
+			return undefined;
+		if (response.data.torrents.en[quality].url == undefined)
+			return undefined;
+		else
+			return response.data.torrents.en[quality].url;
+	}
+
 
 	static buildMagnetLink(hash: any, url: any){
 		try {
