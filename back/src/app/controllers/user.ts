@@ -4,9 +4,17 @@ import {Request, Response} from 'express'
 export default class userController {
 
 	static async userProfile(req: Request, res: Response) {
-		let userId = req.query.userId;
-		let user = await  User.findOne({ id: userId });
-		res.send(user);
+		try {
+			let userId = req.query.userId;
+			if (userId == undefined)
+				throw "userId undefined";
+			let user = await  User.findOne({ id: userId });
+			if (user == undefined)
+				throw "user undefined";
+			res.status(200).send(user);
+		} catch (err) {
+			res.status(401).send("error");
+		}
 	}
 
 	static async create(req: Request, res: Response) {
