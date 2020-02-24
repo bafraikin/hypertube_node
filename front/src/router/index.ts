@@ -33,24 +33,6 @@ const router = new VueRouter({
 			component: () => import('../../src/components/MovieDetails.vue'),
 			meta: {layout: "layout"}
 		},
-		// {
-		// 	path: '/oauth42/callback',
-		// 	name: 'oauth42',
-		// 	component: () => import('../views/oauth42.vue'),
-		// 	meta: {layout: "layout"}
-		// },
-		// {
-		// 	path: '/oauthGoogle/callback',
-		// 	name: 'oauthGoogle',
-		// 	component: () => import('../views/oauthGoogle.vue'),
-		// 	meta: {layout: "layout"}
-		// },
-		// {
-		// 	path: '/research',
-		// 	name: 'researchBar',
-		// 	component: () => import('../../src/components/ResearchBar.vue'),
-		// 	meta: {layout: "layout"}
-		// },
 	]
 })
 
