@@ -12,9 +12,6 @@ export default class torrentsController {
 			let torrentPOP = torrentClient.torrentPopCorn(imdbCode);
 			let promise = Promise.all([torrentYTS, torrentPOP]);
 			promise.then((response: any) => {
-				console.log("*********************");
-				console.log(response);
-				console.log("*********************");
 				res.status(200).send(response.flat(Infinity));
 			})
 		} catch (err) {
