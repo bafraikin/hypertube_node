@@ -1,10 +1,9 @@
 <template>
   <v-container >
-    <h1>New Home</h1>
+    <h1>Research</h1>
     <ResearchBar v-if="showResearchBar" v-on:moviesResearch="researchMovieFun($event)" ></ResearchBar>
     <MovieVignette :movies="moviesToDisplay" v-if="showMovieVignette" v-on:selectMovie="showMovieDetailsFun($event)" ></MovieVignette>
-    <MovieDetails  v-if="showMovieDetails" :OMDBid="OMDBid"></MovieDetails>
-    <pagination v-if="!showMovieDetails" v-on:displayNewResults="popStackMovie()"/> 
+    <pagination v-on:displayNewResults="popStackMovie()"/>
   </v-container >
 </template>
 
@@ -14,21 +13,18 @@
   import axios from  '@/config/axios_default';
   import ResearchBar from '@/components/ResearchBar.vue'
   import MovieVignette from '@/components/MovieVignette.vue'
-  import MovieDetails from '@/components/MovieDetails.vue'
   import pagination from '@/components/utils/pagination.vue'
 
   export default {
     name: 'home',
     components: {
       "ResearchBar": ResearchBar,
-      "MovieDetails": MovieDetails,
       "MovieVignette": MovieVignette,
       pagination,
     },
     data() {
       return {
         showMovieVignette: false,
-        showMovieDetails: false,
         showResearchBar: true,
         moviesToDisplay: [],
         moviesStack: [],
@@ -39,10 +35,7 @@
     },
     methods:{
       showMovieDetailsFun(movie){
-        this.OMDBid = movie.id;
-        this.showMovieVignette = false;
-        this.showResearchBar = false;
-        this.showMovieDetails = true;
+		this.$router.push({ name: "movie", params:{OMDBid: movie.id}});
       },
       researchMovieFun(research){
         this.lastResearch = research;
