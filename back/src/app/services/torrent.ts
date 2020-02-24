@@ -39,7 +39,6 @@ export default class torrentClient {
 
 			data = (((response || {}).data || {}).torrents || {}).en['1080p'];
 			if (data != undefined){
-				console.log("Hello ici");
 				let entry = {
 					'provider': 'Pop corn',
 					'magnetLink': response.data.torrents.en['1080p'].url,
