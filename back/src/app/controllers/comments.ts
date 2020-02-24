@@ -23,10 +23,10 @@ export default class commentController {
 
 	static async postComment(req: Request, res: Response) {
 		try {
-			let userrr : any = req.user;
-			if (!userrr)
+			let rUser : any = req.user;
+			if (!rUser)
 				throw "user undefined";
-			let userId = userrr.id;
+			let userId = rUser.id;
 			let imdbCode = req.body.imdbCode;
 			let content = req.body.content;
 			if (!userId || !imdbCode || imdbCode == '' || !content || content == '')
