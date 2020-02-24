@@ -4,7 +4,7 @@
 			<h1 >Casting</h1>
 			<v-layout row wrap>
 				<v-flex xs12 sm6 md4 lg3  v-for="character in cast.slice(0, 5)" :key="cast.cast_id"  >
-					<v-card dark>
+					<v-card dark v-if="character.profile_path">
 						<v-img  height="200px" v-bind:src="buildImg(character.profile_path)" > </v-img>
 						<v-card-subtitle >{{ character.name }}</v-card-subtitle>
 					</v-card>
@@ -16,7 +16,7 @@
 			<h1 >Executive Producer</h1>
 			<v-layout row wrap>
 				<v-flex xs12 sm6 md4 lg3  v-for="cre in crew.slice(0, 5)" :key="cre.id"  >
-					<v-card dark>
+					<v-card dark v-if="cre.profile_path" >
 						<v-img  height="200px" v-bind:src="buildImg(cre.profile_path)" > </v-img>
 						<v-card-subtitle >{{ cre.name }}</v-card-subtitle>
 					</v-card>

@@ -7,8 +7,6 @@ export default class moviesController {
 
 	static async searchForMovies(req: Request, res: Response) {
 		try {
-			let url: string;
-
 			let apiClient : any;
 			if (!req.query.page)
 				throw "error";
