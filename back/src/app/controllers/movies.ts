@@ -10,7 +10,7 @@ export default class moviesController {
 			let apiClient : any;
 			if (!req.query.page)
 				throw "error";
-			if (req.query.queryString == undefined || req.query.queryString == '') {
+			if (!req.query.queryString  || req.query.queryString == '') {
 				let filter = req.query;
 				let movieFilter: Filter = {firstYear: Number(filter.firstYear), lastYear: Number(filter.lastYear), minMark: Number(filter.minMark), maxMark: Number(filter.maxMark), genders: filter.gender};
 				apiClient = new TMDBClientDiscover(movieFilter);
@@ -19,9 +19,8 @@ export default class moviesController {
 				apiClient = new TMDBClientSearch(req.query.queryString);
 			}
 			let response : any = await apiClient.getPage(req.query.page);
-			res.send(response.data.results)
+			res.status(200).send(response.data.results)
 		} catch (err) {
-			console.log(err);
 			res.status(400).send("error")
 		}
 	}
@@ -29,10 +28,12 @@ export default class moviesController {
 	static async getMovieDetail(req: Request, res: Response) {
 		try {
 			let OMDBid = req.query.OMDBid;
+			if (!OMDBid)
+				throw "OMDBid missing";
 			let url = "https://api.themoviedb.org/3/movie/" + OMDBid + "?api_key=" + process.env.OMDB_KEY + "&language=en-US";
 			let response = await axios.get(url);
 			let movieDetail = response.data;
-			res.send(movieDetail);
+			res.status(200).send(movieDetail);
 		} catch (err) {
 			res.status(400).send("error")
 		}
@@ -41,10 +42,12 @@ export default class moviesController {
 	static async getMovieCasting(req: Request, res: Response) {
 		try {
 			let OMDBid = req.query.OMDBid;
+			if (!OMDBid)
+				throw "OMDBid missing";
 			let url = "https://api.themoviedb.org/3/movie/" + OMDBid + "/credits" + "?api_key=" + process.env.OMDB_KEY;
 			let response = await axios.get(url);
 			let movieDetail = response.data;
-			res.send(movieDetail);
+			res.status(200).send(movieDetail);
 		} catch (err) {
 			res.status(400).send("error")
 		}

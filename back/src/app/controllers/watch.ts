@@ -8,11 +8,12 @@ import axios from 'axios';
 export default class watchController {
 
 	static async getWatch(req: Request, res: Response) {
-		if (req.user instanceof User)
-			connection.getRepository(Watch).find({select: ["idOMDB"], where: {user: req.user}}).then((response: any) => {res.json(response)}).catch((err) => {
-				res.status(401).send(`error in query in ${__filename}`);
-			});
-		else {
+		try {
+			if (!(req.user instanceof User))
+				throw "user undefined";
+			let response: any = await connection.getRepository(Watch).find({select: ["idOMDB"], where: {user: req.user}});
+			res.json(response);
+		} catch (err) {
 			res.status(401).send(`error req.user not a user in ${__filename}`);
 		}
 	}
@@ -20,10 +21,14 @@ export default class watchController {
 	static async postWatch(req: Request, res: Response) {
 		try {
 			let userrr : any = req.user;
+			if (!userrr)
+				throw "user undefined";
 			let userId = userrr.id;
+			if (!userId)
+				throw "userId undefined";
 			let idOMDB = req.body.idOMDB;
 			const user : User | undefined = await User.findOne({ id: userId })
-			if(user == undefined || idOMDB == undefined)
+			if(!user || !idOMDB)
 				throw "error in post Watch parameter"
 			let watch = new Watch;
 			watch.idOMDB = idOMDB;
@@ -31,7 +36,7 @@ export default class watchController {
 			watch.save();
 			res.status(201).json(watch);
 		} catch (err) {
-				res.status(401).send("error");
+			res.status(401).send("error");
 		}
 	}
 
