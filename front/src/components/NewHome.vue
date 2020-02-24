@@ -4,8 +4,8 @@
     <ResearchBar v-if="showResearchBar" v-on:moviesResearch="researchMovieFun($event)" ></ResearchBar>
     <MovieVignette :movies="moviesToDisplay" v-if="showMovieVignette" v-on:selectMovie="showMovieDetailsFun($event)" ></MovieVignette>
     <MovieDetails  v-if="showMovieDetails" :OMDBid="OMDBid"></MovieDetails>
-    <pagination  v-on:displayNewResults="popStackMovie()"/> 
-  </v-container>
+    <pagination v-if="!showMovieDetails" v-on:displayNewResults="popStackMovie()"/> 
+  </v-container >
 </template>
 
 
