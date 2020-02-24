@@ -28,29 +28,15 @@ export default class subtitlesController{
         })
         .then(async (subtitles: any) => {
             let downSubTab = new Array;
+            console.log(subtitles);
             if (subtitles.en != null){
-                downSubTab.push("eng&" + subtitles.en[0].vtt);
-                downSubTab.push("eng&" + subtitles.en[0].utf8);
-                if (subtitles.en[1] != null){
-                    downSubTab.push("eng&" + subtitles.en[1].vtt);
-                    downSubTab.push("eng&" + subtitles.en[1].utf8);
-                }
+                await subtitlesController.createSubTab(downSubTab, subtitles.en);
             }
             if (subtitles.fr != null){
-                downSubTab.push("fre&" + subtitles.fr[0].vtt);
-                downSubTab.push("fre&" + subtitles.fr[0].utf8);
-                if (subtitles.fr[1] != null){
-                    downSubTab.push("fre&" + subtitles.fr[1].vtt);
-                    downSubTab.push("fre&" + subtitles.fr[1].utf8);
-                }
+                await subtitlesController.createSubTab(downSubTab, subtitles.fr);
             }
             if (subtitles.zh != null){
-                downSubTab.push("chi&" + subtitles.zh[0].vtt);
-                downSubTab.push("chi&" + subtitles.zh[0].utf8);
-                if (subtitles.zh[1] != null){
-                    downSubTab.push("chi&" + subtitles.zh[1].vtt);
-                    downSubTab.push("chi&" + subtitles.zh[1].utf8);
-                }
+                await subtitlesController.createSubTab(downSubTab, subtitles.zh);
             }
             let whichSub: Array<string> | undefined = await subtitlesController.downSub(downSubTab, imdb);
             res.send(whichSub);
@@ -62,12 +48,21 @@ export default class subtitlesController{
         })
     }
 
+    static async createSubTab(downSubTab: Array<string>, language: any){
+        if (language != null){
+            downSubTab.push(language[0].langcode + "&" + language[0].vtt, language[0].langcode + "&" + language[0].utf8);
+            if (language[1] != null){
+                downSubTab.push(language[1].langcode + "&" + language[1].vtt, language[1].langcode + "&" + language[1].utf8);
+            }
+        }
+    }
+
     static async downSub(linkSubTab: Array<string>, fileId: string){
         let countTab: Array<number> = [0, 0, 0, 0];
         let i: number = 0;
         let subExist = new Array;
         while (i < linkSubTab.length){
-            let pattern: RegExp = /^[a-z]{3}/;
+            let pattern: RegExp = /^[a-z]{2}/;
             let language: Array<string> | null = linkSubTab[i].match(pattern);
             if (language != null){
                 let url: string = linkSubTab[i].slice(4);
@@ -76,7 +71,7 @@ export default class subtitlesController{
                 pattern = /.vtt./;
                 let isVtt: Array<string> | null = url.match(pattern);
                 switch (language[0]){
-                    case 'eng':
+                    case 'en':
                         if (isValid === true && countTab[0] == 0){
                             if (isVtt != null){
                                 path = "sub/" + fileId + "-eng.vtt";
@@ -87,7 +82,7 @@ export default class subtitlesController{
                             countTab[0]++;
                         }
                         break;
-                    case 'fre':
+                    case 'fr':
                         if (isValid === true && countTab[1] == 0){
                             if (isVtt != null){
                                 path = "sub/" + fileId + "-fre.vtt";
@@ -98,7 +93,7 @@ export default class subtitlesController{
                             countTab[1]++;
                         }
                         break;
-                    case 'chi':
+                    case 'zh':
                         if (isValid === true && countTab[2] == 0){
                             if (isVtt != null){
                                 path = "sub/" + fileId + "-chi.vtt";
@@ -157,3 +152,4 @@ export default class subtitlesController{
             return "error";
         }
     }
+}
