@@ -26,9 +26,15 @@
 
 
 
+		<div v-if="movie.imdb_id">
 		<TorrentList :imdbCode="movie.imdb_id" :idOMDB="movie.id"></TorrentList>
 		<Comment :imdbCode="movie.imdb_id"></Comment>
 		<Casting :OMDBid="movie.id" ></Casting>
+		</div>
+		<div v-else>
+			<h2>No imdb code available</h2>
+			<p>So no torrents to display and no comments</p>
+		</div>
 		</div>
 	</v-container>
 </template>
@@ -62,6 +68,7 @@ export default {
 			axios.get('😂/movie-detail', { params: { OMDBid: this.OMDBid } })
 				.then(response => {
 					this.movie = response.data;
+					console.log(this.movie);
 				})
 		}
 	},
