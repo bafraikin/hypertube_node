@@ -31,7 +31,6 @@ export default {
 			this.showFilm = true;
 		},
 		getSubtitles(code){
-			// var url = "😂/subtitles";
 			axios
 			.post("😂/subtitles", {
 				imdbId: code

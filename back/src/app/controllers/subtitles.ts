@@ -1,12 +1,6 @@
 import {Request, Response} from 'express';
-import { fstat } from 'fs';
-import { AdvancedConsoleLogger } from 'typeorm';
-import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS, SSL_OP_NETSCAPE_CA_DN_BUG } from 'constants';
-import { EventListenerTypes } from 'typeorm/metadata/types/EventListenerTypes';
+import subtitlesServices from '@app/services/subtitles';
 
-const fs = require('fs');
-const srt2vtt = require('srt-to-vtt');
-const axios = require('axios');
 const OS = require('opensubtitles-api');
 const OpenSubtitles = new OS({
     useragent:'TemporaryUserAgent',
@@ -30,15 +24,15 @@ export default class subtitlesController{
             let downSubTab = new Array;
             console.log(subtitles);
             if (subtitles.en != null){
-                await subtitlesController.createSubTab(downSubTab, subtitles.en);
+                await subtitlesServices.createSubTab(downSubTab, subtitles.en);
             }
             if (subtitles.fr != null){
-                await subtitlesController.createSubTab(downSubTab, subtitles.fr);
+                await subtitlesServices.createSubTab(downSubTab, subtitles.fr);
             }
             if (subtitles.zh != null){
-                await subtitlesController.createSubTab(downSubTab, subtitles.zh);
+                await subtitlesServices.createSubTab(downSubTab, subtitles.zh);
             }
-            let whichSub: Array<string> | undefined = await subtitlesController.downSub(downSubTab, imdb);
+            let whichSub: Array<string> | undefined = await subtitlesServices.downSub(downSubTab, imdb);
             res.send(whichSub);
 
         })
@@ -46,110 +40,5 @@ export default class subtitlesController{
             console.log("Error get subtitles");
             console.log(error);
         })
-    }
-
-    static async createSubTab(downSubTab: Array<string>, language: any){
-        if (language != null){
-            downSubTab.push(language[0].langcode + "&" + language[0].vtt, language[0].langcode + "&" + language[0].utf8);
-            if (language[1] != null){
-                downSubTab.push(language[1].langcode + "&" + language[1].vtt, language[1].langcode + "&" + language[1].utf8);
-            }
-        }
-    }
-
-    static async downSub(linkSubTab: Array<string>, fileId: string){
-        let countTab: Array<number> = [0, 0, 0, 0];
-        let i: number = 0;
-        let subExist = new Array;
-        while (i < linkSubTab.length){
-            let pattern: RegExp = /^[a-z]{2}/;
-            let language: Array<string> | null = linkSubTab[i].match(pattern);
-            if (language != null){
-                let url: string = linkSubTab[i].slice(4);
-                let path: string | null = null;
-                let isValid: boolean | string = await subtitlesController.testLink(url);
-                pattern = /.vtt./;
-                let isVtt: Array<string> | null = url.match(pattern);
-                switch (language[0]){
-                    case 'en':
-                        if (isValid === true && countTab[0] == 0){
-                            if (isVtt != null){
-                                path = "sub/" + fileId + "-eng.vtt";
-                            }
-                            else{
-                                path = "sub/" + fileId + "-eng.srt";
-                            }
-                            countTab[0]++;
-                        }
-                        break;
-                    case 'fr':
-                        if (isValid === true && countTab[1] == 0){
-                            if (isVtt != null){
-                                path = "sub/" + fileId + "-fre.vtt";
-                            }
-                            else{
-                                path = "sub/" + fileId + "-fre.srt";
-                            }
-                            countTab[1]++;
-                        }
-                        break;
-                    case 'zh':
-                        if (isValid === true && countTab[2] == 0){
-                            if (isVtt != null){
-                                path = "sub/" + fileId + "-chi.vtt";
-                            }
-                            else{
-                                path = "sub/" + fileId + "-chi.srt";
-                            }
-                            countTab[2]++;
-                        }
-                        break;
-                }
-                if (path != null) {
-                    let isSave: string = await subtitlesController.getFile(url, path);
-                    if (isSave != "error"){
-                        subExist.push(isSave);
-                    }
-                }
-            }
-            i++;
-        }
-        return subExist;
-    }
-
-    static async getFile(url: string, path: string){
-        try{
-            let pattern: RegExp = /.srt$/;
-            let isSrt: Array<string> | null = path.match(pattern);
-            let vttPath: string = path.slice(0, path.length - 3) + "vtt";
-            let response: any = await axios.get(url, {responseType: 'blob'});
-            if (response.status == 200){
-                fs.writeFile(path, response.data, () => {
-                    console.log('The file has been saved!');
-                    if (isSrt != null){
-                        fs.createReadStream(path)
-                        .pipe(srt2vtt())
-                        .pipe(fs.createWriteStream(vttPath))
-                    } 
-                });
-                pattern = /eng|fre|chi/;
-                let lang: Array<string> | null = path.match(pattern);
-                if (lang != null){
-                    return lang[0];
-                }
-            }
-            return "error";
-        } catch (error){
-            return "error";
-        }
-    }
-
-    static async testLink(url: string){
-        try {
-            let response: any = await axios.get(url);
-            return (response.status == 200);
-        } catch (error) {
-            return "error";
-        }
     }
 }
