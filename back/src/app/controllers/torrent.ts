@@ -12,7 +12,14 @@ export default class torrentsController {
 			let torrentPOP = torrentClient.torrentPopCorn(imdbCode);
 			let promise = Promise.all([torrentYTS, torrentPOP]);
 			promise.then((response: any) => {
-				res.status(200).send(response.flat(Infinity));
+				if (response[0] != undefined && response[1] != undefined)
+					res.status(200).send(response.flat(Infinity));
+				if (response[0] == undefined && response[1] == undefined)
+					res.status(200).send({});
+				if (response[0] == undefined && response[1] != undefined)
+					res.status(200).send(response[1]);
+				if (response[0] != undefined && response[1] == undefined)
+					res.status(200).send(response[0]);
 			})
 		} catch (err) {
 			res.status(401).send("error");

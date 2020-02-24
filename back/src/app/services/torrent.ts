@@ -9,9 +9,8 @@ export default class torrentClient {
 				throw "error";
 			let url = 'http://yts.mx/api/v2/list_movies.json?query_term='+ imdbCode;
 			let response: any = await axios.get(url);
-			let torrents: Array<any> = [];
-			let getListOrUndefinedFromResponse = (response: any) => { return ((((response || {}).data || {}).data || {}).movies[0] || {}).torrents; }
-			let list = getListOrUndefinedFromResponse(response);
+			let torrents: Array<any> | undefined;
+			let list = this.getTorrentList(response);
 			if (list != undefined) {
 				list.forEach((torrent: any) => {
 					let entry = {
@@ -19,11 +18,15 @@ export default class torrentClient {
 						'magnetLink': torrentClient.buildMagnetLink(torrent.hash, torrent.url),
 						'quality': torrent.quality
 					};
+					if (torrents == undefined)
+						torrents = [];
 					torrents.push(entry);
 				});
 			}
-				return (torrents);
+			return (torrents);
 		} catch (err) {
+			console.log("11");
+			console.log(err);
 			return err
 		}
 	}
@@ -34,7 +37,7 @@ export default class torrentClient {
 				throw "error";
 			let url = 'https://tv-v2.api-fetch.website/movie/'+ imdbCode;
 			let response: any = await axios.get(url);
-			let torrents: Array<any> = [];
+			let torrents: Array<any> | undefined;
 
 			let magnetLink = this.getMagnetLink(response, '1080p');
 			if (magnetLink != undefined){
@@ -43,6 +46,8 @@ export default class torrentClient {
 					'magnetLink': magnetLink,
 					'quality': '1080p'
 				};
+				if (torrents == undefined)
+					torrents = [];
 				torrents.push(entry);
 			}
 			magnetLink = this.getMagnetLink(response, '720p');
@@ -52,18 +57,41 @@ export default class torrentClient {
 					'magnetLink': magnetLink,
 					'quality': '720p'
 				};
+				if (torrents == undefined)
+					torrents = [];
 				torrents.push(entry);
 			}
 			return (torrents);
 		} catch (err) {
+			console.log("22");
+			console.log(err);
 			return err;
 		}
+	}
+
+	static getTorrentList(response: any){
+		if (response == undefined)
+			return undefined;
+		if (response.data == undefined)
+			return undefined;
+		if (response.data.data == undefined)
+			return undefined;
+		if (response.data.data.movies == undefined)
+			return undefined;
+		if (response.data.data.movies[0] == undefined)
+			return undefined;
+		if (response.data.data.movies[0].torrents == undefined)
+			return undefined;
+		else
+			return response.data.data.movies[0].torrents;
 	}
 
 	static getMagnetLink(response: any, quality: string){
 		if (response == undefined)
 			return undefined;
 		if (response.data == undefined)
+			return undefined;
+		if (response.data.torrents == undefined)
 			return undefined;
 		if (response.data.torrents.en == undefined)
 			return undefined;
