@@ -20,9 +20,6 @@ export class Movie extends BaseEntity {
 	size: number;
 	magnetLink!: string;
 
-	// @Column()
-	// size!: number;
-
 	toJSON() {
 		return {
 			id: this.id,

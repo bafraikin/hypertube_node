@@ -36,7 +36,7 @@ export default {
 				imdbId: code
 			})
 			.then((response) => {
-				if (response != undefined){
+				if (response.data != undefined){
 				let i = 0;
 					while (i < response.data.length){
 						if (response.data[i] == 'eng'){
@@ -63,7 +63,7 @@ export default {
 			track.setAttribute("label", label);
 			track.setAttribute("kind", "subtitles");
 			track.setAttribute("srclang", srclang);
-			track.setAttribute("src", "http://127.0.0.1:3000/" + code + "-" + lang + ".vtt");
+			track.setAttribute("src", baseURL + code + "-" + lang + ".vtt");
 			video.appendChild(track);
 		}
 	},
