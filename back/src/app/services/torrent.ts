@@ -5,7 +5,7 @@ export default class torrentClient {
 
 	static async torrentYts(imdbCode: string) {
 		try {
-			if (imdbCode == undefined)
+			if (!imdbCode || imdbCode == '')
 				throw "error";
 			let url = 'http://yts.mx/api/v2/list_movies.json?query_term='+ imdbCode;
 			let response: any = await axios.get(url);
@@ -30,7 +30,7 @@ export default class torrentClient {
 
 	static async torrentPopCorn(imdbCode: string) {
 		try {
-			if (!imdbCode)
+			if (!imdbCode || imdbCode == '')
 				throw "error";
 			let url = 'https://tv-v2.api-fetch.website/movie/'+ imdbCode;
 			let response: any = await axios.get(url);

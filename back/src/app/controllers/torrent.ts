@@ -6,7 +6,7 @@ export default class torrentsController {
 	static async getTorrent(req: Request, res: Response) {
 		try {
 			let imdbCode: string = req.query.imdbCode;
-			if (!imdbCode)
+			if (!imdbCode || imdbCode == '')
 				throw "imdbCode missing in getTorrent";
 			let torrentYTS = torrentClient.torrentYts(imdbCode);
 			let torrentPOP = torrentClient.torrentPopCorn(imdbCode);

@@ -9,7 +9,7 @@ export default class commentController {
 	static async getComment(req: Request, res: Response) {
 		try {
 			let imdbCode = req.query.imdbCode;
-			if (!imdbCode)
+			if (!imdbCode || imdbCode == '')
 				throw "imdbCode undefined";
 			let movie = await Movie.findOne({ imdbCode: imdbCode});
 			if (!movie)
@@ -29,7 +29,7 @@ export default class commentController {
 			let userId = userrr.id;
 			let imdbCode = req.body.imdbCode;
 			let content = req.body.content;
-			if (!userId || !imdbCode || !content)
+			if (!userId || !imdbCode || imdbCode == '' || !content || content == '')
 				throw "params missing";
 			let movie = await Movie.getMovie(imdbCode);
 			if (!movie)
