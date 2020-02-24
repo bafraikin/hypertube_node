@@ -15,14 +15,14 @@ export default class moviesController {
 				let movieFilter: Filter = {firstYear: Number(filter.firstYear), lastYear: Number(filter.lastYear), minMark: Number(filter.minMark), maxMark: Number(filter.maxMark), genders: filter.gender};
 				apiClient = new TMDBClientDiscover(movieFilter);
 			}
-		else
-			apiClient = new TMDBClientSearch(req.query.queryString);
-		apiClient.getPage(req.query.page).then((response: any)  => {
-			let valid_movie = response.data.results.filter((movie: any) => {return movie.poster_path != null})
-			res.send(valid_movie);
-		}))
-    } catch {
-			res.status(401).send("error") 
+			else
+				apiClient = new TMDBClientSearch(req.query.queryString);
+			apiClient.getPage(req.query.page).then((response: any)  => {
+				let valid_movie = response.data.results.filter((movie: any) => {return movie.poster_path != null})
+				res.send(valid_movie);
+			});
+		} catch (err) {
+			res.status(401).send(err) 
 		};
 		return;
 	}
@@ -37,7 +37,7 @@ export default class moviesController {
 			let movieDetail = response.data;
 			res.status(200).send(movieDetail);
 		} catch (err) {
-			res.status(400).send("error")
+			res.status(400).send(err)
 		}
 	}
 
