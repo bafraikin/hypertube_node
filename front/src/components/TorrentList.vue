@@ -1,24 +1,29 @@
 <template>
 	<v-container v-if="onMontre" dark>
 		<h1 style="color:white;">Torrent List</h1>
-		<v-simple-table>
-			<template v-slot:default>
-				<thead>
-					<tr>
-						<th class="text-left">Quality</th>
-						<th class="text-left">Provider</th>
-						<th class="text-left">Torrent link</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr v-for="torrent in torrents">
-						<td>{{ torrent.quality }}</td>
-						<td>{{ torrent.provider }}</td>
-						<td> <i v-on:click="play(torrent.magnetLink)" >Play</i> </td>
-					</tr>
-				</tbody>
-			</template>
-		</v-simple-table>
+		<div v-if="torrents[0]">
+			<v-simple-table>
+				<template v-slot:default>
+					<thead>
+						<tr>
+							<th class="text-left">Quality</th>
+							<th class="text-left">Provider</th>
+							<th class="text-left">Torrent link</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="torrent in torrents">
+							<td>{{ torrent.quality }}</td>
+							<td>{{ torrent.provider }}</td>
+							<td> <i v-on:click="play(torrent.magnetLink)" >Play</i> </td>
+						</tr>
+					</tbody>
+				</template>
+			</v-simple-table>
+		</div>
+		<div v-else>
+			<p>No torrent found</p>
+		</div>
 	</v-container>
 </template>
 
@@ -43,17 +48,17 @@ export default {
 	},
 	methods:{
 		play(magnetLink){
-			this.$router.push({ name: "player-film", params:{magnetLink: magnetLink, idOMDB: this.idOMDB}});
+			this.$router.push({ name: "player-film", params:{magnetLink: magnetLink, idOMDB: this.idOMDB, imdbCode: this.imdbCode}});
 		},
 		buildImg(movie){
 			return "https://image.tmdb.org/t/p/w500/"+ movie.poster_path;
 		},
 		getMovieTorrent(){
 			axios.get('😂/torrent', { params: { imdbCode: this.imdbCode } })
-			.then(response => {
-				this.torrents = response.data;
-				this.onMontre = true;
-			})
+				.then(response => {
+					this.torrents = response.data;
+					this.onMontre = true;
+				})
 		},
 	},
 	mounted(){

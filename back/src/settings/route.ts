@@ -50,6 +50,8 @@ export default function setRoute(connection: Connection, app: Express) {
 		userAuthenticated.post('/comment', controller.comments.postComment);
 		// /*TORRENT*/
 		userAuthenticated.get('/torrent', controller.torrent.getTorrent);
+		// /*SUBTITLES*/
+		userAuthenticated.get('/subtitles', controller.subtitles.getSub);
 
 		app.use(`/${encodeURI("😱")}`, userNotAuthenticated);
 		app.use(`/${encodeURI("😂")}`, userAuthenticated);

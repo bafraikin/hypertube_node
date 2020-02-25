@@ -26,12 +26,11 @@ export default async function getServer (connection: Connection, isDev = false) 
 		keys: ['Arman.D']
 	}));
 
-
 	server.use(bodyParser.urlencoded({
 		extended: true
 	}));
 
-
+	server.use(express.static('sub'));
 	server.use(express.static('films'));
 	server.use(bodyParser.json());
 	server = await setupPassport(server);
