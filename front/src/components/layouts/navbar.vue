@@ -56,7 +56,7 @@
     data() {
       return {
         showMenu: false,
-        arr: [{message: 'logout', method: this.logout}]
+        arr: [{message: 'logout', method: this.logout}, {message: 'profil', method: this.displayUserProfile} ]
       }
     },
     methods: {
@@ -66,6 +66,9 @@
         });
         this.$store.commit('disconnectUser')
       },
+      displayUserProfile(){
+        this.$router.push({ name: "userProfile", params: {userId: this.$store.state.user.id}});
+      }
     },
     computed: {
       isConnected() {
