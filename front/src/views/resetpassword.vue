@@ -40,12 +40,12 @@ export default {
           newPassword: this.password
         })
         .then(response => {
-            bus.$emit('alert', {type: 'success', msg: "Well done 💪  you can now log"});
+            bus.$emit('alert', {type: 'success', code: "WELL_DONE"});
         	setTimeout(function(){ window.location= process.env.VUE_APP_frontURL ;}, 1000);
         })
         .catch(err => {
             console.log(err.response);
-            bus.$emit('alert', {type: 'error', msg: "Maybe your token is to old or the password is no good"});
+            bus.$emit('alert', {type: 'error', code: "OLD_TOKEN"});
           });
     }
   }

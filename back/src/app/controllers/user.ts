@@ -43,7 +43,7 @@ export default class userController {
 			user.password =  req.body.password;
 			if (user.checkPassIsComplex()){
 				await user.setPassword(req.body.password);
-				user.save;
+				user.save();
 				res.send(true);
 				return;
 			}
@@ -59,7 +59,6 @@ export default class userController {
 			if ((Date.now() - user.tokenPassDate) > (fiveMin / 10))
 			{
 				user.initResetPassword();
-				console.log(user);
 			}
 		}
 		res.status(200).send(true);
@@ -74,7 +73,6 @@ export default class userController {
 			let user: User | undefined  = await  User.findOne({ email: req.body.email});
 			if (user instanceof User && !user.isEmpty())
 			 {
-			  console.log(user);
 				if ((Date.now() - user.tokenPassDate) < fiveMin && await user.validateTokenPass(req.body.token))
 				{
 					user.password = req.body.newPassword;
@@ -106,7 +104,7 @@ export default class userController {
 		{
 			user.email = req.body.email;
 			if (await user.isEmailTaken()){
-				user.save;
+				user.save();
 				res.send(true);
 				return;
 			}

@@ -21,6 +21,10 @@
             return "No touching the code 🤬";
           case "YOU_HAVE_TO_YES":
             return "You have to click yes 🤣";
+          case "WELL_DONE":
+            return "Well done 💪  you can now log";
+          case "OLD_TOKEN":
+            return "Maybe your token is to old ⚰️ or the password is no good 💣";
           default:
             return "error"
         }

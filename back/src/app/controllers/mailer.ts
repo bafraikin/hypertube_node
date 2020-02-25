@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+import logger from "../../settings/logger";
 const transporter = nodemailer.createTransport({
   service: 'mail.ru',
   auth: {
@@ -19,9 +20,9 @@ export default class Mailer {
 		};
 		transporter.sendMail(mailOptions, function(error: string, info:any){
 			if (error) {
-			  console.log(error);
+				logger.info(error);
 			} else {
-			  console.log('Email sent: ' + info.response);
+				logger.info('Email sent: ' + info.response);
 			}
 		  }); 
 	}
