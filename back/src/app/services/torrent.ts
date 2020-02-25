@@ -25,8 +25,6 @@ export default class torrentClient {
 			}
 			return (torrents);
 		} catch (err) {
-			console.log("11");
-			console.log(err);
 			return err
 		}
 	}
@@ -63,8 +61,6 @@ export default class torrentClient {
 			}
 			return (torrents);
 		} catch (err) {
-			console.log("22");
-			console.log(err);
 			return err;
 		}
 	}
