@@ -10,7 +10,9 @@ const OpenSubtitles = new OS({
 export default class subtitlesController{
 
     static getSub(req: Request, res: Response){
-        let imdb: string = req.body.imdbId;
+        let imdb: string = req.query.imdbId;
+        console.log("IMDB******************************************************");
+        console.log(imdb);
 
         OpenSubtitles.search({
             sublanguageid: 'eng, fre, chi',

@@ -32,12 +32,12 @@ export default {
 		},
 		getSubtitles(code){
 			axios
-			.post("😂/subtitles", {
-				imdbId: code
+			.get("😂/subtitles", {
+				params: {imdbId: code}
 			})
 			.then((response) => {
 				if (response.data != undefined){
-				let i = 0;
+					let i = 0;
 					while (i < response.data.length){
 						if (response.data[i] == 'eng'){
 							this.addTrack("eng", "English", "en", code);
@@ -63,7 +63,7 @@ export default {
 			track.setAttribute("label", label);
 			track.setAttribute("kind", "subtitles");
 			track.setAttribute("srclang", srclang);
-			track.setAttribute("src", baseURL + code + "-" + lang + ".vtt");
+			track.setAttribute("src", baseURL + "/" + code + "-" + lang + ".vtt");
 			video.appendChild(track);
 		}
 	},
