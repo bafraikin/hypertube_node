@@ -3,7 +3,6 @@
     <h1>Research</h1>
     <ResearchBar v-if="showResearchBar" v-on:moviesResearch="researchMovieFun($event)" ></ResearchBar>
     <MovieVignette :movies="moviesToDisplay" v-if="showMovieVignette" v-on:selectMovie="showMovieDetailsFun($event)" ></MovieVignette>
-    <MovieDetails  v-if="showMovieDetails" :OMDBid="OMDBid"></MovieDetails>
     <pagination v-if="loaderShouldBeDisplayed" v-on:displayNewResults="popStackMovie()"/> 
   </v-container >
 </template>
