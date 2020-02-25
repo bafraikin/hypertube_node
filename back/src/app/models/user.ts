@@ -129,7 +129,9 @@ export class User extends BaseEntity {
 	}
 
 	async initResetPassword() {
-		const token: any = await User.generateToken({ byteLength: 200 });
+		let token: any = await User.generateToken({ byteLength: 200 });
+		token = encodeURI(token);
+		console.log("token", token);
 		try {
 			this.tokenPass = await bcrypt.hash(token, saltRounds);
 			this.tokenPassDate = Date.now();

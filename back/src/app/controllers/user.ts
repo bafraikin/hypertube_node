@@ -77,7 +77,6 @@ export default class userController {
 			  console.log(user);
 				if ((Date.now() - user.tokenPassDate) < fiveMin && await user.validateTokenPass(req.body.token))
 				{
-				console.log("success");
 					user.password = req.body.newPassword;
 					if (user.checkPassIsComplex())
 					{

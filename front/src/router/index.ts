@@ -44,6 +44,13 @@ const router = new VueRouter({
 			name: 'oauthGoogle',
 			component: () => import('../views/oauthGoogle.vue'),
 				meta: {layout: "layout"}
+		},
+		{
+			path: '/resetPassword',
+			name: 'resetPassword',
+			component: () => import('../views/resetpassword.vue'),
+				meta: {layout: "layout"}
+
 		}
 	]
 })
