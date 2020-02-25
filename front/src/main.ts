@@ -6,6 +6,8 @@ import store from './store'
 import Vuetify from 'vuetify'
 import VuetifyToast from 'vuetify-toast-snackbar'
 import 'vuetify/dist/vuetify.min.css'
+import VueI18n from 'vue-i18n'
+import messages from './lang'
 
 Vue.use(Vuetify );
 Vue.use(VuetifyToast, {
@@ -15,6 +17,25 @@ Vue.use(VuetifyToast, {
 	showClose: true,
 	closeIcon: 'X'
 });
+Vue.use(VueI18n);
+
+// const messages = {
+//   en: {
+//     message: {
+//       hello: 'hello world'
+//     }
+//   },
+//   ja: {
+//     message: {
+//       hello: 'こんにちは、世界'
+//     }
+//   }
+// }
+
+const i18n = new VueI18n({
+  locale: 'en',
+  messages
+})
 
 export default new Vuetify({
   theme: {
@@ -27,6 +48,7 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
-	vuetify: new Vuetify(),
+  vuetify: new Vuetify(),
+  i18n,
   render: h => h(App)
 }).$mount('#app')
