@@ -48,7 +48,7 @@ export default {
 	},
 	methods:{
 		play(magnetLink){
-			this.$router.push({ name: "player-film", params:{magnetLink: magnetLink, idOMDB: this.idOMDB}});
+			this.$router.push({ name: "player-film", params:{magnetLink: magnetLink, idOMDB: this.idOMDB, imdbCode: this.imdbCode}});
 		},
 		buildImg(movie){
 			return "https://image.tmdb.org/t/p/w500/"+ movie.poster_path;

@@ -2,3 +2,4 @@ dist
 tmp
 Session.vim
 .env
+sub/*
