@@ -22,7 +22,7 @@
           })
           .catch(err => {
             console.log("no touching ",err.response);
-            bus.$emit('alert', {type: 'error', code: "NO_TOUCHING");
+            bus.$emit('alert', {type: 'error', code: "NO_TOUCHING"});
             setTimeout(function(){ window.location= process.env.VUE_APP_frontURL ;}, 700);
           });
       }	
