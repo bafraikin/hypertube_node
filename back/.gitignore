@@ -1,5 +1,5 @@
-dist
-tmp
+./dist
+./tmp
 Session.vim
-.env
-sub/*
+./.env
+./sub/*

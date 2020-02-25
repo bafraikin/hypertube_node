@@ -73,4 +73,20 @@ export default class userController {
 	static getUser(req: Request, res: Response) {
 		res.send(req.user);
 	}
+
+
+	static saveProfilePic(req: Request, res: Response){
+		console.log("************")
+		let copyReq: any = req;
+		console.log(copyReq.files);
+		console.log(req.body);
+		res.send("okokokokokokokokok");
+	}
+
+
+
+
+
+
+
 }

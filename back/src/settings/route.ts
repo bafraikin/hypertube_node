@@ -33,6 +33,7 @@ export default function setRoute(connection: Connection, app: Express) {
 		// /*USER*/
 		userAuthenticated.get("/user", controller.user.getUser);
 		userNotAuthenticated.post("/user", controller.user.create);
+		userNotAuthenticated.post("/upload-pic", controller.user.saveProfilePic);
 		userAuthenticated.get("/userProfile", controller.user.userProfile);
 		// /*MOVIE*/
 		app.get('/research', controller.movies.searchForMovies);
