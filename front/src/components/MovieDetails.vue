@@ -26,9 +26,15 @@
 
 
 
+		<div v-if="movie.imdb_id">
 		<TorrentList :imdbCode="movie.imdb_id" :idOMDB="movie.id"></TorrentList>
 		<Comment :imdbCode="movie.imdb_id"></Comment>
 		<Casting :OMDBid="movie.id" ></Casting>
+		</div>
+		<div v-else>
+			<h2>No imdb code available</h2>
+			<p>So no torrents to display and no comments</p>
+		</div>
 		</div>
 	</v-container>
 </template>
@@ -43,11 +49,9 @@ import Casting from '@/components/Casting.vue';
 export default {
 	data() {
 		return {
-			movie: null
+			movie: null,
+			OMDBid: null
 		}
-	},
-	props: {
-		OMDBid: { type: Number }
 	},
 	components: {
 		"Comment": Comment,
@@ -58,15 +62,17 @@ export default {
 		buildImg(movie){
 			return "https://image.tmdb.org/t/p/w500/"+ movie.poster_path;
 		},
-		getMovieDetails(research){
+		getMovieDetails(){
 			axios.get('😂/movie-detail', { params: { OMDBid: this.OMDBid } })
 				.then(response => {
 					this.movie = response.data;
+					console.log(this.movie);
 				})
 		}
 	},
 	mounted(){
-		this.getMovieDetails(this.OMDBid);
+		this.OMDBid = this.$route.params.OMDBid;
+		this.getMovieDetails();
 	}
 }
 
