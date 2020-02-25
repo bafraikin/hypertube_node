@@ -5,9 +5,6 @@
         <v-subheader v-if="index == 0"> Comments </v-subheader>
         <v-divider v-if="index != 0" :inset="true"></v-divider>
         <v-list-item :key="comment.content" @click="displayUserProfile(comment.user.id)" shaped>
-          <v-list-item-avatar>
-            <img src='https://resize-elle.ladmedia.fr/rcrop/638,,forcex/img/var/plain_site/storage/images/people/la-vie-des-people/news/pamela-anderson-son-evolution-de-malibu-a-aujourd-hui/81439406-1-fre-FR/Pamela-Anderson-son-evolution-de-Malibu-a-aujourd-hui.jpg'/>
-          </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title> {{comment.user.login}} </v-list-item-title>
             <v-list-item-subtitle class="subtitle_wrap"> {{comment.content }} </v-list-item-subtitle>
