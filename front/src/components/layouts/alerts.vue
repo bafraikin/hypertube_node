@@ -17,6 +17,10 @@
             return "bad input"
           case "CREATED":
             return "action granteed";
+          case "NO_TOUCHING":
+            return "No touching the code 🤬";
+          case "YOU_HAVE_TO_YES":
+            return "You have to click yes 🤣";
           default:
             return "error"
         }
