@@ -1,5 +1,5 @@
 <template>
-  <v-card black id="comment">
+  <v-card black id="comment" class="">
     <v-list two-line>
       <template v-for="(comment, index) in comments">
         <v-subheader v-if="index == 0"> Comments </v-subheader>
@@ -10,7 +10,7 @@
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title> {{comment.user.login}} </v-list-item-title>
-            <v-list-item-subtitle> {{comment.content }}</v-list-item-subtitle>
+            <v-list-item-subtitle class="subtitle_wrap"> {{comment.content }} </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </template>
@@ -19,9 +19,8 @@
       <v-textarea
         v-model="textarea"
         label="Please enter your comment"
-        dark
       ></v-textarea>
-      <v-btn class="mr-4" @click="submit">submit</v-btn>
+      <v-btn @click="submit">submit</v-btn>
     </v-form>
   </v-card>
 </template>
@@ -40,7 +39,7 @@
         textarea: null,
       }
     },
-    methods:{
+    methods: {
       displayUserProfile(userId){
         this.$router.push({ name: "userProfile", params:{userId: userId}});
       },
@@ -68,6 +67,9 @@
 <style type="scss" media="screen">
   #comment {
     text-align: initial;
+  }
+  .subtitle_wrap {
+    white-space: unset;
   }
   
 </style>
