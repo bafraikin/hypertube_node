@@ -1,5 +1,6 @@
 import { User } from '@app/models/user'
 import {Request, Response} from 'express'
+const fiveMin: number = 300000;
 
 export default class userController {
 
@@ -46,37 +47,49 @@ export default class userController {
 	static async startResetPassword(req: Request, res: Response) {
 		let user = await  User.findOne({ email: req.body.email });
 		if (user instanceof User && !user.isEmpty())
-			user.initResetPassword();
+		{
+			if ((Date.now() - user.tokenPassDate) > (fiveMin / 10))
+			{
+				user.initResetPassword();
+				console.log(user);
+			}
+		}
 		res.status(200).send(true);
 		return;
 	}
 
 	/*
-	** il faut dans la requete post email + newPassword 
-	*/
+	 ** il faut dans la requete post email + newPassword 
+	 */
 	static async  endResetPassword(req: Request, res: Response) {
-		const fiveMin: number = 300000;
-		let user: User | undefined  = await  User.findOne({ email: req.body.email});
-		if (user instanceof User && !user.isEmpty() && user.tokenPass !== "false")
-		{
-			if ((Date.now() - user.tokenPassDate) < fiveMin && await user.validatePassword(user.tokenPass))
-			{
-				user.password = req.body.newPassword;
-				if (user.checkPassIsComplex())
+		try {
+			let user: User | undefined  = await  User.findOne({ email: req.body.email});
+			if (user instanceof User && !user.isEmpty())
+			 {
+			  console.log(user);
+				if ((Date.now() - user.tokenPassDate) < fiveMin && await user.validateTokenPass(req.body.token))
 				{
-					user.tokenPass = "false";
-					user.tokenPassDate = 0;
-					await user.setPassword(user.password);
-					user.save();
-					res.status(201).send(true);
-					return;				
+				console.log("success");
+					user.password = req.body.newPassword;
+					if (user.checkPassIsComplex())
+					{
+						user.tokenPass = "false";
+						user.tokenPassDate = 0;
+						await user.setPassword(user.password);
+						user.save();
+						res.status(200).send(true);
+						return;				
+					}
 				}
-			} 
-			res.status(401).send(false);
+				res.status(401).send(false);		
+				return;
+			}
 		}
-		res.status(405).send(false);
-		return;
-
+		catch {
+			console.log("Someone is tickering with endResetPassword on controller user.ts \n Or an error as occured ");
+			res.status(405).send(false);
+			return;
+		}
 	}
 
 

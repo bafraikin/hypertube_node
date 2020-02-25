@@ -10,7 +10,6 @@ const transporter = nodemailer.createTransport({
 export default class Mailer {
 	
 	static forgotPassMail(to: string, token: string){
-
 		const text: string = "Click on the link to reset your password \n note that if you are on oauth all future connection will need to be via email\n http://127.0.0.1:8080/resetPassword?token=" + token + "&email="+ to +" \nthis mail  is only valide a few minute hurry up 😱";
 		var mailOptions = {
 		  from: process.env.email_pseudo ,
@@ -18,6 +17,13 @@ export default class Mailer {
 		  subject: "Reset password 🦃🦃🦃",
 		  text: text
 		};
+		transporter.sendMail(mailOptions, function(error: string, info:any){
+			if (error) {
+			  console.log(error);
+			} else {
+			  console.log('Email sent: ' + info.response);
+			}
+		  }); 
 	}
 	
 }

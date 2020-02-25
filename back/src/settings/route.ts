@@ -34,8 +34,8 @@ export default function setRoute(connection: Connection, app: Express) {
 		userAuthenticated.get("/user", controller.user.getUser);
 		userNotAuthenticated.post("/user", controller.user.create);
 		userAuthenticated.get("/userProfile", controller.user.userProfile);
-		userNotAuthenticated.get('/resetPassword', controller.user.endResetPassword);
-		userNotAuthenticated.get('/forgotPassword', controller.user.startResetPassword);	
+		userNotAuthenticated.post('/resetPassword', controller.user.endResetPassword);
+		userNotAuthenticated.post('/forgotPassword', controller.user.startResetPassword);	
 		// /*MOVIE*/
 		app.get('/research', controller.movies.searchForMovies);
 		userAuthenticated.get('/movie-detail', controller.movies.getMovieDetail);
