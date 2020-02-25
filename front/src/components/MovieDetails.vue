@@ -49,11 +49,9 @@ import Casting from '@/components/Casting.vue';
 export default {
 	data() {
 		return {
-			movie: null
+			movie: null,
+			OMDBid: null
 		}
-	},
-	props: {
-		OMDBid: { type: Number }
 	},
 	components: {
 		"Comment": Comment,
@@ -64,7 +62,7 @@ export default {
 		buildImg(movie){
 			return "https://image.tmdb.org/t/p/w500/"+ movie.poster_path;
 		},
-		getMovieDetails(research){
+		getMovieDetails(){
 			axios.get('😂/movie-detail', { params: { OMDBid: this.OMDBid } })
 				.then(response => {
 					this.movie = response.data;
@@ -73,7 +71,8 @@ export default {
 		}
 	},
 	mounted(){
-		this.getMovieDetails(this.OMDBid);
+		this.OMDBid = this.$route.params.OMDBid;
+		this.getMovieDetails();
 	}
 }
 
