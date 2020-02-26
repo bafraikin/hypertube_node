@@ -3,7 +3,7 @@
 .DS_STORE
 node_modules
 sub
-./back/public/tmpPic/
-./back/public/tmpValid/
-./back/public/userPic/
+tmpPic
+tmpValid
+userPic
 
