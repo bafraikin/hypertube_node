@@ -162,7 +162,7 @@ export class User extends BaseEntity {
 		});
 	}
 
-	static init(user: any): number | undefined {
+	static getId(user: any): number | undefined {
 		try {
 			if (!user)
 				throw "user undefined";

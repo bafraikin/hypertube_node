@@ -46,7 +46,7 @@ export default class userController {
 
 
 	static async updateEmail(req: Request, res: Response) {
-		const userid : number | undefined = User.init(req.user)
+		const userid : number | undefined = User.getId(req.user)
 		if (userid) {
 			let user: User | undefined = await User.findOne({ id: userid });
 			if (user instanceof User && !user.isEmpty()) {
@@ -63,7 +63,7 @@ export default class userController {
 	}
 	
 		static async updatePassword(req: Request, res: Response) {
-			const userid : number | undefined = User.init(req.user)
+			const userid : number | undefined = User.getId(req.user)
 			let user: User | undefined = await User.findOne({ id: userid });
 			if (user instanceof User && !user.isEmpty()) {
 				user.password = req.body.password;
@@ -79,7 +79,7 @@ export default class userController {
 		}
 	
 		static async updateLogin(req: Request, res: Response) {
-			const userid : number | undefined = User.init(req.user)
+			const userid : number | undefined = User.getId(req.user)
 			let user: User | undefined = await User.findOne({ id: userid });
 			if (user instanceof User && !user.isEmpty()) {
 				user.login = req.body.login;
@@ -95,7 +95,7 @@ export default class userController {
 	
 	
 		static async updateLastname(req: Request, res: Response) {
-			const userid : number | undefined = User.init(req.user)
+			const userid : number | undefined = User.getId(req.user)
 			let user: User | undefined = await User.findOne({ id: userid });
 			if (user instanceof User && !user.isEmpty()) {
 				user.lastName = req.body.lastname;
@@ -110,7 +110,7 @@ export default class userController {
 		}
 	
 		static async updateFirstname(req: Request, res: Response) {
-			const userid : number | undefined = User.init(req.user)
+			const userid : number | undefined = User.getId(req.user)
 			let user: User | undefined = await User.findOne({ id: userid });
 			if (user instanceof User && !user.isEmpty()) {
 				user.firstName = req.body.firstname;
@@ -125,7 +125,7 @@ export default class userController {
 		}
 
 		static async updateImageUrl(req: Request, res: Response) {
-			const userid : number | undefined = User.init(req.user)
+			const userid : number | undefined = User.getId(req.user)
 			let user: User | undefined = await User.findOne({ id: userid });
 			if (user instanceof User && !user.isEmpty()) {
 				user.imageUrl = req.body.imageUrl;
