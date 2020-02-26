@@ -24,7 +24,6 @@ export default function setRoute(connection: Connection, app: Express) {
 		})
 
 		// /*AUTHENTICATION*/
-		app.get('/myCookie', (req, res) => res.send("Your cookie sir!"));
  		userNotAuthenticated.post('/authentication', passport.authenticate('local'), controller.authenticate.afterAuth);
 		userAuthenticated.route("/authentication").delete(controller.authenticate.logout);
 		userNotAuthenticated.get('/oauth42', passport.authenticate('42'), controller.authenticate.afterAuth);
@@ -35,6 +34,10 @@ export default function setRoute(connection: Connection, app: Express) {
 		userAuthenticated.get("/user", controller.user.getUser);
 		userNotAuthenticated.post("/user", controller.user.create);
 		userNotAuthenticated.post("/upload-pic", controller.user.saveProfilePic);
+
+
+		userNotAuthenticated.get('/myCookie', controller.user.getCookie);
+
 		userAuthenticated.get("/userProfile", controller.user.userProfile);
 		// /*MOVIE*/
 		app.get('/research', controller.movies.searchForMovies);

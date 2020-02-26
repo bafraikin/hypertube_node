@@ -30,6 +30,7 @@ export default async function getServer (connection: Connection, isDev = false) 
 	server.use(fileUpload({ useTempFiles : true, tempFileDir : '/back/public/tmp', createParentPath : true }));
 
 
+	server.use(express.static('public'));
 	server.use(express.static('sub'));
 	server.use(express.static('films'));
 	server.use(bodyParser.json());

@@ -69,14 +69,27 @@ export default class userController {
 		// user.imageUrl = "http://pngimg.com/uploads/anaconda/anaconda_PNG11.png"; //req.body.img;
 		user.imageUrl = user.email; //req.body.img;
 		user.oauth = false;
-		if (user.isValid() && !(await user.isEmailTaken()) && copyReq.session.validPic) {
+
+
+		console.log("%%%%%%%%%%%%%%%%%%%%%%%%%5");
+	console.log(copyReq.session.validPic == true);
+
+
+		if (user.isValid() && !(await user.isEmailTaken())) {
+		console.log("%%%%%%%okokok%%%%%%%%%%%%%%%%%%5");
 			await user.setPassword(user.password);
 			user.save();
 			res.status(201).send(true);
 			userController.movePicToUserPic(user.email, copyReq);
 			return;
 		}
-		res.status(400).send("false");
+		else{
+		console.log("%%%Non %%%%okokok%%%%%%%%%%%%%%%%%%5");
+			console.log(user.isValid());
+			console.log(!(await user.isEmailTaken()));
+			console.log(copyReq.session.validPic);
+			res.status(400).send("false ici");
+		}
 	}
 
 	static movePicToUserPic(email: any, copyReq: any){
@@ -90,6 +103,12 @@ export default class userController {
 
 	static movePicToTmpValid(copyReq: any){
 		copyReq.files.file_jerome.mv('/back/public/tmpValid/'+ copyReq.session._ctx.cookies['express:sess.sig']);
+	}
+
+	static getCookie(req: Request, res: Response){
+		let copyReq: any = req;
+		copyReq['session'].id  = true;
+		res.send("Your cookies sir!");
 	}
 
 	static validPicture(files: any){
@@ -134,7 +153,10 @@ export default class userController {
 		if (isValidPic === true){
 			copyReq['session'].validPic = true;
 			userController.movePicToTmpValid(copyReq);
-			res.send("success");
+			let maRep = {};
+			maRep.status = "sucess";
+			maRep.expressSig = copyReq.session._ctx.cookies['express:sess.sig'];
+			res.send(maRep);
 		}
 		else {
 			copyReq['session'].validPic = false;

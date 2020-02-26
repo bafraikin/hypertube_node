@@ -5,7 +5,7 @@
 		<p class="ici" dark>Login == {{user.login}}</p>
 		<p class="ici" dark>First Name == {{user.firstName}}</p>
 		<p class="ici" dark>Last Name == {{user.lastName}}</p>
-		<p class="ici" dark>Image == {{user.imageUrl}}</p>
+		<v-img height=200 contain :src="getProfilePic()"></v-img>
 		</div>
 	</div>
 </template>
@@ -27,6 +27,9 @@ export default {
 		}
 	},
 	methods:{
+		getProfilePic(){
+			return process.env.VUE_APP_backURL + "/userPic/" + this.user.imageUrl;
+		},
 		getUserProfile(){
 			axios.get('😂/userProfile', { params: { userId: this.userId}
 			}) .then(response => { this.user = response.data; })
