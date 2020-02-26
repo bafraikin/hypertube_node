@@ -39,5 +39,9 @@
     "producer": "Executive Producer",
     "agree": "Do you agree?",
     "play": "Play",
-    "userprofile": "User profile"
+    "userprofile": "User profile",
+    "granteed": "Action granteed",
+    "badinput": "Bad input",
+    "notallowed": "You're not allowed to perform this action",
+    "needsignin": "You need to sign in to perform this action"
 }

@@ -39,5 +39,9 @@
     "producer": "Producteur Exécutif",
     "agree": "Accepter les conditions générales du site",
     "play": "Lancer",
-    "userprofile": "Profile"
+    "userprofile": "Profile",
+    "granteed": "Action autorisée",
+    "badinput": "Mauvaise entrée",
+    "notallowed": "Vous n'êtes pas autorisé à accéder à ce contenu",
+    "needsignin": "Vous devez vous identifier pour accéder à ce contenu"
 }
