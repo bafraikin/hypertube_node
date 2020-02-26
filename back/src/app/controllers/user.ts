@@ -169,20 +169,25 @@ export default class userController {
 
 	static saveProfilePic(req: Request, res: Response){
 		let copyReq: any = req;
-		let isValidPic: any = userController.validPicture(copyReq.files);
-		if (isValidPic === true){
-			copyReq['session'].validPic = true;
-			let random:any = Math.floor((Math.random() * 10000) + 1);
-			let maRep :any = {};
-			maRep.expressSig = random;
-			copyReq.session.random = random;
-			userController.movePicToTmpValid(copyReq);
-			maRep.status = "sucess";
-			res.send(maRep);
+		if (copyReq.files == null){
+			res.send("vide");
 		}
-		else {
-			copyReq['session'].validPic = false;
-			res.send(isValidPic);
+		else{
+			let isValidPic: any = userController.validPicture(copyReq.files);
+			if (isValidPic === true){
+				copyReq['session'].validPic = true;
+				let random:any = Math.floor((Math.random() * 10000) + 1);
+				let maRep :any = {};
+				maRep.expressSig = random;
+				copyReq.session.random = random;
+				userController.movePicToTmpValid(copyReq);
+				maRep.status = "sucess";
+				res.send(maRep);
+			}
+			else {
+				copyReq['session'].validPic = false;
+				res.send(isValidPic);
+			}
 		}
 
 	}
