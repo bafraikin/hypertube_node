@@ -1,7 +1,9 @@
 import { User } from '@app/models/user'
+
 import { Request, Response } from 'express'
 import { inherits } from 'util';
 import logger from '@settings/logger';
+
 const fiveMin: number = 300000;
 
 export default class userController {
@@ -185,7 +187,7 @@ export default class userController {
 			}
 		}
 		catch {
-			console.log("Someone is tickering with endResetPassword on controller user.ts \n Or an error as occured ");
+			logger.info("Someone is tickering with endResetPassword on controller user.ts \n Or an error as occured ");
 			res.status(405).send(false);
 			return;
 		}

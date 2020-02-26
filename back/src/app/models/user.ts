@@ -144,7 +144,7 @@ export class User extends BaseEntity {
 			await this.save();
 			Mailer.forgotPassMail(this.email, token);
 		} catch {
-			console.log("unexpected errore at l.128 of models/user.ts");
+			logger.info("unexpected errore at l.128 of models/user.ts");
 		}
 
 	}
