@@ -26,6 +26,13 @@
                 <v-list-item-title @click="n.method">{{ n.message }}</v-list-item-title>
               </v-list-item>
               <v-list-item>
+                <router-link :to="{ name: 'userProfile', params: { userId: $store.state.user.id }}" v-slot="{ href, route, navigate}">
+                  <v-list-item-title>
+                    <a :href="href" style="text-decoration: none; color: unset" @click="navigate">profil</a>
+                  </v-list-item-title>
+                </router-link>
+              </v-list-item>
+              <v-list-item>
                 <modify-profil />
               </v-list-item>
             </v-list>
@@ -38,17 +45,17 @@
 
 
 <script>
-import signup from "./modal_signup";
-import signin from "./modal_signin";
-import profil from "./modal_profil";
-import axios from "@/config/axios_default";
+  import signup from "./modal_signup";
+  import signin from "./modal_signin";
+  import profil from "./modal_profil";
+  import axios from "@/config/axios_default";
 
 
   export default {
     data() {
       return {
         showMenu: false,
-        arr: [{message: 'logout', method: this.logout}, {message: 'profil', method: this.displayUserProfile} ]
+        arr: [{message: 'logout', method: this.logout}]
       }
     },
     methods: {
@@ -58,9 +65,6 @@ import axios from "@/config/axios_default";
         });
         this.$store.commit('disconnectUser')
       },
-      displayUserProfile(){
-        this.$router.push({ name: "userProfile", params: {userId: this.$store.state.user.id}});
-      }
     },
     computed: {
       isConnected() {
@@ -72,25 +76,25 @@ import axios from "@/config/axios_default";
       "sign-in": signin,
       "modify-profil": profil
     } 
-};
+  };
 </script>
 
 <style lang="scss" media="screen">
-.navbar {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   .navbar {
-    justify-content: space-around;
-    width: 15%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .navbar {
+      justify-content: space-around;
+      width: 15%;
+    }
+    h2 a {
+      text-decoration: none;
+      color: inherit;
+    }
   }
-  h2 a {
-    text-decoration: none;
-    color: inherit;
+  .v-menu__content {
+    left: 0;
+    max-width: 100%;
   }
-}
-.v-menu__content {
-  left: 0;
-  max-width: 100%;
-}
 </style>
