@@ -43,33 +43,34 @@ import signin from "./modal_signin";
 import profil from "./modal_profil";
 import axios from "@/config/axios_default";
 
-export default {
-  data() {
-    return {
-      showMenu: false,
-      arr: [{ message: "logout", method: this.logout }]
-    };
-  },
-  methods: {
-    async logout() {
-      const response = await axios
-        .delete("/😂/authentication")
-        .then(response => {
+
+  export default {
+    data() {
+      return {
+        showMenu: false,
+        arr: [{message: 'logout', method: this.logout}, {message: 'profil', method: this.displayUserProfile} ]
+      }
+    },
+    methods: {
+      async logout() {
+        const response = await axios.delete("/😂/authentication").then((response) => {
           return true;
         });
-      this.$store.commit("disconnectUser");
-    }
-  },
-  computed: {
-    isConnected() {
-      return this.$store.getters.connected;
-    }
-  },
-  components: {
-    "sign-up": signup,
-    "sign-in": signin,
-    profil: profil
-  }
+        this.$store.commit('disconnectUser')
+      },
+      displayUserProfile(){
+        this.$router.push({ name: "userProfile", params: {userId: this.$store.state.user.id}});
+      }
+    },
+    computed: {
+      isConnected() {
+        return this.$store.getters.connected
+      }
+    },
+    components: {
+      "sign-up": signup,
+      "sign-in": signin
+    } 
 };
 </script>
 

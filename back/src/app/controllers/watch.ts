@@ -34,7 +34,7 @@ export default class watchController {
 			watch.idOMDB = idOMDB;
 			watch.user = user;
 			watch.save();
-			res.status(201).json(watch);
+			res.status(200).json(watch);
 		} catch (err) {
 			res.status(401).send("error");
 		}
