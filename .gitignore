@@ -3,3 +3,8 @@
 .DS_STORE
 node_modules
 sub
+./back/public/tmpPic/*
+./back/public/tmpValid/*
+./back/public/userPic/*
+
+!./back/puclic/tmpPic/zeroFile
