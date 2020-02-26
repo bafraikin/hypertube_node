@@ -26,7 +26,7 @@
                 <v-list-item-title @click="n.method">{{ n.message }}</v-list-item-title>
               </v-list-item>
               <v-list-item>
-                <profil />
+                <modify-profil />
               </v-list-item>
             </v-list>
           </v-menu>
@@ -69,7 +69,8 @@ import axios from "@/config/axios_default";
     },
     components: {
       "sign-up": signup,
-      "sign-in": signin
+      "sign-in": signin,
+      "modify-profil": profil
     } 
 };
 </script>

@@ -70,7 +70,7 @@ export default {
 
   methods: {
     reqNewLogin() {
-      axios.post(
+      axios.put(
         "😂/updateLogin",
         {
           login: this.login
@@ -81,7 +81,7 @@ export default {
           .catch(error => {});
     },
     reqNewEmail() {
-      axios.post(
+      axios.put(
         "😂/updateEmail",
         {
           email: this.email
@@ -92,7 +92,7 @@ export default {
           .catch(error => {});
     },
     reqNewpass() {
-      axios.post(
+      axios.put(
         "😂/updatePassword",
         {
           password: this.password
@@ -103,7 +103,7 @@ export default {
           .catch(error => {});
     },
     reqNewFName() {
-      axios.post(
+      axios.put(
         "😂/updateFirstname",
         {
           firstName: this.firstName
@@ -114,7 +114,7 @@ export default {
           .catch(error => {});
     },
     reqNewLName() {
-      axios.post(
+      axios.put(
         "😂/updateLastname",
         {
           lastName: this.lastName

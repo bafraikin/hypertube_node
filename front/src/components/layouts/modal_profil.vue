@@ -6,9 +6,9 @@
       max-width="700"
       dark>
       <template v-slot:activator="{ on }">
-        <v-btn v-on="on">
-          profile
-        </v-btn>
+        <v-list-item v-on="on">
+          modify profil
+        </v-list-item>
       </template>
       <v-card>
         <v-card-title>
