@@ -66,7 +66,8 @@ export default class userController {
 		user.firstName = req.body.firstName;
 		user.lastName = req.body.lastName;
 		user.password = req.body.password;
-		user.imageUrl = "http://pngimg.com/uploads/anaconda/anaconda_PNG11.png"; //req.body.img;
+		// user.imageUrl = "http://pngimg.com/uploads/anaconda/anaconda_PNG11.png"; //req.body.img;
+		user.imageUrl = user.email; //req.body.img;
 		user.oauth = false;
 		if (user.isValid() && !(await user.isEmailTaken()) && copyReq.session.validPic) {
 			await user.setPassword(user.password);
