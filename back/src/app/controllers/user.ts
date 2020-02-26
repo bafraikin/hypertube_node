@@ -2,6 +2,7 @@ import { User } from '@app/models/user'
 import { Request, Response } from 'express'
 import { inherits } from 'util';
 import logger from '@settings/logger';
+var fs = require('fs');
 
 const fiveMin: number = 300000;
 
