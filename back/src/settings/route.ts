@@ -30,12 +30,23 @@ export default function setRoute(connection: Connection, app: Express) {
 		userNotAuthenticated.post('/oauth42/callback', passport.authenticate('42'), controller.authenticate.afterAuth);
 		userNotAuthenticated.get('/oauthGoogle', passport.authenticate('google', { scope: ['profile', 'email']  }));
 		userNotAuthenticated.post('/oauthGoogle/callback',passport.authenticate('google', { failureRedirect: '/login' }), controller.authenticate.afterAuth);
+
 		// /*USER*/
-		userAuthenticated.get("/user", controller.user.getUser);
 		userNotAuthenticated.post("/user", controller.user.create);
-		userAuthenticated.get("/userProfile", controller.user.userProfile);
 		userNotAuthenticated.post('/resetPassword', controller.user.endResetPassword);
 		userNotAuthenticated.post('/forgotPassword', controller.user.startResetPassword);	
+		
+		userAuthenticated.post('/updateEmail', controller.user.updateEmail);
+		userAuthenticated.post('/updatePassword', controller.user.updatePassword);
+		userAuthenticated.post('/updateLogin', controller.user.updateLogin);
+		userAuthenticated.post('/updateFirstname', controller.user.updateFirstname);
+		userAuthenticated.post('/updateLastname', controller.user.updateLastname);
+		userAuthenticated.post('/updateImageUrl', controller.user.updateImageUrl);
+		
+		
+		userAuthenticated.get("/userProfile", controller.user.userProfile);
+		userAuthenticated.get("/user", controller.user.getUser);
+	
 		// /*MOVIE*/
 		app.get('/research', controller.movies.searchForMovies);
 		userAuthenticated.get('/movie-detail', controller.movies.getMovieDetail);
