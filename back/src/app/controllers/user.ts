@@ -1,5 +1,7 @@
 import { User } from '@app/models/user'
 import {Request, Response} from 'express'
+import logger from "../../settings/logger";
+const fiveMin: number = 300000;
 
 export default class userController {
 
@@ -38,32 +40,78 @@ export default class userController {
 	static async updatePassword(req: Request, res: Response) {
 		let user = await  User.findOne({ email: req.body.email });
 		if (user instanceof User && !user.isEmpty())
-			{
-				user.password =  req.body.password;
-				if (user.checkPassIsComplex()){
-					await user.setPassword(req.body.password);
-					user.save;
-					res.send(true);
-					return;
-				}
+		{
+			user.password =  req.body.password;
+			if (user.checkPassIsComplex()){
+				await user.setPassword(req.body.password);
+				user.save();
+				res.send(true);
+				return;
 			}
+		}
+		res.status(405).send(false);
+		return;
+	}
+
+	static async startResetPassword(req: Request, res: Response) {
+		let user = await  User.findOne({ email: req.body.email });
+		if (user instanceof User && !user.isEmpty())
+		{
+			if ((Date.now() - user.tokenPassDate) > (fiveMin / 10))
+			{
+				user.initResetPassword();
+			}
+		}
+		res.status(200).send(true);
+		return;
+	}
+
+	/*
+	 ** il faut dans la requete post email + newPassword 
+	 */
+	static async  endResetPassword(req: Request, res: Response) {
+		try {
+			let user: User | undefined  = await  User.findOne({ email: req.body.email});
+			if (user instanceof User && !user.isEmpty())
+			 {
+				if ((Date.now() - user.tokenPassDate) < fiveMin && await user.validateTokenPass(req.body.token))
+				{
+					user.password = req.body.newPassword;
+					if (user.checkPassIsComplex())
+					{
+						user.tokenPass = "false";
+						user.tokenPassDate = 0;
+						await user.setPassword(user.password);
+						user.save();
+						res.status(200).send(true);
+						return;				
+					}
+				}
+				res.status(401).send(false);		
+				return;
+			}
+		}
+		catch {
+			logger.info("Someone is tickering with endResetPassword on controller user.ts \n Or an error as occured ");
 			res.status(405).send(false);
 			return;
+		}
 	}
+
 
 	static async updateEmail(req: Request, res: Response) {
 		let user = await  User.findOne({ email: req.body.email });
 		if (user instanceof User && user.isEmpty())
-			{
-				user.email = req.body.email;
-				if (await user.isEmailTaken()){
-					user.save;
-					res.send(true);
-					return;
-				}
+		{
+			user.email = req.body.email;
+			if (await user.isEmailTaken()){
+				user.save();
+				res.send(true);
+				return;
 			}
-			res.status(405).send(false);
-			return;
+		}
+		res.status(405).send(false);
+		return;
 	}
 
 	static destroy(req: Request, res: Response) {

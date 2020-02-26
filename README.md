@@ -43,6 +43,8 @@ client_secret_42=<votre cle secrete>
 OMDB_KEY=<votre cle secrete>
 client_id_google=< votre id api>
 client_secret_google=<votre cle secrete>
+email_pseudo=<email>
+email_password=<email password>
 ```
 pour google il faut cree un compte sur google console
 cree un projet et aller ici https://console.cloud.google.com/apis/dashboard
@@ -53,3 +55,4 @@ puis venez voir adejbakh et je vous aide.
 
 ![alt text](https://upload.wikimedia.org/wikipedia/en/thumb/f/f7/Aigle_Azur_logo.svg/250px-Aigle_Azur_logo.svg.png "....")
 ![alt text](https://i.pinimg.com/originals/ff/b2/d2/ffb2d2f77c47563c30f95b4732403851.jpg "api bleu")
+![alt text](https://images4.alphacoders.com/799/79924.jpg "Stop les image")
