@@ -3,7 +3,8 @@ import { Comment } from '@app/models/comment'
 import { Watch } from '@app/models/watch'
 import Mailer from '@app/controllers/mailer'
 import validator from 'validator';
-import logger from "../../settings/logger";
+import logger from '@settings/logger';
+
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -57,7 +58,7 @@ export class User extends BaseEntity {
 		return await bcrypt.compare(plainTextPassword, this.password + '')
 	}
 
-	async validateTokenPass(plainTextToken: string){
+	async validateTokenPass(plainTextToken: string) {
 		return await bcrypt.compare(plainTextToken, this.tokenPass + '')
 	}
 
@@ -114,21 +115,26 @@ export class User extends BaseEntity {
 	}
 
 	createOAuth(profile: any) {
-		this.email = profile.emails[0].value;
-		this.password = "bcrypt";
-		if (profile.thisname === undefined) {
-			this.login = profile.displayName;
-			this.firstName = profile.displayName;
-			this.lastName = profile.displayName;
-			this.imageUrl = profile.photos[0].value;
+		try {
+			this.email = profile.emails[0].value;
+			this.password = "bcrypt888bbb";
+			if (profile.thisname === undefined) {
+				this.login = profile.displayName;
+				this.firstName = profile.displayName.split(' ')[0];;
+				this.lastName = profile.displayName.split(' ')[1];;
+				this.imageUrl = profile.photos[0].value;
+			}/* for google 👇 for 42 👆 */
+			else {
+				this.login = profile.thisname;
+				this.firstName = profile.name.givenName
+				this.lastName = profile.name.familyName
+				this.imageUrl = profile.image_url
+			}
+			this.oauth = true;
+		} catch
+		{
+			logger.info("an unxepted error occured at createOAuth in user model")
 		}
-		else {
-			this.login = profile.thisname;
-			this.firstName = profile.name.givenName;
-			this.lastName = profile.name.familyName;
-			this.imageUrl = profile.image_url
-		}
-		this.oauth = true;
 	}
 
 	async initResetPassword() {
@@ -156,6 +162,20 @@ export class User extends BaseEntity {
 				}
 			});
 		});
+	}
+
+	static getId(user: any): number | undefined {
+		try {
+			if (!user)
+				throw "user undefined";
+			let userId = user.id;
+			if (!userId)
+				throw "userId undefined";
+			return userId;
+		}
+		catch (err) {
+			logger.info("user init had an unxpected error : " + err);
+		}
 	}
 
 }
