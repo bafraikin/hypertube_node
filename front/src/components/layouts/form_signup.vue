@@ -104,7 +104,7 @@ enctype="multipart/form-data"
   export default {
     data: () => ({
 
-		pic_path: "http://127.0.0.1:8080/user_default.png",
+		pic_path: process.env.VUE_APP_frontURL + "/user_default.png",
 		file_pic: null,
 
 
@@ -134,18 +134,16 @@ enctype="multipart/form-data"
 
     methods: {
       filesChange($event) {
-      	  console.log("le file a change");
-      	  console.log($event);
-      	  console.log(this.file_pic);
 		let formData = new FormData();
 		formData.append('file_jerome', this.file_pic);
-		  console.log(formData);
 			axios.post( "😱/upload-pic", formData)
 		  	  .then(response => {
-		  	  	  console.log(response);
 		  	  	  if (response.data.status == "sucess"){
-		  	  	  	  console.log("!!!!!!!!!!!!!!!!!On change ");
-		  	  	  	  this.pic_path = "http://127.0.0.1:3000/" + "/tmpValid/" + response.data.expressSig;
+		  	  	  	  this.pic_path = process.env.VUE_APP_backURL + "/tmpValid/" + response.data.expressSig;
+		  	  	  }
+		  	  	  else{
+		  	  	  	  console.log("On affiche les erreur en front")
+		  	  	  	  console.log(response.data);
 		  	  	  }
 		  	  });
 
@@ -179,8 +177,6 @@ enctype="multipart/form-data"
 
 		let formData = new FormData();
           axios.get('😱/myCookie').then(response => {
-          	  console.log(response.data);
-          	  console.log(document.cookie);
           })
         }
   }

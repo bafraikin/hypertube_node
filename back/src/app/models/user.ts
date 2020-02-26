@@ -82,7 +82,6 @@ export class User extends BaseEntity {
 			return false;
 		}
 		catch {
-			console.log("***************************************hello erreur");
 			return false;
 		}
 	}
