@@ -1,41 +1,39 @@
 <template>
-  <v-card
-    dark
-    color="#BF55EC"
-    :elevation="5"
-  >
+  <v-card dark color="#BF55EC" :elevation="5">
     <div class="navbar">
       <h2>
-        <router-link
-          to="/"
-          v-slot="{ href, route, navigate, isActive, isExactActive }"
-        >
+        <router-link to="/" v-slot="{ href, route, navigate}">
           <a :href="href" @click="navigate">Hypertubulaire</a>
         </router-link>
       </h2>
 
       <div class="navbar">
-
-        <div v-if="!isConnected" class="navbar"> 
-          <sign-up data-app="true"/>
-          <sign-in data-app="true"/>
+        <div v-if="!isConnected" class="navbar">
+          <sign-up data-app="true" />
+          <sign-in data-app="true" />
         </div>
 
-        <div v-else data-app="true"> 
-          <v-menu light bottom left nudge-bottom="35"    v-model="showMenu">
+        <div v-else data-app="true">
+          <v-menu light bottom left nudge-bottom="35" v-model="showMenu">
             <template v-slot:activator="{ on }">
-              <v-btn icon  v-on="on">
+              <v-btn icon v-on="on">
                 <v-icon>mdi-account</v-icon>
               </v-btn>
             </template>
 
             <v-list data-app="true">
-              <v-list-item
-                v-for="n in arr"
-                :key="n.message"
-                @click="() => {}"
-              >
+              <v-list-item v-for="n in arr" :key="n.message" @click="() => {}">
                 <v-list-item-title @click="n.method">{{ n.message }}</v-list-item-title>
+              </v-list-item>
+              <v-list-item>
+                <router-link :to="{ name: 'userProfile', params: { userId: $store.state.user.id }}" v-slot="{ href, route, navigate}">
+                  <v-list-item-title>
+                    <a :href="href" style="text-decoration: none; color: unset" @click="navigate">profil</a>
+                  </v-list-item-title>
+                </router-link>
+              </v-list-item>
+              <v-list-item>
+                <modify-profil />
               </v-list-item>
             </v-list>
           </v-menu>
@@ -47,16 +45,17 @@
 
 
 <script>
+  import signup from "./modal_signup";
+  import signin from "./modal_signin";
+  import profil from "./modal_profil";
+  import axios from "@/config/axios_default";
 
-  import signup from './modal_signup'
-  import signin from './modal_signin'
-  import axios from "@/config/axios_default"
 
   export default {
     data() {
       return {
         showMenu: false,
-        arr: [{message: 'logout', method: this.logout}, {message: 'profil', method: this.displayUserProfile} ]
+        arr: [{message: 'logout', method: this.logout}]
       }
     },
     methods: {
@@ -66,9 +65,6 @@
         });
         this.$store.commit('disconnectUser')
       },
-      displayUserProfile(){
-        this.$router.push({ name: "userProfile", params: {userId: this.$store.state.user.id}});
-      }
     },
     computed: {
       isConnected() {
@@ -77,19 +73,18 @@
     },
     components: {
       "sign-up": signup,
-      "sign-in": signin
+      "sign-in": signin,
+      "modify-profil": profil
     } 
-  }
-
+  };
 </script>
 
 <style lang="scss" media="screen">
-
-  .navbar{
+  .navbar {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    .navbar{
+    .navbar {
       justify-content: space-around;
       width: 15%;
     }
