@@ -3,6 +3,7 @@ import { Comment } from '@app/models/comment'
 import { Watch } from '@app/models/watch'
 import Mailer from '@app/controllers/mailer'
 import validator from 'validator';
+import logger from "../../settings/logger";
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -131,14 +132,13 @@ export class User extends BaseEntity {
 	async initResetPassword() {
 		let token: any = await User.generateToken({ byteLength: 200 });
 		token = encodeURI(token);
-		console.log("token", token);
 		try {
 			this.tokenPass = await bcrypt.hash(token, saltRounds);
 			this.tokenPassDate = Date.now();
 			await this.save();
 			Mailer.forgotPassMail(this.email, token);
 		} catch {
-			console.log("unexpected errore at l.128 of models/user.ts");
+			logger.info("unexpected errore at l.128 of models/user.ts");
 		}
 
 	}
