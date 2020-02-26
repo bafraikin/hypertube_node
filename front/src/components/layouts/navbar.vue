@@ -14,6 +14,8 @@
         </router-link>
       </h2>
 
+      <language />
+
       <div class="navbar">
 
         <div v-if="!isConnected" class="navbar"> 
@@ -51,6 +53,7 @@
   import signup from './modal_signup'
   import signin from './modal_signin'
   import axios from "@/config/axios_default"
+  import language from "./LangButton"
 
   export default {
     data() {
@@ -74,7 +77,8 @@
     },
     components: {
       "sign-up": signup,
-      "sign-in": signin
+      "sign-in": signin,
+      language
     } 
   }
 
