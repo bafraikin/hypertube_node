@@ -27,7 +27,7 @@ export default async function getServer (connection: Connection, isDev = false) 
 	}));
 
 	server.use(bodyParser.urlencoded({ extended: true }));
-	server.use(fileUpload({ useTempFiles : true, tempFileDir : '/back/public/tmp', createParentPath : true }));
+	server.use(fileUpload({ useTempFiles : true, tempFileDir : '/back/public/tmpPic', createParentPath : true }));
 
 
 	server.use(express.static('public'));
