@@ -7,7 +7,7 @@
     >
 
       <v-text-field
-        label="login"
+        label="Login"
         v-model="login"
         :rules="nameRules"
         required
@@ -23,7 +23,7 @@
       <v-text-field
         v-model="password"
         :rules="passwordRules"
-        label="Password"
+        :label="$t('password')"
         :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
         :type="showPassword ? 'text' : 'password'"
         @click:append="showPassword = !showPassword"
@@ -31,14 +31,14 @@
       ></v-text-field>
 
       <v-text-field
-        label="First name"
+        :label="$t('firstname')"
         v-model="firstName"
         :rules="nameRules"
         required
       ></v-text-field>
 
       <v-text-field
-        label="Last name"
+        :label="$t('lastname')"
         v-model="lastName"
         :rules="nameRules"
         required
@@ -47,7 +47,7 @@
       <v-checkbox
         v-model="checkbox"
         :rules="[v => !!v || 'You must agree to continue!']"
-        label="Do you agree?"
+        :label="$t('agree')"
         required
       ></v-checkbox>
 
@@ -57,7 +57,7 @@
         class="mr-4"
         @click="validate"
       >
-        Validate
+        {{ $t('validate') }}
       </v-btn>
 
       <v-btn
@@ -65,7 +65,7 @@
         class="mr-4"
         @click="reset"
       >
-        Reset Form
+        {{ $t('resetform') }}
       </v-btn>
     </v-form>
     <oauth> </oauth>

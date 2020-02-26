@@ -18,7 +18,7 @@
         v-model="password"
 
         :rules="passwordRules"
-        label="Password"
+        :label="$t('password')"
         :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
         :type="showPassword ? 'text' : 'password'"
         @click:append="showPassword = !showPassword"
@@ -32,7 +32,7 @@
         class="mr-4"
         @click="requestForm"
       >
-        Validate
+        {{ $t('validate') }}
       </v-btn>
     </v-form>
     <oauth> </oauth>

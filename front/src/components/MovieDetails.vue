@@ -10,7 +10,7 @@
 			<template v-slot:default>
 				<thead>
 					<tr>
-						<th class="text-left">Release Date</th>
+						<th class="text-left">{{ $t('releasedate') }}</th>
 						<th class="text-left">Note</th>
 					</tr>
 				</thead>

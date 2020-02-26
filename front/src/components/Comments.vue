@@ -1,6 +1,6 @@
 <template>
 	<div style="color: white">
-		<h2>Comments</h2>
+		<h2>{{ $t('com') }}</h2>
 		<div v-for="comment in comments">
 			<p v-on:click="displayUserProfile(comment.user.id)">{{ comment.user.login }}</p>
 			<p>{{ comment.content }}</p>
@@ -8,10 +8,10 @@
 		<v-form>
 			<v-textarea
 			v-model="textarea"
-			label="Please enter your comment"
+			:label="$t('entercom')"
    dark
 			></v-textarea>
-			<v-btn class="mr-4" @click="submit">submit</v-btn>
+			<v-btn class="mr-4" @click="submit">{{ $t('submit') }}</v-btn>
 		</v-form>
 	</div>
 </template>

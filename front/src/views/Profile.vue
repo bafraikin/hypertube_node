@@ -1,10 +1,10 @@
 <template>
 	<div>
 		<div v-if="user">
-		<h1 class="ici">User profile</h1>
+		<h1 class="ici">{{ $t('userprofile') }}</h1>
 		<p class="ici" dark>Login == {{user.login}}</p>
-		<p class="ici" dark>First Name == {{user.firstName}}</p>
-		<p class="ici" dark>Last Name == {{user.lastName}}</p>
+		<p class="ici" dark>{{ $t('firstname') }} == {{user.firstName}}</p>
+		<p class="ici" dark>{{ $t('lastname') }} == {{user.lastName}}</p>
 		<p class="ici" dark>Image == {{user.imageUrl}}</p>
 		</div>
 	</div>

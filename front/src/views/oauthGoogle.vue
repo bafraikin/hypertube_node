@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Please wait</h1> 
+    <h1>{{ $t('wait') }}</h1> 
   </div>
 </template>
 
@@ -22,13 +22,13 @@
           })
           .catch(err => {
             console.log("no touching ",err.response);
-            bus.$emit('alert', {type: 'error', msg: "No touching the code 🤬"});
+            bus.$emit('alert', {type: 'error', msg: $t('notouch') });
             setTimeout(function(){ window.location= process.env.VUE_APP_frontURL ;}, 700);
           });
       }	
       else {
         console.log("the other one", err.response);
-        bus.$emit('alert', {type: 'error', msg: "You have to click yes 🤣"});
+        bus.$emit('alert', {type: 'error', msg: $t('clicky') });
         setTimeout(function(){ window.location= process.env.VUE_APP_frontURL ;}, 700);
       }
     },

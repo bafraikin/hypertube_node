@@ -1,6 +1,6 @@
 <template>
   <v-container >
-    <h1>New Home</h1>
+    <h1>{{ $t('home') }}</h1>
     <ResearchBar v-if="showResearchBar" v-on:moviesResearch="researchMovieFun($event)" ></ResearchBar>
     <MovieVignette :movies="moviesToDisplay" v-if="showMovieVignette" v-on:selectMovie="showMovieDetailsFun($event)" ></MovieVignette>
     <MovieDetails  v-if="showMovieDetails" :OMDBid="OMDBid"></MovieDetails>
