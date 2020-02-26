@@ -59,7 +59,7 @@ export default {
 			return "https://image.tmdb.org/t/p/w500/"+ movie.poster_path;
 		},
 		getMovieDetails(research){
-			axios.get('😂/movie-detail', { params: { OMDBid: this.OMDBid } })
+			axios.get('😂/movie-detail', { params: { OMDBid: this.OMDBid, lang: this.$i18n.locale } })
 				.then(response => {
 					this.movie = response.data;
 				})
