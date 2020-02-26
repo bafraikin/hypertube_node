@@ -24,6 +24,7 @@ export default function setRoute(connection: Connection, app: Express) {
 		})
 
 		// /*AUTHENTICATION*/
+		app.get('/myCookie', (req, res) => res.send("Your cookie sir!"));
  		userNotAuthenticated.post('/authentication', passport.authenticate('local'), controller.authenticate.afterAuth);
 		userAuthenticated.route("/authentication").delete(controller.authenticate.logout);
 		userNotAuthenticated.get('/oauth42', passport.authenticate('42'), controller.authenticate.afterAuth);

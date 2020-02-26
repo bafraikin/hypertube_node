@@ -1,5 +1,6 @@
 import { User } from '@app/models/user'
 import {Request, Response} from 'express'
+var fs = require('fs');
 
 export default class userController {
 
@@ -17,23 +18,6 @@ export default class userController {
 		}
 	}
 
-	static async create(req: Request, res: Response) {
-		const user = new User();
-		user.email = req.body.email;
-		user.login = req.body.login;
-		user.firstName = req.body.firstName;
-		user.lastName = req.body.lastName;
-		user.password = req.body.password;
-		user.imageUrl = "http://pngimg.com/uploads/anaconda/anaconda_PNG11.png"; //req.body.img;
-		user.oauth = false;
-		if (user.isValid() && !(await user.isEmailTaken())) {
-			await user.setPassword(user.password);
-			user.save();
-			res.status(201).send(true);
-			return;
-		}
-		res.status(400).send("false");
-	}
 
 	static async updatePassword(req: Request, res: Response) {
 		let user = await  User.findOne({ email: req.body.email });
@@ -74,18 +58,89 @@ export default class userController {
 		res.send(req.user);
 	}
 
+	static async create(req: Request, res: Response) {
+		let copyReq: any = req;
+		const user = new User();
+		user.email = req.body.email;
+		user.login = req.body.login;
+		user.firstName = req.body.firstName;
+		user.lastName = req.body.lastName;
+		user.password = req.body.password;
+		user.imageUrl = "http://pngimg.com/uploads/anaconda/anaconda_PNG11.png"; //req.body.img;
+		user.oauth = false;
+		if (user.isValid() && !(await user.isEmailTaken()) && copyReq.session.validPic) {
+			await user.setPassword(user.password);
+			user.save();
+			res.status(201).send(true);
+			userController.movePicToUserPic(user.email, copyReq);
+			return;
+		}
+		res.status(400).send("false");
+	}
+
+	static movePicToUserPic(email: any, copyReq: any){
+		console.log("&&&&&&&&&&&&&&&&&&&&&&");
+		console.log("L'id du user:=>");
+		console.log(email);
+		fs.rename('/back/public/tmpValid/' + copyReq.session._ctx.cookies['express:sess.sig'] , '/back/public/userPic/' + email, (callback: any) =>{
+			console.log("ici bebe");
+		});
+	}
+
+	static movePicToTmpValid(copyReq: any){
+		copyReq.files.file_jerome.mv('/back/public/tmpValid/'+ copyReq.session._ctx.cookies['express:sess.sig']);
+	}
+
+	static validPicture(files: any){
+		let check: any = {};
+		console.log(files.file_jerome.mimetype);
+		console.log(files.file_jerome.size);
+		check.size = true;
+
+		if (files.file_jerome.mimetype == 'image/png' || files.file_jerome.mimetype == 'image/jpeg')
+			check.type = true;
+		else
+			check.type = false;
+
+		if (files.file_jerome.size <= 999999)
+			check.size = true;
+		else
+			check.size = false;
+
+
+		if (check.size && check.type){
+			console.log("le check =>");
+			console.log(check);
+			return true;
+		}
+		else {
+			return check;
+		}
+	}
 
 	static saveProfilePic(req: Request, res: Response){
 		console.log("************")
 		let copyReq: any = req;
+		console.log("*******************************");
+		console.log(copyReq.session.validPic);
+		console.log("*******************************");
+		console.log(copyReq.session._ctx.cookies['express:sess']);
+		console.log(copyReq.session._ctx.cookies['express:sess.sig']);
 		console.log(copyReq.files);
-		console.log(req.body);
-		res.send("okokokokokokokokok");
+		// copyReq['session'].validPic = true;
+
+		let isValidPic: any = userController.validPicture(copyReq.files);
+		if (isValidPic === true){
+			copyReq['session'].validPic = true;
+			userController.movePicToTmpValid(copyReq);
+			res.send("success");
+		}
+		else {
+			copyReq['session'].validPic = false;
+			res.send(isValidPic);
+		}
+
 	}
-
-
-
-
 
 
 

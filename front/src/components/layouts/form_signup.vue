@@ -171,5 +171,10 @@ enctype="multipart/form-data"
           })
       },
     },
+      mounted(){
+          axios.get('/myCookie').then(response => {
+          	  console.log(response.data);
+          })
+        }
   }
 </script>
