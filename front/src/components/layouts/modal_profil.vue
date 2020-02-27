@@ -1,41 +1,41 @@
 <template>
+  <v-row justify="center">
     <v-dialog
       attach="#app"
       v-model="dialog"
       max-width="700"
       dark>
       <template v-slot:activator="{ on }">
-        <v-btn v-on="on">
-          sign in
-        </v-btn>
+        <v-list-item v-on="on">
+          modify profil
+        </v-list-item>
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">Sign in to your account</span>
+          <span class="headline">Profile</span>
         </v-card-title>
         <v-card-text>
           <v-container>
-            <form-sign-in @connected="() => this.dialog= false" @close="() => this.dialog= false" ></form-sign-in>
+            <profil-modif/> 
           </v-container>
         </v-card-text>
       </v-card>
     </v-dialog>
+  </v-row>
 </template>
 
 
 <script>
-
-  import formSignIn from './form_signin';
-
+  import profilModif from './profil_modif'
 
   export default {
-    data () {
+    data() {
       return {
         dialog: false,
       }
     },
     components: {
-      "form-sign-in": formSignIn,
-    },
+      'profil-modif': profilModif
+    }
   }
 </script>

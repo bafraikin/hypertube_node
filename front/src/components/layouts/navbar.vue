@@ -41,29 +41,36 @@
         >
           <v-list-item-title @click="n.method">{{ n.message }}</v-list-item-title>
         </v-list-item>
+         <v-list-item>
+                <router-link :to="{ name: 'userProfile', params: { userId: $store.state.user.id }}" v-slot="{ href, route, navigate}">
+                  <v-list-item-title>
+                    <a :href="href" style="text-decoration: none; color: unset" @click="navigate">profil</a>
+                  </v-list-item-title>
+                </router-link>
+              </v-list-item>
+              <v-list-item>
+                <modify-profil />
+              </v-list-item>
       </v-list>
     </v-menu>
   </v-app-bar>
-
-
-
-
   </v-card>
 </template>
 
 
 <script>
+  import signup from "./modal_signup";
+  import signin from "./modal_signin";
+  import profil from "./modal_profil";
+  import axios from "@/config/axios_default";
 
-  import signup from './modal_signup'
-  import signin from './modal_signin'
-  import axios from "@/config/axios_default"
 
   export default {
     data() {
       return {
         showMenu: false,
         showMenuUser: false,
-        arr: [{message: 'logout', method: this.logout}, {message: 'profil', method: this.displayUserProfile} ]
+        arr: [{message: 'logout', method: this.logout}]
       }
     },
     methods: {
@@ -73,9 +80,6 @@
         });
         this.$store.commit('disconnectUser')
       },
-      displayUserProfile(){
-        this.$router.push({ name: "userProfile", params: {userId: this.$store.state.user.id}});
-      }
     },
     computed: {
       isConnected() {
@@ -84,14 +88,13 @@
     },
     components: {
       "sign-up": signup,
-      "sign-in": signin
+      "sign-in": signin,
+      "modify-profil": profil
     } 
-  }
-
+  };
 </script>
 
 <style lang="scss" media="screen">
-
     h3 a {
       text-decoration: none;
       color: #00ffdf!important;
