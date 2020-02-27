@@ -9,7 +9,6 @@
             :disabled="researchByFilmGenre"
             v-model="queryString"
             label="Votre research"
-
             required
           ></v-text-field>
         </v-card-text>
@@ -18,7 +17,7 @@
         <v-subheader>Range year movie</v-subheader>
         <v-card-text>
           <v-row>
-            <v-col class="px-4">
+            <v-col class="px-4 d-none d-md-flex">
               <v-range-slider
                 v-model="range"
                 :max="max"
@@ -50,6 +49,27 @@
                 </template>
               </v-range-slider>
             </v-col>
+
+            <v-col class="d-flex d-md-none">
+              <v-text-field
+                :value="range[0]"
+                class="mt-0 pt-0"
+                hide-details
+                outlined
+                type="number"
+                style="width: 60px"
+                v-on:change="$set(range, 0, $event)"
+              ></v-text-field>
+              <v-text-field
+                :value="range[1]"
+                class="mt-0 pt-0"
+                hide-details
+                outlined
+                type="number"
+                style="width: 60px"
+                @change="$set(range, 1, $event)"
+              ></v-text-field>
+            </v-col>
           </v-row>
         </v-card-text>
 
@@ -57,7 +77,7 @@
         <v-subheader>Intervale de note</v-subheader>
         <v-card-text>
           <v-row>
-            <v-col class="px-4">
+            <v-col class="px-4 d-none d-md-flex">
               <v-range-slider
                 v-model="note"
                 :max=10
@@ -88,18 +108,41 @@
                   ></v-text-field>
                 </template>
               </v-range-slider>
-              <v-checkbox
-                v-model="researchByFilmGenre"
-                label="research by genre"
-                v-on:change="clearInput"
-              >
-              </v-checkbox>
+            </v-col>
+
+            <v-col class="d-flex d-md-none">
+              <v-text-field
+                :value="note[0]"
+                class="mt-0 pt-0"
+                hide-details
+                outlined
+                type="number"
+                style="width: 60px"
+                v-on:change="$set(range, 0, $event)"
+              ></v-text-field>
+              <v-text-field
+                :value="note[1]"
+                class="mt-0 pt-0"
+                hide-details
+                outlined
+                type="number"
+                style="width: 60px"
+                @change="$set(range, 1, $event)"
+              ></v-text-field>
             </v-col>
           </v-row>
+            <v-checkbox
+              class="d-none d-md-flex"
+              v-model="researchByFilmGenre"
+              label="research by genre"
+              v-on:change="clearInput"
+            >
+            </v-checkbox>
         </v-card-text>
       </v-card>
 
       <v-expansion-panels
+        class="d-none d-md-flex"
         :disabled="!researchByFilmGenre"
       >
         <v-expansion-panel>
