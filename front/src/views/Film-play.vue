@@ -60,6 +60,12 @@ export default {
 		addTrack(lang, label, srclang, code){
 			let video = document.getElementById("videoPlayer");
 			let track = document.createElement('track');
+			if (this.$i18n.locale == srclang)
+				track.default = true;
+			console.log("i18n");
+			console.log(this.$i18n);
+			console.log("srclang");
+			console.log(srclang);
 			track.setAttribute("label", label);
 			track.setAttribute("kind", "subtitles");
 			track.setAttribute("srclang", srclang);
