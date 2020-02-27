@@ -1,48 +1,36 @@
 <template>
-  <v-card
+  <v-app-bar
+    color="deep-purple accent-4"
+    dense
     dark
-    color="#BF55EC"
-    :elevation="5"
   >
-    <div class="navbar">
-      <h2>
-        <router-link
-          to="/"
-          v-slot="{ href, route, navigate, isActive, isExactActive }"
+    <v-app-bar-nav-icon class="d-sm-none"></v-app-bar-nav-icon>
+    <v-toolbar-title>Hypertubulaire</v-toolbar-title>
+    <v-spacer></v-spacer>
+
+    <v-btn-toggle class="d-none d-sm-flex" v-if="!isConnected">
+      <sign-up/>
+      <sign-in/>
+    </v-btn-toggle>
+
+    <v-menu  v-else light bottom left nudge-bottom="35"    v-model="showMenu">
+      <template v-slot:activator="{ on }">
+        <v-btn icon  v-on="on">
+          <v-icon>mdi-account</v-icon>
+        </v-btn>
+      </template>
+
+      <v-list data-app="true">
+        <v-list-item
+          v-for="n in arr"
+          :key="n.message"
+          @click="() => {}"
         >
-          <a :href="href" @click="navigate">Hypertubulaire</a>
-        </router-link>
-      </h2>
-
-      <div class="navbar">
-
-        <div v-if="!isConnected" class="navbar"> 
-          <sign-up data-app="true"/>
-          <sign-in data-app="true"/>
-        </div>
-
-        <div v-else data-app="true"> 
-          <v-menu light bottom left nudge-bottom="35"    v-model="showMenu">
-            <template v-slot:activator="{ on }">
-              <v-btn icon  v-on="on">
-                <v-icon>mdi-account</v-icon>
-              </v-btn>
-            </template>
-
-            <v-list data-app="true">
-              <v-list-item
-                v-for="n in arr"
-                :key="n.message"
-                @click="() => {}"
-              >
-                <v-list-item-title @click="n.method">{{ n.message }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </div>
-      </div>
-    </div>
-  </v-card>
+          <v-list-item-title @click="n.method">{{ n.message }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+  </v-app-bar>
 </template>
 
 
