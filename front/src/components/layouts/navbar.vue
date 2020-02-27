@@ -24,13 +24,13 @@
             </template>
 
             <v-list data-app="true">
-              <v-list-item v-for="n in arr" :key="n.message" @click="() => {}">
-                <v-list-item-title @click="n.method">{{ n.message }}</v-list-item-title>
+              <v-list-item>
+                <v-list-item-title @click="logout()">{{ $t('signout') }}</v-list-item-title>
               </v-list-item>
               <v-list-item>
                 <router-link :to="{ name: 'userProfile', params: { userId: $store.state.user.id }}" v-slot="{ href, route, navigate}">
                   <v-list-item-title>
-                    <a :href="href" style="text-decoration: none; color: unset" @click="navigate">profil</a>
+                    <a :href="href" style="text-decoration: none; color: unset" @click="navigate">{{ $t('userprofile')  }}</a>
                   </v-list-item-title>
                 </router-link>
               </v-list-item>
@@ -57,7 +57,6 @@
     data() {
       return {
         showMenu: false,
-        arr: [{message: 'logout', method: this.logout}]
       }
     },
     methods: {

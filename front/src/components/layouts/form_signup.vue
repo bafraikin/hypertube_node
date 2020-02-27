@@ -9,20 +9,20 @@
       <v-text-field
         label="Login"
         v-model="login"
-        :rules="nameRules"
+        :rules="[ nameRules ]"
         required
       ></v-text-field>
 
       <v-text-field
         v-model="email"
-        :rules="emailRules"
+        :rules="[ emailRules ]"
         label="E-mail"
         required
       ></v-text-field>
 
       <v-text-field
         v-model="password"
-        :rules="passwordRules"
+        :rules="[ passwordRules ]"
         :label="$t('password')"
         :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
         :type="showPassword ? 'text' : 'password'"
@@ -33,20 +33,20 @@
       <v-text-field
         :label="$t('firstname')"
         v-model="firstName"
-        :rules="nameRules"
+        :rules="[ nameRules ]"
         required
       ></v-text-field>
 
       <v-text-field
         :label="$t('lastname')"
         v-model="lastName"
-        :rules="nameRules"
+        :rules="[ nameRules ]"
         required
       ></v-text-field>
 
       <v-checkbox
         v-model="checkbox"
-        :rules="[v => !!v || 'You must agree to continue!']"
+        :rules="[v => !!v || this.$t('mustagree')]"
         :label="$t('agree')"
         required
       ></v-checkbox>
@@ -84,6 +84,7 @@
       login: '',
       firstName: '',
       lastName: '',
+      qqch: '',
 
       valid: true,
       password: '',
@@ -91,21 +92,36 @@
       email: '',
       checkbox: false,
       lazy: false,
-      passwordRules: [
-        v => !!v || 'Password is required',
-        v=> (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,255}$/.test(v)) || 'A Maj. letter and a Min. letter and a number and be more than 8 length'],
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',],
-      nameRules: [
-        v => !!v || 'this field is required',
-        v => v.length > 0 && v.length < 251 || 'a name should be inside 1 and 250 charactere'],
     }),
     components: {
 		"oauth": oauth,
 	},
 
     methods: {
+      passwordRules (value) {
+        if (value.length === 0){
+          return this.$t('pwdrequired');
+        }
+        else if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,255}$/.test(value)){
+          return this.$t('pwdrules');
+        }
+        return true;
+      },
+      emailRules (value) {
+        if (value.length === 0){
+          return this.$t('emailrequired');
+        }
+        else if (/.+@.+\..+/.test(value)){
+          return this.$t('emailvalid');
+        }
+        return true;
+      },
+      nameRules (value) {
+        if (value.length === 0){
+          return this.$t('fieldrequired');
+        }
+        return true;
+      },
       validate() {
         if (this.$refs.form.validate()) {
           this.snackbar = true
@@ -131,5 +147,8 @@
           })
       },
     },
+    mounted(){
+      this.qqch = "blabla"
+    }
   }
 </script>

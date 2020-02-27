@@ -7,7 +7,7 @@
       dark>
       <template v-slot:activator="{ on }">
         <v-list-item v-on="on">
-          modify profil
+          {{ $t('modifyp') }}
         </v-list-item>
       </template>
       <v-card>

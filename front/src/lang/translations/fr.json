@@ -40,8 +40,9 @@
     "casting": "Distribution",
     "producer": "Producteur Exécutif",
     "agree": "Accepter les conditions générales du site",
+    "mustagree": "Vous devez accepter pour continuer",
     "play": "Lancer",
-    "userprofile": "Profile",
+    "userprofile": "Profil",
     "granteed": "Action autorisée",
     "badinput": "Mauvaise entrée",
     "notallowed": "Vous n'êtes pas autorisé à accéder à ce contenu",
@@ -49,5 +50,12 @@
     "error": "Erreur",
     "forgotpwd": "Mot de passe oublié",
     "provider": "Source",
-    "notorrent": "Aucun torrent trouvé"
+    "notorrent": "Aucun torrent trouvé",
+    "modifyp": "Modifier mes informations",
+    "pwdrequired": "Mot de passe requis",
+    "pwdrules": "Une lettre majuscule, une minuscule, un nombre et la taille supérieure à 8 caractères",
+    "emailrequired": "E-mail requis",
+    "emailvalid": "L'e-mail doit être valide",
+    "fieldrequired": "Champs requis",
+    "namerules": "Le nom doit faire entre 1 et 250 caractères"
 }

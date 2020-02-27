@@ -40,8 +40,9 @@
     "casting": "Casting",
     "producer": "Executive Producer",
     "agree": "Do you agree?",
+    "mustagree": "You must agree to continue",
     "play": "Play",
-    "userprofile": "User profile",
+    "userprofile": "Profile",
     "granteed": "Action granteed",
     "badinput": "Bad input",
     "notallowed": "You're not allowed to perform this action",
@@ -49,5 +50,13 @@
     "error": "Error",
     "forgotpwd": "Forgot Password",
     "provider": "Provider",
-    "notorrent": "No torrent found"
+    "notorrent": "No torrent found",
+    "profile": "Profile",
+    "modifyp": "Modify my profile",
+    "pwdrequired": "Password required",
+    "pwdrules": "A maj. letter, a min. letter, a number and more than 8 length",
+    "emailrequired": "E-mail is required",
+    "emailvalid": "E-mail must be valid",
+    "fieldrequired": "This field is required",
+    "namerules": "Name should be inside 1 and 250 characters"
 }

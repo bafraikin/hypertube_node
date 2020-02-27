@@ -1,13 +1,13 @@
 <template>
   <div>
     <v-form ref="form" v-model="valid" :lazy-validation="lazy">
-      <v-text-field v-model="email" :rules="emailRules" label="E-mail" required>
+      <v-text-field v-model="email" :rules="[ emailRules ]" label="E-mail" required>
         <v-icon>fas fa-lock</v-icon>
       </v-text-field>
 
       <v-text-field
         v-model="password"
-        :rules="passwordRules"
+        :rules="[ passwordRules ]"
         :label="$t('password')"
         :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
         :type="showPassword ? 'text' : 'password'"
@@ -34,22 +34,30 @@ export default {
     email: "",
     lazy: false,
     showPassword: false,
-    passwordRules: [
-      v => !!v || "Password is required",
-      v =>
-        /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,250}$/.test(v) ||
-        "Password must contains moult truc"
-    ],
-    emailRules: [
-      v => !!v || "E-mail is required",
-      v => /.+@.+\..+/.test(v) || "E-mail must be valid"
-    ]
   }),
   components: {
     oauth: oauth,
   },
 
   methods: {
+    passwordRules (value) {
+        if (value.length === 0){
+          return this.$t('pwdrequired');
+        }
+        else if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,255}$/.test(value)){
+          return this.$t('pwdrules');
+        }
+        return true;
+    },
+    emailRules (value) {
+        if (value.length === 0){
+          return this.$t('emailrequired');
+        }
+        else if (/.+@.+\..+/.test(value)){
+          return this.$t('emailvalid');
+        }
+        return true;
+    },
     validate() {
       if (this.$refs.form.validate()) {
         this.snackbar = true;
