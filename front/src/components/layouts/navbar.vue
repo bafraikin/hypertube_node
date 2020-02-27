@@ -1,13 +1,22 @@
 <template>
-  </v-row>
+   <v-card
+    class="mx-auto overflow-hidden"
+    tile
+  >
   <v-app-bar
     color="deep-purple accent-4"
     dense
     dark
   >
-    <v-app-bar-nav-icon class="d-sm-none"></v-app-bar-nav-icon>
-    <v-toolbar-title><h3 style="color: #00ffdf">Hypertubulaire</h3></v-toolbar-title>
-    <v-spacer></v-spacer>
+    <v-app-bar-nav-icon class="d-sm-none" @click.stop="showMenu = !showMenu"></v-app-bar-nav-icon>
+    <v-toolbar-title>
+      <h3 >
+          <router-link to="/" v-slot="{ href, route, navigate}">
+          <a :href="href" @click="navigate">Hypertubulaire</a>
+        </router-link>
+    </h3>
+  </v-toolbar-title>
+    <v-spacer class="d-none d-sm-flex"></v-spacer>
 
     <v-btn-toggle class="d-none d-sm-flex" v-if="!isConnected"
       shaped
@@ -17,9 +26,9 @@
       <sign-in/>
     </v-btn-toggle>
 
-    <v-menu  v-else light bottom left nudge-bottom="35"    v-model="showMenu">
+    <v-menu  v-else light bottom left nudge-bottom="35"    v-model="showMenuUser">
       <template v-slot:activator="{ on }">
-        <v-btn icon  v-on="on">
+        <v-btn icon  class="d-none d-sm-flex" v-on="on">
           <v-icon>mdi-account</v-icon>
         </v-btn>
       </template>
@@ -35,6 +44,11 @@
       </v-list>
     </v-menu>
   </v-app-bar>
+
+
+
+
+  </v-card>
 </template>
 
 
@@ -48,6 +62,7 @@
     data() {
       return {
         showMenu: false,
+        showMenuUser: false,
         arr: [{message: 'logout', method: this.logout}, {message: 'profil', method: this.displayUserProfile} ]
       }
     },
@@ -77,19 +92,10 @@
 
 <style lang="scss" media="screen">
 
-  .navbar{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    .navbar{
-      justify-content: space-around;
-      width: 15%;
-    }
-    h2 a {
+    h3 a {
       text-decoration: none;
-      color: inherit;
+      color: #00ffdf!important;
     }
-  }
   .v-menu__content {
     left: 0;
     max-width: 100%;
