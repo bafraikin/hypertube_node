@@ -54,6 +54,7 @@ enctype="multipart/form-data"
 
 		  <v-file-input
 			label="Upload profile pic"
+   			:rules="fileRules"
    			v-model="file_pic" 
 			@change="filesChange($event)"
 			>
@@ -127,6 +128,12 @@ enctype="multipart/form-data"
       nameRules: [
         v => !!v || 'this field is required',
         v => v.length > 0 && v.length < 251 || 'a name should be inside 1 and 250 charactere'],
+        fileRules: [
+        	value => !!value || 'A profile pic is required',
+        	value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
+        	value => !value || value.size > 0 || 'Your file is empty',
+        	value => !value || value.mimetype == 'image/png' || value.mimetype == 'image/jpeg' || 'Wrong file type',
+        ]
     }),
     components: {
 		"oauth": oauth,
@@ -174,7 +181,6 @@ enctype="multipart/form-data"
       },
     },
       mounted(){
-
 		let formData = new FormData();
           axios.get('😱/myCookie').then(response => {
           })

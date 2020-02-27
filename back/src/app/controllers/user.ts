@@ -2,6 +2,7 @@ import { User } from '@app/models/user'
 import { Request, Response } from 'express'
 import { inherits } from 'util';
 import logger from '@settings/logger';
+import picUploadClient from '@app/services/picUpload'
 var fs = require('fs');
 
 const fiveMin: number = 300000;
@@ -176,11 +177,6 @@ export default class userController {
 		}
 	}
 
-
-	static destroy(req: Request, res: Response) {
-
-	}
-
 	static getUser(req: Request, res: Response) {
 		res.send(req.user);
 	}
@@ -193,57 +189,24 @@ export default class userController {
 		user.firstName = req.body.firstName;
 		user.lastName = req.body.lastName;
 		user.password = req.body.password;
-		user.imageUrl = user.email;//**********************************
+		user.imageUrl = copyReq.session.random + user.email;//**********************************
 		user.oauth = false;
 		if (user.isValid() && !(await user.isEmailTaken()) && copyReq['session'].validPic == true) {
 			await user.setPassword(user.password);
 			user.save();
 			res.status(201).send(true);
-			userController.movePicToUserPic(user.email, copyReq);
+			picUploadClient.movePicToUserPic(user.email, copyReq);
 			return;
 		}
 		else{
-			res.status(400).send("false");
+			res.status(401).send("false");
 		}
-	}
-
-	static movePicToUserPic(email: any, copyReq: any){
-		fs.rename('/back/public/tmpValid/' + copyReq.session.random, '/back/public/userPic/' + email, (callback: any) =>{
-		});
-	}
-
-	static movePicToTmpValid(copyReq: any){
-		copyReq.files.file_jerome.mv('/back/public/tmpValid/'+ copyReq.session.random);
 	}
 
 	static getCookie(req: Request, res: Response){
 		let copyReq: any = req;
 		copyReq['session'].id  = true;
-		res.send("Your cookies sir!");
-	}
-
-	static validPicture(files: any){
-		let check: any = {};
-		check.size = false;
-		check.type = false;
-
-		if (files.file_jerome.mimetype == 'image/png' || files.file_jerome.mimetype == 'image/jpeg')
-			check.type = true;
-		else
-			check.type = false;
-
-		if (files.file_jerome.size <= 9999999)
-			check.size = true;
-		else
-			check.size = false;
-
-
-		if (check.size && check.type){
-			return true;
-		}
-		else {
-			return check;
-		}
+		res.status(200).send("Your cookies sir!");
 	}
 
 	static saveProfilePic(req: Request, res: Response){
@@ -252,20 +215,20 @@ export default class userController {
 			res.send("vide");
 		}
 		else{
-			let isValidPic: any = userController.validPicture(copyReq.files);
+			let isValidPic: any = picUploadClient.validPicture(copyReq.files);
 			if (isValidPic === true){
 				copyReq['session'].validPic = true;
 				let random:any = Math.floor((Math.random() * 10000) + 1);
 				let maRep :any = {};
 				maRep.expressSig = random;
 				copyReq.session.random = random;
-				userController.movePicToTmpValid(copyReq);
+				picUploadClient.movePicToTmpValid(copyReq);
 				maRep.status = "sucess";
-				res.send(maRep);
+				res.status(200).send(maRep);
 			}
 			else {
 				copyReq['session'].validPic = false;
-				res.send(isValidPic);
+				res.status(401).send(isValidPic);
 			}
 		}
 
