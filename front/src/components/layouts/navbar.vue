@@ -1,14 +1,18 @@
 <template>
+  </v-row>
   <v-app-bar
     color="deep-purple accent-4"
     dense
     dark
   >
     <v-app-bar-nav-icon class="d-sm-none"></v-app-bar-nav-icon>
-    <v-toolbar-title>Hypertubulaire</v-toolbar-title>
+    <v-toolbar-title><h3 style="color: #00ffdf">Hypertubulaire</h3></v-toolbar-title>
     <v-spacer></v-spacer>
 
-    <v-btn-toggle class="d-none d-sm-flex" v-if="!isConnected">
+    <v-btn-toggle class="d-none d-sm-flex" v-if="!isConnected"
+      shaped
+      borderless
+    >
       <sign-up/>
       <sign-in/>
     </v-btn-toggle>
