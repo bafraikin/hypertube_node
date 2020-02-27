@@ -43,5 +43,6 @@
     "granteed": "Action granteed",
     "badinput": "Bad input",
     "notallowed": "You're not allowed to perform this action",
-    "needsignin": "You need to sign in to perform this action"
+    "needsignin": "You need to sign in to perform this action",
+    "error": "Error"
 }

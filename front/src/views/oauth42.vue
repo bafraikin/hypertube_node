@@ -21,12 +21,12 @@
           })
           .catch(err => {
             console.log(err.response);
-            bus.$emit('alert', {type: 'error', msg: $t('notouch') });
+            bus.$emit('alert', {type: 'error', msg: this.$t('notouch') });
             setTimeout(function(){ window.location= process.env.VUE_APP_frontURL ;}, 700);
           });
       }	
       else {
-        bus.$emit('alert', {type: 'error', msg: $t('clicky') });
+        bus.$emit('alert', {type: 'error', msg: this.$t('clicky') });
         setTimeout(function(){ window.location= process.env.VUE_APP_frontURL ;}, 700);
       }
     },

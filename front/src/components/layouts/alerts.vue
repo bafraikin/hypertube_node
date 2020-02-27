@@ -12,56 +12,16 @@
         console.log(this.$i18n);
         switch(code){
           case "UNSIGNED":
-            return this.whichMess(language, "needsignin");
+            return this.$t("needsignin");
           case "NOT_ALLOWED":
-            return this.whichMess(language, "notallowed");
+            return this.$t("notallowed");
           case "BAD_INPUT":
-            return this.whichMess(language, "badinput");
+            return this.$t("badinput");
           case "CREATED":
-            return this.whichMess(language, "granteed");
+            return this.$t("granteed");
           default:
-            return "error"
+            return this.$t("error");
         }
-      },
-      whichMess(lang, mess){
-        switch(mess){
-          case "granteed":
-            if (lang == "fr"){
-              return this.$i18n.messages.fr.granteed;
-            }
-            else{
-              return this.$i18n.messages.en.granteed;
-            }
-          case "badinput":
-            if (lang == "fr"){
-              return this.$i18n.messages.fr.badinput;
-            }
-            else{
-              return this.$i18n.messages.en.badinput;
-            }
-          case "notallowed":
-            if (lang == "fr"){
-              return this.$i18n.messages.fr.notallowed;
-            }
-            else{
-              return this.$i18n.messages.en.notallowed;
-            }
-          case "needsignin":
-            if (lang == "fr"){
-              return this.$i18n.messages.fr.needsignin;
-            }
-            else{
-              return this.$i18n.messages.en.needsignin;
-            }
-          default:
-            if (lang == "fr"){
-              return "erreur";
-            }
-            else{
-              return "error";
-            }             
-        }
-
       },
       displayAlert(args) {
         if (args.code !== undefined)
