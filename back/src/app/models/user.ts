@@ -116,17 +116,19 @@ export class User extends BaseEntity {
 		try {
 			this.email = profile.emails[0].value;
 			this.password = "bcrypt888bbb";
-			if (profile.thisname === undefined) {
+			if (profile.imageURL == undefined) 
+			{
 				this.login = profile.displayName;
 				this.firstName = profile.displayName.split(' ')[0];;
-				this.lastName = profile.displayName.split(' ')[1];;
+				this.lastName = profile.displayName.split(' ')[0];;
 				this.imageUrl = profile.photos[0].value;
-			}/* for google 👇 for 42 👆 */
+			}/* for google 👆 for 42 👇 */
 			else {
-				this.login = profile.thisname;
-				this.firstName = profile.name.givenName
-				this.lastName = profile.name.familyName
-				this.imageUrl = profile.image_url
+
+				this.login = profile.login;
+				this.firstName = profile.firstName;
+				this.lastName = profile.lastName;
+				this.imageUrl = profile.imageURL;
 			}
 			this.oauth = true;
 		} catch

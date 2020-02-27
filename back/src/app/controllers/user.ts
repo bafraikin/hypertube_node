@@ -47,97 +47,95 @@ export default class userController {
 
 	static async updateEmail(req: Request, res: Response) {
 		const userid : number | undefined = User.getId(req.user)
-		if (userid) {
-			let user: User | undefined = await User.findOne({ id: userid });
-			if (user instanceof User && !user.isEmpty()) {
-				user.email = req.body.email;
-				if (await user.isEmailTaken()) {
-					user.save();
-					res.status(200).send(true);
-					return;
-				}
+		let user: User | undefined = await User.findOne({ id: userid });
+		if (user instanceof User && !user.isEmpty()) {
+			user.email = req.body.email;
+			if (!(await user.isEmailTaken())) {
+				user.save();
+				res.status(200).send(true);
+				return;
 			}
 		}
 		res.status(405).send(false);
 		return;
 	}
-	
-		static async updatePassword(req: Request, res: Response) {
-			const userid : number | undefined = User.getId(req.user)
-			let user: User | undefined = await User.findOne({ id: userid });
-			if (user instanceof User && !user.isEmpty()) {
-				user.password = req.body.password;
-				if (user.checkPassIsComplex()) {
-	
-					user.save();
-					res.status(200).send(true);
-					return;
-				}
-			}
-			res.status(405).send(false);
-			return;
-		}
-	
-		static async updateLogin(req: Request, res: Response) {
-			const userid : number | undefined = User.getId(req.user)
-			let user: User | undefined = await User.findOne({ id: userid });
-			if (user instanceof User && !user.isEmpty()) {
-				user.login = req.body.login;
-				console.log(user.isValid());
-				if (user.isValid()) {
-					user.save();
-					res.status(200).send(true);
-					return;
-				}			}
-			res.status(405).send(false);
-			return;
-		}
-	
-	
-		static async updateLastname(req: Request, res: Response) {
-			const userid : number | undefined = User.getId(req.user)
-			let user: User | undefined = await User.findOne({ id: userid });
-			if (user instanceof User && !user.isEmpty()) {
-				user.lastName = req.body.lastname;
-				if (user.isValid()) {
-					user.save();
-					res.status(200).send(true);
-					return;
-				}
-			}
-			res.status(405).send(false);
-			return;
-		}
-	
-		static async updateFirstname(req: Request, res: Response) {
-			const userid : number | undefined = User.getId(req.user)
-			let user: User | undefined = await User.findOne({ id: userid });
-			if (user instanceof User && !user.isEmpty()) {
-				user.firstName = req.body.firstname;
-				if (user.isValid()) {
-					user.save();
-					res.status(200).send(true);
-					return;
-				}
-			}
-			res.status(405).send(false);
-			return;
-		}
 
-		static async updateImageUrl(req: Request, res: Response) {
-			const userid : number | undefined = User.getId(req.user)
-			let user: User | undefined = await User.findOne({ id: userid });
-			if (user instanceof User && !user.isEmpty()) {
-				user.imageUrl = req.body.imageUrl;
-				if (user.isValid()) {
-					user.save();
-					res.status(200).send(true);
-					return;
-				}
+	static async updatePassword(req: Request, res: Response) {
+		const userid : number | undefined = User.getId(req.user)
+		let user: User | undefined = await User.findOne({ id: userid });
+		if (user instanceof User && !user.isEmpty()) {
+			user.password = req.body.password;
+			if (user.checkPassIsComplex()) {
+
+				user.save();
+				res.status(200).send(true);
+				return;
 			}
-			res.status(405).send(false);
-			return;
 		}
+		res.status(405).send(false);
+		return;
+	}
+
+	static async updateLogin(req: Request, res: Response) {
+		const userid : number | undefined = User.getId(req.user)
+			let user: User | undefined = await User.findOne({ id: userid });
+		if (user instanceof User && !user.isEmpty()) {
+			user.login = req.body.login;
+			console.log(user.isValid());
+			if (user.isValid()) {
+				user.save();
+				res.status(200).send(true);
+				return;
+			}			}
+		res.status(405).send(false);
+		return;
+	}
+
+
+	static async updateLastname(req: Request, res: Response) {
+		const userid : number | undefined = User.getId(req.user)
+		let user: User | undefined = await User.findOne({ id: userid });
+		if (user instanceof User && !user.isEmpty()) {
+			user.lastName = req.body.lastName;
+			if (user.isValid()) {
+				user.save();
+				res.status(200).send(true);
+				return;
+			}
+		}
+		res.status(405).send(false);
+		return;
+	}
+
+	static async updateFirstname(req: Request, res: Response) {
+		const userid : number | undefined = User.getId(req.user)
+		let user: User | undefined = await User.findOne({ id: userid });
+		if (user instanceof User && !user.isEmpty()) {
+			user.firstName = req.body.firstName;
+			if (user.isValid()) {
+				user.save();
+				res.status(200).send(true);
+				return;
+			}
+		}
+		res.status(405).send(false);
+		return;
+	}
+
+	static async updateImageUrl(req: Request, res: Response) {
+		const userid : number | undefined = User.getId(req.user)
+		let user: User | undefined = await User.findOne({ id: userid });
+		if (user instanceof User && !user.isEmpty()) {
+			user.imageUrl = req.body.imageUrl;
+			if (user.isValid()) {
+				user.save();
+				res.status(200).send(true);
+				return;
+			}
+		}
+		res.status(405).send(false);
+		return;
+	}
 
 	/*
 	 ** il manque update pictures
