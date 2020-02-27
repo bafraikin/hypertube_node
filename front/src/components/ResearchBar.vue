@@ -108,61 +108,61 @@
             <v-container dark fluid>
               <v-row dark >
                 <v-col cols="2">
-                  <v-checkbox  v-model="gender" label="Action" value="28"></v-checkbox>
+                  <v-checkbox :disabled="!researchByFilmGenre"  v-model="gender" label="Action" value="28"></v-checkbox>
                 </v-col>
                 <v-col cols="2">
-                  <v-checkbox v-model="gender" label="Adventure" value="12"></v-checkbox>
+                  <v-checkbox :disabled="!researchByFilmGenre" v-model="gender" label="Adventure" value="12"></v-checkbox>
                 </v-col>
                 <v-col cols="2">
-                  <v-checkbox v-model="gender" label="Animation" value="16"></v-checkbox>
+                  <v-checkbox :disabled="!researchByFilmGenre" v-model="gender" label="Animation" value="16"></v-checkbox>
                 </v-col>
                 <v-col cols="2">
-                  <v-checkbox v-model="gender" label="Comedy" value="35"></v-checkbox>
+                  <v-checkbox :disabled="!researchByFilmGenre" v-model="gender" label="Comedy" value="35"></v-checkbox>
                 </v-col>
                 <v-col cols="2">
-                  <v-checkbox v-model="gender" label="Crime" value="80"></v-checkbox>
+                  <v-checkbox :disabled="!researchByFilmGenre" v-model="gender" label="Crime" value="80"></v-checkbox>
                 </v-col>
                 <v-col cols="2">
-                  <v-checkbox v-model="gender" label="Documentary" value="99"></v-checkbox>
+                  <v-checkbox :disabled="!researchByFilmGenre" v-model="gender" label="Documentary" value="99"></v-checkbox>
                 </v-col>
                 <v-col cols="2">
-                  <v-checkbox v-model="gender" label="Drama" value="18"></v-checkbox>
+                  <v-checkbox :disabled="!researchByFilmGenre" v-model="gender" label="Drama" value="18"></v-checkbox>
                 </v-col>
                 <v-col cols="2">
-                  <v-checkbox v-model="gender" label="Family" value="10751"></v-checkbox>
+                  <v-checkbox :disabled="!researchByFilmGenre" v-model="gender" label="Family" value="10751"></v-checkbox>
                 </v-col>
                 <v-col cols="2">
-                  <v-checkbox v-model="gender" label="Fantasy" value="14"></v-checkbox>
+                  <v-checkbox :disabled="!researchByFilmGenre" v-model="gender" label="Fantasy" value="14"></v-checkbox>
                 </v-col>
                 <v-col cols="2">
-                  <v-checkbox v-model="gender" label="History" value="36"></v-checkbox>
+                  <v-checkbox :disabled="!researchByFilmGenre" v-model="gender" label="History" value="36"></v-checkbox>
                 </v-col>
                 <v-col cols="2">
-                  <v-checkbox v-model="gender" label="Horror" value="27"></v-checkbox>
+                  <v-checkbox :disabled="!researchByFilmGenre" v-model="gender" label="Horror" value="27"></v-checkbox>
                 </v-col>
                 <v-col cols="2">
-                  <v-checkbox v-model="gender" label="Music" value="10402"></v-checkbox>
+                  <v-checkbox :disabled="!researchByFilmGenre" v-model="gender" label="Music" value="10402"></v-checkbox>
                 </v-col>
                 <v-col cols="2">
-                  <v-checkbox v-model="gender" label="Mystery" value="9648"></v-checkbox>
+                  <v-checkbox :disabled="!researchByFilmGenre" v-model="gender" label="Mystery" value="9648"></v-checkbox>
                 </v-col>
                 <v-col cols="2">
-                  <v-checkbox v-model="gender" label="Romance" value="10749"></v-checkbox>
+                  <v-checkbox :disabled="!researchByFilmGenre" v-model="gender" label="Romance" value="10749"></v-checkbox>
                 </v-col>
                 <v-col cols="2">
-                  <v-checkbox v-model="gender" label="Science Fiction" value="878"></v-checkbox>
+                  <v-checkbox :disabled="!researchByFilmGenre" v-model="gender" label="Science Fiction" value="878"></v-checkbox>
                 </v-col>
                 <v-col cols="2">
-                  <v-checkbox v-model="gender" label="TV Movie" value="10770"></v-checkbox>
+                  <v-checkbox :disabled="!researchByFilmGenre" v-model="gender" label="TV Movie" value="10770"></v-checkbox>
                 </v-col>
                 <v-col cols="2">
-                  <v-checkbox v-model="gender" label="Thriller" value="53"></v-checkbox>
+                  <v-checkbox :disabled="!researchByFilmGenre" v-model="gender" label="Thriller" value="53"></v-checkbox>
                 </v-col>
                 <v-col cols="2">
-                  <v-checkbox v-model="gender" label="War" value="10752"></v-checkbox>
+                  <v-checkbox :disabled="!researchByFilmGenre" v-model="gender" label="War" value="10752"></v-checkbox>
                 </v-col>
                 <v-col cols="2">
-                  <v-checkbox v-model="gender" label="Western" value="37"></v-checkbox>
+                  <v-checkbox :disabled="!researchByFilmGenre" v-model="gender" label="Western" value="37"></v-checkbox>
                 </v-col>
               </v-row>
             </v-container>
