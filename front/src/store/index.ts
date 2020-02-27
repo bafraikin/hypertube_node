@@ -13,9 +13,9 @@ const store = {
 		connected: Boolean(false)
 	},
 	mutations: {
-		connectUser(state: any, user: Object) {
+		connectUser(state: any, response: any) {
 			state.connected = true
-			state.user = user
+			state.user = response.data.user
 		},
 		disconnectUser(state: any) {
 			state.connected = false

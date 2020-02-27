@@ -13,7 +13,7 @@ export default async function getServer (connection: Connection, isDev = false) 
 
 	server.use(function(req, res, next) {
 		res.header("Access-Control-Allow-Origin", "http://127.0.0.1:8080");
-		res.header("Access-Control-Allow-Methods", "GET, HEAD, POST, DELETE, OPTIONS");
+		res.header("Access-Control-Allow-Methods", "GET, PUT,  HEAD, POST, DELETE, OPTIONS");
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		res.header("Access-Control-Allow-Credentials",  "true");
 		next();
@@ -26,12 +26,11 @@ export default async function getServer (connection: Connection, isDev = false) 
 		keys: ['Arman.D']
 	}));
 
-
 	server.use(bodyParser.urlencoded({
 		extended: true
 	}));
 
-
+	server.use(express.static('sub'));
 	server.use(express.static('films'));
 	server.use(bodyParser.json());
 	server = await setupPassport(server);

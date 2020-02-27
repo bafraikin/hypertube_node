@@ -1,5 +1,5 @@
 {
-    "home": "Home",
+    "researchpage": "Research",
     "signin": "Sign in",
     "signinaccount": "Sign in to your account",
     "createaccount": "Create an account",
@@ -13,6 +13,8 @@
     "wait": "Please wait",
     "notouch": "No touching the code 🤬",
     "clicky": "You have to click yes 🤣",
+    "welldone": "Well done 💪 you can now log",
+    "oldtoken":"Maybe your token is to old ⚰️ or the password is no good 💣",
     "research": "Enter a movie title",
     "rangeyear": "Range year movie",
     "note": "Note",
@@ -44,5 +46,8 @@
     "badinput": "Bad input",
     "notallowed": "You're not allowed to perform this action",
     "needsignin": "You need to sign in to perform this action",
-    "error": "Error"
+    "error": "Error",
+    "forgotpwd": "Forgot Password",
+    "provider": "Provider",
+    "notorrent": "No torrent found"
 }

@@ -21,12 +21,12 @@
           })
           .catch(err => {
             console.log(err.response);
-            bus.$emit('alert', {type: 'error', msg: this.$t('notouch') });
+            bus.$emit('alert', {type: 'error', code: "NO_TOUCHING"});
             setTimeout(function(){ window.location= process.env.VUE_APP_frontURL ;}, 700);
           });
       }	
       else {
-        bus.$emit('alert', {type: 'error', msg: this.$t('clicky') });
+        bus.$emit('alert', {type: 'error', code: "YOU_HAVE_TO_YES"});
         setTimeout(function(){ window.location= process.env.VUE_APP_frontURL ;}, 700);
       }
     },

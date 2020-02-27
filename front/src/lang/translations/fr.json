@@ -1,5 +1,5 @@
 {
-    "home": "Accueil",
+    "researchpage": "Recherche",
     "signin": "Se connecter",
     "signinaccount": "Connexion à votre compte",
     "signup": "S'inscrire",
@@ -13,6 +13,8 @@
     "wait": "Patientez",
     "notouch": "Ne touchez pas au code 🤬",
     "clicky": "Vous devez cliquer sur oui 🤣",
+    "welldone": "Bien joué 💪 Vous pouvez vous connecter",
+    "oldtoken": "Votre token a expiré ⚰️ ou votre mot de passe n'est pas bon 💣",
     "research": "Entrez un nom de film",
     "rangeyear": "Année de production",
     "note": "Note",
@@ -44,5 +46,8 @@
     "badinput": "Mauvaise entrée",
     "notallowed": "Vous n'êtes pas autorisé à accéder à ce contenu",
     "needsignin": "Vous devez vous identifier pour accéder à ce contenu",
-    "error": "Erreur"
+    "error": "Erreur",
+    "forgotpwd": "Mot de passe oublié",
+    "provider": "Source",
+    "notorrent": "Aucun torrent trouvé"
 }

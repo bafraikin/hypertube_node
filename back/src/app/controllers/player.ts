@@ -17,10 +17,7 @@ export default class playerController {
 				let regex = /mp4/;
 				let isMovie = regex.test(file.name);
 				if (isMovie){
-					let opt = {
-						start: start,
-						end: file.length
-					}
+					let opt = { start: start, end: file.length };
 					let stream = file.createReadStream(opt);
 					const fileSize = file.length;
 					const end = parts[1]
@@ -56,8 +53,6 @@ export default class playerController {
 }
 
 
-
-
 	// var progress = 0;
 	// stream.on('data', (chunk: any) => {
 	// 	console.log("received " + chunk.length + " bytes of data");
@@ -68,13 +63,3 @@ export default class playerController {
 	// stream.on('end', () => {
 	// console.log("Download completed");
 	// })
-
-
-
-
-
-
-
-
-
-
