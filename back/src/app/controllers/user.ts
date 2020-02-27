@@ -209,19 +209,24 @@ export default class userController {
 		res.status(200).send("Your cookies sir!");
 	}
 
-	static saveProfilePic(req: Request, res: Response){
+	static async saveProfilePic(req: Request, res: Response){
 		let copyReq: any = req;
 		if (copyReq.files == null){
 			res.send("vide");
 		}
 		else{
-			let isValidPic: any = picUploadClient.validPicture(copyReq.files);
+			let isValidPic: any = await picUploadClient.validPicture(copyReq.files);
 			if (isValidPic === true){
+				if (copyReq.session.random != undefined)
+					fs.unlinkSync('/back/public/tmpValid/'+ copyReq.session.random);
+
+
 				copyReq['session'].validPic = true;
 				let random:any = Math.floor((Math.random() * 10000) + 1);
 				let maRep :any = {};
 				maRep.expressSig = random;
 				copyReq.session.random = random;
+
 				picUploadClient.movePicToTmpValid(copyReq);
 				maRep.status = "sucess";
 				res.status(200).send(maRep);

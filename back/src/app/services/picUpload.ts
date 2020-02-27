@@ -1,4 +1,5 @@
-var fs = require('fs');
+const fs = require('fs');
+const FileType = require('file-type');
 
 export default class picUploadClient {
 
@@ -11,13 +12,15 @@ export default class picUploadClient {
 		copyReq.files.file_jerome.mv('/back/public/tmpValid/'+ copyReq.session.random);
 	}
 
-	static validPicture(files: any){
+	static async validPicture(files: any){
 		let check: any = {};
 		check.size = false;
 		check.type = false;
 
-		if (files.file_jerome.mimetype == 'image/png' || files.file_jerome.mimetype == 'image/jpeg')
-			check.type = true;
+		const {ext, mime} = await FileType.fromFile(files.file_jerome.tempFilePath) || {};
+
+		if ( (files.file_jerome.mimetype == 'image/png' || files.file_jerome.mimetype == 'image/jpeg') && (mime == 'image/png' || mime == 'image/jpeg'))
+				check.type = true;
 		else
 			check.type = false;
 
@@ -26,11 +29,11 @@ export default class picUploadClient {
 		else
 			check.size = false;
 
-
 		if (check.size && check.type){
 			return true;
 		}
-		else {
+		else{
+			fs.unlinkSync(files.file_jerome.tempFilePath);
 			return check;
 		}
 	}
