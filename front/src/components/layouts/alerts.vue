@@ -25,6 +25,10 @@
             return "Well done 💪  you can now log";
           case "OLD_TOKEN":
             return "Maybe your token is to old ⚰️ or the password is no good 💣";
+          case "CHECK_MAIL":
+          	return "Check your mail ✉️👀";
+          case "DONE" :
+          	return "Done 😤";
           default:
             return "error"
         }

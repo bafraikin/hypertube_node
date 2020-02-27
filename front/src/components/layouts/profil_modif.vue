@@ -37,6 +37,7 @@
 
 <script>
 import axios from "@/config/axios_default";
+import bus from "@/config/bus_event";
 
 export default {
   data: () => ({
@@ -76,9 +77,11 @@ export default {
           login: this.login
         }
           ).then(response => {
-            console.log(response);
+            bus.$emit('alert', {type: 'success', code: "DONE"});
           })
-          .catch(error => {});
+          .catch(error => {
+  	      	bus.$emit('alert', {type: 'error', code: "BAD_INPUT"});
+          });
     },
     reqNewEmail() {
       axios.put(
@@ -87,9 +90,11 @@ export default {
           email: this.email
         }
           ).then(response => {
-            console.log(response);
+            bus.$emit('alert', {type: 'success', code: "DONE"});
           })
-          .catch(error => {});
+          .catch(error => {
+  	      	bus.$emit('alert', {type: 'error', code: "BAD_INPUT"});
+          });
     },
     reqNewpass() {
       axios.put(
@@ -98,9 +103,11 @@ export default {
           password: this.password
         }
           ).then(response => {
-            console.log(response);
+            bus.$emit('alert', {type: 'success', code: "DONE"});
           })
-          .catch(error => {});
+          .catch(error => {
+	        bus.$emit('alert', {type: 'error', code: "BAD_INPUT"});
+          });
     },
     reqNewFName() {
       axios.put(
@@ -109,9 +116,11 @@ export default {
           firstName: this.firstName
         }
           ).then(response => {
-            console.log(response);
+            bus.$emit('alert', {type: 'success', code: "DONE"});
           })
-          .catch(error => {});
+          .catch(error => {
+	        bus.$emit('alert', {type: 'error', code: "BAD_INPUT"});
+          });
     },
     reqNewLName() {
       axios.put(
@@ -120,9 +129,11 @@ export default {
           lastName: this.lastName
         }
           ).then(response => {
-            console.log(response);
+            bus.$emit('alert', {type: 'success', code: "DONE"});
           })
-          .catch(error => {});
+          .catch(error => {
+	        bus.$emit('alert', {type: 'error', code: "BAD_INPUT"});
+          });
     }
   }
 };
