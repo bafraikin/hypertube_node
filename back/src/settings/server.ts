@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import express from 'express'
+import express, {Request, Response} from 'express'
 import setupPassport from './passport'
 import * as bodyParser from 'body-parser'
 import {Connection} from 'typeorm'
@@ -26,14 +26,17 @@ export default async function getServer (connection: Connection, isDev = false) 
 		keys: ['Arman.D']
 	}));
 
-	server.use(bodyParser.urlencoded({ extended: true }));
-	server.use(fileUpload({ useTempFiles : true, tempFileDir : '/back/public/tmpPic', createParentPath : true }));
+	function callbackOnLimit(req: Request, res: Response, next: any) {
+    res.status(413).send('File size limit has been reached');
+		return;
+	}
 
-
+	server.use(bodyParser.urlencoded({ extended: true , limit: '1mb'}));
+	server.use(fileUpload({limits: {fileSize: 5 * 1024 * 1024, files: 1}, debug: true, abortOnLimit: true, limitHandler: callbackOnLimit, useTempFiles : true, tempFileDir : '/back/public/tmpPic', createParentPath : true }));
 	server.use(express.static('public'));
 	server.use(express.static('sub'));
 	server.use(express.static('films'));
-	server.use(bodyParser.json());
+	server.use(bodyParser.json({limit: '1mb'}));
 	server = await setupPassport(server);
 	server = setRoute(connection, server);
 	return server
