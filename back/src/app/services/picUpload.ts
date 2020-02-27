@@ -1,3 +1,5 @@
+import logger from "@settings/logger";
+
 const fs = require('fs');
 const FileType = require('file-type');
 
@@ -11,6 +13,18 @@ export default class picUploadClient {
 	static movePicToTmpValid(copyReq: any){
 		copyReq.files.file_jerome.mv('/back/public/tmpValid/'+ copyReq.session.random);
 	}
+
+
+
+	static modifyPicToUserPic(copyReq: any, user: any){
+				let random:any = Math.floor((Math.random() * 10000) + 1);
+		user.imageUrl = random + user.email;//**********************************
+			user.save();
+		copyReq.files.file_jerome.mv('/back/public/userPic/' + user.imageUrl);
+	}
+
+
+	
 
 	static async validPicture(files: any){
 		let check: any = {};
@@ -33,7 +47,8 @@ export default class picUploadClient {
 			return true;
 		}
 		else{
-			fs.unlinkSync(files.file_jerome.tempFilePath);
+			try{fs.unlinkSync(files.file_jerome.tempFilePath);}
+			catch(e){logger.info(e);}
 			return check;
 		}
 	}
