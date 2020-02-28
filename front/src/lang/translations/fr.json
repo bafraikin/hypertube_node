@@ -58,5 +58,11 @@
     "emailvalid": "L'e-mail doit être valide",
     "fieldrequired": "Champs requis",
     "namerules": "Le nom doit faire entre 1 et 250 caractères",
-    "language": "Langage"
+    "language": "Langage",
+    "picrequired": "Vous devez choisir une image de profil",
+    "sizeover": "La taille du fichier doit être inférieure à 2MB !",
+    "fileempty": "Votre fichier est vide",
+    "wrongfile": "Votre fichier doit être de type png ou jpeg",
+    "uploadfile": "Téléchargez une image de profil",
+    "researchgenre": "Recherche par genre"
 }

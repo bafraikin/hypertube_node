@@ -33,7 +33,9 @@ export default function setRoute(connection: Connection, app: Express) {
 
 	// /*USER*/
 	userNotAuthenticated.post("/user", controller.user.create);
-	userNotAuthenticated.post('/resetPassword', controller.user.endResetPassword);
+	userNotAuthenticated.post("/upload-pic", controller.user.saveProfilePic);
+	userNotAuthenticated.get('/myCookie', controller.user.getCookie);
+  userNotAuthenticated.post('/resetPassword', controller.user.endResetPassword);
 	userNotAuthenticated.post('/forgotPassword', controller.user.startResetPassword);	
 
 	userAuthenticated.put('/updateEmail', controller.user.updateEmail);
@@ -67,4 +69,5 @@ export default function setRoute(connection: Connection, app: Express) {
 	app.use(`/${encodeURI("😱")}`, userNotAuthenticated);
 	app.use(`/${encodeURI("😂")}`, userAuthenticated);
 	return app;
+
 }

@@ -3,8 +3,16 @@
     <v-form
       ref="form"
       v-model="valid"
+enctype="multipart/form-data"
       :lazy-validation="lazy"
     >
+
+	<v-flex>
+
+    	<v-col>
+    <v-img :src="pic_path" height="150" contain ></v-img>
+    	</v-col>
+    	<v-col>
 
       <v-text-field
         label="Login"
@@ -44,6 +52,16 @@
         required
       ></v-text-field>
 
+		  <v-file-input
+			  :label="$t('uploadfile')"
+   			:rules="[ fileRules ]"
+   			v-model="file_pic" 
+			@change="filesChange($event)"
+			>
+		  </v-file-input>
+
+
+
       <v-checkbox
         v-model="checkbox"
         :rules="[v => !!v || this.$t('mustagree')]"
@@ -67,6 +85,11 @@
       >
         {{ $t('resetform') }}
       </v-btn>
+      	  </v-col>
+
+    		</v-flex>
+
+
     </v-form>
     <oauth> </oauth>
   </div>
@@ -81,6 +104,11 @@
 
   export default {
     data: () => ({
+
+		pic_path: process.env.VUE_APP_frontURL + "/user_default.png",
+		file_pic: null,
+
+
       login: '',
       firstName: '',
       lastName: '',
@@ -122,6 +150,32 @@
         }
         return true;
       },
+      fileRules(value) {
+        if (value == null){
+          return this.$t('picrequired');
+        }
+        else if (value.size > 2000000){
+          return this.$t('sizeover');
+        }
+        else if (value.size <= 0){
+          return this.$t('fileempty');
+        }
+        else if (value.type != 'image/png' || value.type != 'image/jpeg'){
+          return this.$t('wrongfile');
+        }
+      },
+      filesChange($event) {
+      	  if (this.file_pic != null){
+		        let formData = new FormData();
+		        formData.append('file_jerome', this.file_pic);
+			      axios.post( "😱/upload-pic", formData)
+		  	    .then(response => {
+		  	  	  if (response.data.status == "sucess"){
+		  	  	  	  this.pic_path = process.env.VUE_APP_backURL + "/tmpValid/" + response.data.expressSig;
+		  	  	  }
+		  	    });
+      	  }
+      },
       validate() {
         if (this.$refs.form.validate()) {
           this.snackbar = true
@@ -149,7 +203,9 @@
       },
     },
     mounted(){
-      this.qqch = "blabla"
+		  let formData = new FormData();
+        axios.get('😱/myCookie').then(response => {
+        })
     }
   }
 </script>

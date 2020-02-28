@@ -59,5 +59,11 @@
     "emailvalid": "E-mail must be valid",
     "fieldrequired": "This field is required",
     "namerules": "Name should be inside 1 and 250 characters",
-    "language": "Language"
+    "language": "Language",
+    "picrequired": "A profile pic is required",
+    "sizeover": "Avatar size should be less than 2 MB!",
+    "fileempty": "Your file is empty",
+    "wrongfile": "Wrong file type",
+    "uploadfile": "Upload profile pic",
+    "researchgenre": "Research by genre"
 }

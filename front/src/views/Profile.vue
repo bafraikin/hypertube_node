@@ -5,8 +5,8 @@
 		<p class="ici" dark>Login == {{user.login}}</p>
 		<p class="ici" dark>{{ $t('firstname') }} == {{user.firstName}}</p>
 		<p class="ici" dark>{{ $t('lastname') }} == {{user.lastName}}</p>
-		<p class="ici" dark>Image == {{user.imageUrl}}</p>
 		<p class="ici" dark>{{ $t('language') }} == {{user.lang}}</p>
+		<v-img height=200 contain :src="getProfilePic()"></v-img>
 		</div>
 	</div>
 </template>
@@ -28,6 +28,12 @@ export default {
 		}
 	},
 	methods:{
+		getProfilePic(){
+			if (RegExp('^http','g').test(this.user.imageUrl))
+				return this.user.imageUrl;
+			else
+				return process.env.VUE_APP_backURL + "/userPic/" + this.user.imageUrl;
+		},
 		getUserProfile(){
 			axios.get('😂/userProfile', { params: { userId: this.userId}
 			}) .then(response => { this.user = response.data; })

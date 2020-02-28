@@ -83,6 +83,10 @@ export class User extends BaseEntity {
 	}
 
 	isValid(): boolean {
+
+
+
+
 		try {
 			if (validator.isEmail(this.email) &&
 				validator.isAlpha(this.login) &&
@@ -91,8 +95,6 @@ export class User extends BaseEntity {
 				validator.isLength(this.firstName, { min: 1, max: 250 }) &&
 				validator.isAlpha(this.lastName) &&
 				validator.isLength(this.lastName, { min: 1, max: 250 }) &&
-				validator.isURL(this.imageUrl) &&
-				validator.isLength(this.imageUrl, { min: 1, max: 250 }) &&
 				this.checkPassIsComplex())
 				return true;
 			return false;

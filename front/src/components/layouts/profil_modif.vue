@@ -38,7 +38,18 @@
       <language />
       <v-btn color="success" class="mr-4" @click="reqNewLang">{{ $t('validate') }}</v-btn>
     </v-form>
-    </div>
+
+    <v-form ref="form" v-model="valid" :lazy-validation="lazy">
+		  <v-file-input
+			  :label="$t('uploadfile')"
+   			:rules="[ fileRules ]"
+   			v-model="file_pic" 
+			@change="filesChange($event)"
+			>
+		  </v-file-input>
+    </v-form>
+
+  </div>
 </template>
 
 <script>
@@ -52,6 +63,7 @@ export default {
     lastName: "",
 
     valid: true,
+    file_pic: null,
     password: "",
     showPassword: false,
     email: "",
@@ -89,6 +101,26 @@ export default {
         }
         return true;
     },
+    fileRules(value) {
+        if (value == null){
+          return this.$t('picrequired');
+        }
+        else if (value.size > 2000000){
+          return this.$t('sizeover');
+        }
+        else if (value.size <= 0){
+          return this.$t('fileempty');
+        }
+        else if (value.type != 'image/png' || value.type != 'image/jpeg'){
+          return this.$t('wrongfile');
+        }
+    },
+        //  fileRules: [
+        // 	value => !!value || 'A profile pic is required',
+        // 	value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
+        // 	value => !value || value.size >= 0 || 'Your file is empty',
+        // 	value => !value || (value.type == 'image/png' || value.type == 'image/jpeg')|| 'Wrong file type',
+        // ]
     reqNewLogin() {
       axios.put(
         "😂/updateLogin",
@@ -154,7 +186,16 @@ export default {
         console.log(response);
       })
       .catch(error => {});
+    },
+	  filesChange($event) {
+		  let formData = new FormData();
+      formData.append('file_jerome', this.file_pic);
+      if (this.file_pic != null){
+			  axios.put( "😂/updateImageUrl", formData)
+		  	  .then(response => {
+		  	  });
+      }
     }
   }
-};
+}
 </script>
