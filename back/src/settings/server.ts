@@ -9,17 +9,9 @@ import cookieParser from 'cookie-parser'
 const cookieSession = require('cookie-session')
 const fileUpload = require('express-fileupload')
 import fs from 'fs'
-//import { CronJob } from 'cron'
+import { CronJob } from 'cron'
 import moment from 'moment'
 const rmdir = require('rimraf');
-
-
-
-
-
-
-const root = "/back/films/biblio";
-const dir = fs.readdirSync(root);
 
 function isOld(filePath: string){
 	// const acessTime = moment(fs.statSync(filePath));
@@ -28,19 +20,30 @@ function isOld(filePath: string){
 	const diffminutes = acessTime.diff(Date.now(), "minutes");
 	console.log("le diff day =>", diffDay);
 	console.log("le diff minute =>", diffminutes);
-	// if (diffDay < -30){
-	console.log(filePath);
-	if (diffminutes <= -1){
+	if (diffDay < -30){
+		// console.log(filePath);
+		// if (diffminutes <= -1){
 		console.log("On supprime ", filePath);
 		// fs.unlinkSync(filePath);
 		rmdir(filePath, function(error: any){});
 	}
 }
 
-for (let file of dir){
-	console.log(file);
-	isOld(root + '/' + file) ;
-}
+// let job = new CronJob('0 0-59 * * * *', function() {
+//   	console.log('***********************************************You will see this message every minute');
+let job = new CronJob('0 0 0 1 * *', function() {
+  	console.log('***********************************************You will see this message every month');
+	const root = "/back/films/biblio";
+	const dir = fs.readdirSync(root);
+	console.log(dir);
+
+	for (let file of dir){
+		console.log(file);
+		isOld(root + '/' + file) ;
+	}
+
+}, null, true, 'America/Los_Angeles');
+job.start();
 
 
 
