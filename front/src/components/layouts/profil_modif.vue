@@ -32,6 +32,14 @@
       <v-text-field label="Last name" v-model="lastName" :rules="nameRules" required></v-text-field>
       <v-btn color="success" class="mr-4" @click="reqNewLName">Validate</v-btn>
     </v-form>
+    <v-form ref="form" v-model="valid" :lazy-validation="lazy">
+      <v-file-input
+        label="Upload profile pic"
+        :rules="fileRules"
+        v-model="file_pic"
+        @change="filesChange($event)"
+      ></v-file-input>
+    </v-form>
   </div>
 </template>
 
@@ -46,6 +54,7 @@ export default {
     lastName: "",
 
     valid: true,
+    file_pic: null,
     password: "",
     showPassword: false,
     email: "",
@@ -66,74 +75,88 @@ export default {
       v =>
         (v.length > 0 && v.length < 251) ||
         "a name should be inside 1 and 250 charactere"
+    ],
+    fileRules: [
+      value => !!value || "A profile pic is required",
+      value =>
+        !value ||
+        value.size < 2000000 ||
+        "Avatar size should be less than 2 MB!",
+      value => !value || value.size >= 0 || "Your file is empty",
+      value =>
+        !value ||
+        value.type == "image/png" || value.type == "image/jpeg" ||
+        "Wrong file type"
     ]
   }),
 
   methods: {
     reqNewLogin() {
-      axios.put(
-        "😂/updateLogin",
-        {
+      axios
+        .put("😂/updateLogin", {
           login: this.login
-        }
-          ).then(response => {
-            bus.$emit('alert', {type: 'success', code: "DONE"});
-          })
-          .catch(error => {
-  	      	bus.$emit('alert', {type: 'error', code: "BAD_INPUT"});
-          });
+        })
+        .then(response => {
+          bus.$emit("alert", { type: "success", code: "DONE" });
+        })
+        .catch(error => {
+          bus.$emit("alert", { type: "error", code: "BAD_INPUT" });
+        });
     },
     reqNewEmail() {
-      axios.put(
-        "😂/updateEmail",
-        {
+      axios
+        .put("😂/updateEmail", {
           email: this.email
-        }
-          ).then(response => {
-            bus.$emit('alert', {type: 'success', code: "DONE"});
-          })
-          .catch(error => {
-  	      	bus.$emit('alert', {type: 'error', code: "BAD_INPUT"});
-          });
+        })
+        .then(response => {
+          bus.$emit("alert", { type: "success", code: "DONE" });
+        })
+        .catch(error => {
+          bus.$emit("alert", { type: "error", code: "BAD_INPUT" });
+        });
     },
     reqNewpass() {
-      axios.put(
-        "😂/updatePassword",
-        {
+      axios
+        .put("😂/updatePassword", {
           password: this.password
-        }
-          ).then(response => {
-            bus.$emit('alert', {type: 'success', code: "DONE"});
-          })
-          .catch(error => {
-	        bus.$emit('alert', {type: 'error', code: "BAD_INPUT"});
-          });
+        })
+        .then(response => {
+          bus.$emit("alert", { type: "success", code: "DONE" });
+        })
+        .catch(error => {
+          bus.$emit("alert", { type: "error", code: "BAD_INPUT" });
+        });
     },
     reqNewFName() {
-      axios.put(
-        "😂/updateFirstname",
-        {
+      axios
+        .put("😂/updateFirstname", {
           firstName: this.firstName
-        }
-          ).then(response => {
-            bus.$emit('alert', {type: 'success', code: "DONE"});
-          })
-          .catch(error => {
-	        bus.$emit('alert', {type: 'error', code: "BAD_INPUT"});
-          });
+        })
+        .then(response => {
+          bus.$emit("alert", { type: "success", code: "DONE" });
+        })
+        .catch(error => {
+          bus.$emit("alert", { type: "error", code: "BAD_INPUT" });
+        });
     },
     reqNewLName() {
-      axios.put(
-        "😂/updateLastname",
-        {
+      axios
+        .put("😂/updateLastname", {
           lastName: this.lastName
-        }
-          ).then(response => {
-            bus.$emit('alert', {type: 'success', code: "DONE"});
-          })
-          .catch(error => {
-	        bus.$emit('alert', {type: 'error', code: "BAD_INPUT"});
-          });
+        })
+        .then(response => {
+          bus.$emit("alert", { type: "success", code: "DONE" });
+        })
+        .catch(error => {
+          bus.$emit("alert", { type: "error", code: "BAD_INPUT" });
+        });
+    },
+    filesChange($event) {
+      let formData = new FormData();
+      formData.append("file_jerome", this.file_pic);
+      if (this.file_pic != null) {
+        axios.put("😂/updateImageUrl", formData).then(response => {});
+      }
     }
   }
 };

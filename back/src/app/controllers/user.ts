@@ -1,8 +1,9 @@
 import { User } from '@app/models/user'
-
 import { Request, Response } from 'express'
 import { inherits } from 'util';
 import logger from '@settings/logger';
+import picUploadClient from '@app/services/picUpload'
+var fs = require('fs');
 
 const fiveMin: number = 300000;
 
@@ -22,23 +23,6 @@ export default class userController {
 		}
 	}
 
-	static async create(req: Request, res: Response) {
-		const user = new User();
-		user.email = req.body.email;
-		user.login = req.body.login;
-		user.firstName = req.body.firstName;
-		user.lastName = req.body.lastName;
-		user.password = req.body.password;
-		user.imageUrl = "http://pngimg.com/uploads/anaconda/anaconda_PNG11.png"; //req.body.img;
-		user.oauth = false;
-		if (user.isValid() && !(await user.isEmailTaken())) {
-			await user.setPassword(user.password);
-			user.save();
-			res.status(201).send(true);
-			return;
-		}
-		res.status(400).send("false");
-	}
 
 	/*
 	 ** Fonction de modification du profil si connecter
@@ -46,7 +30,7 @@ export default class userController {
 
 
 	static async updateEmail(req: Request, res: Response) {
-		const userid : number | undefined = User.getId(req.user)
+		const userid : number | undefined = User.getId(req.user);
 		let user: User | undefined = await User.findOne({ id: userid });
 		if (user instanceof User && !user.isEmpty()) {
 			user.email = req.body.email;
@@ -61,7 +45,7 @@ export default class userController {
 	}
 
 	static async updatePassword(req: Request, res: Response) {
-		const userid : number | undefined = User.getId(req.user)
+		const userid : number | undefined = User.getId(req.user);
 		let user: User | undefined = await User.findOne({ id: userid });
 		if (user instanceof User && !user.isEmpty()) {
 			user.password = req.body.password;
@@ -77,7 +61,7 @@ export default class userController {
 	}
 
 	static async updateLogin(req: Request, res: Response) {
-		const userid : number | undefined = User.getId(req.user)
+		const userid : number | undefined = User.getId(req.user);
 			let user: User | undefined = await User.findOne({ id: userid });
 		if (user instanceof User && !user.isEmpty()) {
 			user.login = req.body.login;
@@ -93,7 +77,7 @@ export default class userController {
 
 
 	static async updateLastname(req: Request, res: Response) {
-		const userid : number | undefined = User.getId(req.user)
+		const userid : number | undefined = User.getId(req.user);
 		let user: User | undefined = await User.findOne({ id: userid });
 		if (user instanceof User && !user.isEmpty()) {
 			user.lastName = req.body.lastName;
@@ -108,7 +92,7 @@ export default class userController {
 	}
 
 	static async updateFirstname(req: Request, res: Response) {
-		const userid : number | undefined = User.getId(req.user)
+		const userid : number | undefined = User.getId(req.user);
 		let user: User | undefined = await User.findOne({ id: userid });
 		if (user instanceof User && !user.isEmpty()) {
 			user.firstName = req.body.firstName;
@@ -123,12 +107,13 @@ export default class userController {
 	}
 
 	static async updateImageUrl(req: Request, res: Response) {
-		const userid : number | undefined = User.getId(req.user)
+		const userid : number | undefined = User.getId(req.user);
 		let user: User | undefined = await User.findOne({ id: userid });
-		if (user instanceof User && !user.isEmpty()) {
-			user.imageUrl = req.body.imageUrl;
-			if (user.isValid()) {
-				user.save();
+		let copyReq: any = req;
+		if (user instanceof User && !user.isEmpty() && copyReq.files != null){
+			let isValidPic: any = await picUploadClient.validPicture(copyReq.files);
+			if (isValidPic == true) {
+				picUploadClient.modifyPicToUserPic(copyReq, user);
 				res.status(200).send(true);
 				return;
 			}
@@ -138,17 +123,8 @@ export default class userController {
 	}
 
 	/*
-	 ** il manque update pictures
-	 */
-
-
-	/*
-	 ** Fin des fonction
-	 */
-
-	/*
-	 ** il manque update pictures
-	 */
+	 ** Fin des fonction update
+	*/
 
 
 	static async startResetPassword(req: Request, res: Response) {
@@ -191,12 +167,70 @@ export default class userController {
 		}
 	}
 
-
-	static destroy(req: Request, res: Response) {
-
-	}
-
 	static getUser(req: Request, res: Response) {
 		res.send(req.user);
 	}
+
+	static async create(req: Request, res: Response) {
+		let copyReq: any = req;
+		const user = new User();
+		user.email = req.body.email;
+		user.login = req.body.login;
+		user.firstName = req.body.firstName;
+		user.lastName = req.body.lastName;
+		user.password = req.body.password;
+		user.imageUrl = copyReq.session.random + user.email;//**********************************
+		user.oauth = false;
+		if (user.isValid() && !(await user.isEmailTaken()) && copyReq['session'].validPic == true) {
+			await user.setPassword(user.password);
+			user.save();
+			res.status(201).send(true);
+			picUploadClient.movePicToUserPic(user.email, copyReq);
+			return;
+		}
+		else{
+			res.status(401).send("false");
+		}
+	}
+
+	static getCookie(req: Request, res: Response){
+		let copyReq: any = req;
+		copyReq['session'].id  = true;
+		res.status(200).send("Your cookies sir!");
+	}
+
+	static async saveProfilePic(req: Request, res: Response){
+		let copyReq: any = req;
+		if (copyReq.files == null){
+			res.send("vide");
+		}
+		else{
+			let isValidPic: any = await picUploadClient.validPicture(copyReq.files);
+			if (isValidPic === true){
+				if (copyReq.session.random != undefined){
+					try{
+						fs.unlinkSync('/back/public/tmpValid/'+ copyReq.session.random);
+					}
+					catch(e){}
+				}
+
+
+				copyReq['session'].validPic = true;
+				let random:any = Math.floor((Math.random() * 10000) + 1);
+				let maRep :any = {};
+				maRep.expressSig = random;
+				copyReq.session.random = random;
+
+				picUploadClient.movePicToTmpValid(copyReq);
+				maRep.status = "sucess";
+				res.status(200).send(maRep);
+			}
+			else {
+				copyReq['session'].validPic = false;
+				res.status(401).send(isValidPic);
+			}
+		}
+
+	}
+
 }
