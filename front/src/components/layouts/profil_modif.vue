@@ -32,11 +32,18 @@
       <v-text-field :label="$t('lastname')" v-model="lastName" :rules="[ nameRules ]" required></v-text-field>
       <v-btn color="success" class="mr-4" @click="reqNewLName">{{ $t('validate') }}</v-btn>
     </v-form>
-  </div>
+  
+    <v-form ref="form" v-model="valid" :lazy-validation="lazy">
+      <span>{{ $t('language') }} : </span>
+      <language />
+      <v-btn color="success" class="mr-4" @click="reqNewLang">{{ $t('validate') }}</v-btn>
+    </v-form>
+    </div>
 </template>
 
 <script>
 import axios from "@/config/axios_default";
+import language from "./LangButton";
 
 export default {
   data: () => ({
@@ -51,7 +58,9 @@ export default {
     checkbox: false,
     lazy: false,
   }),
-
+  components: {
+    language
+  },
   methods: {
     passwordRules(value) {
         if (value.length === 0){
@@ -134,6 +143,17 @@ export default {
             console.log(response);
           })
           .catch(error => {});
+    },
+    reqNewLang() {
+      axios.put(
+        "😂/updateLang",
+        {
+          lang: this.$store.state.lang
+        }
+      ).then(response => {
+        console.log(response);
+      })
+      .catch(error => {});
     }
   }
 };

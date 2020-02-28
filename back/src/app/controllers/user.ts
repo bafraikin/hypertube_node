@@ -138,7 +138,19 @@ export default class userController {
 			res.status(405).send(false);
 			return;
 		}
-
+		
+		static async updateLang(req: Request, res: Response){
+			const userid : number | undefined = User.getId(req.user)
+			let user: User | undefined = await User.findOne({ id: userid });
+			if (user instanceof User && !user.isEmpty()) {
+				user.lang = req.body.lang;
+				user.save();
+				res.status(200).send(true);
+				return;
+			}
+			res.status(405).send(false);
+			return;
+		}
 	/*
 	 ** il manque update pictures
 	 */

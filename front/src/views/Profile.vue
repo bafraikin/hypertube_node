@@ -6,6 +6,7 @@
 		<p class="ici" dark>{{ $t('firstname') }} == {{user.firstName}}</p>
 		<p class="ici" dark>{{ $t('lastname') }} == {{user.lastName}}</p>
 		<p class="ici" dark>Image == {{user.imageUrl}}</p>
+		<p class="ici" dark>{{ $t('language') }} == {{user.lang}}</p>
 		</div>
 	</div>
 </template>

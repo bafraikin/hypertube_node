@@ -58,5 +58,6 @@
     "emailrequired": "E-mail is required",
     "emailvalid": "E-mail must be valid",
     "fieldrequired": "This field is required",
-    "namerules": "Name should be inside 1 and 250 characters"
+    "namerules": "Name should be inside 1 and 250 characters",
+    "language": "Language"
 }

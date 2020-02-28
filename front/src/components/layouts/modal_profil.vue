@@ -12,7 +12,7 @@
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">Profile</span>
+          <span class="headline">{{ $t('userprofile') }}</span>
         </v-card-title>
         <v-card-text>
           <v-container>

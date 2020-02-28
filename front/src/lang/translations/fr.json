@@ -57,5 +57,6 @@
     "emailrequired": "E-mail requis",
     "emailvalid": "L'e-mail doit être valide",
     "fieldrequired": "Champs requis",
-    "namerules": "Le nom doit faire entre 1 et 250 caractères"
+    "namerules": "Le nom doit faire entre 1 et 250 caractères",
+    "language": "Langage"
 }

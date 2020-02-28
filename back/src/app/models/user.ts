@@ -42,6 +42,8 @@ export class User extends BaseEntity {
 	@Column({ default: 0, type: 'bigint' })
 	tokenPassDate!: number;
 
+	@Column({ default: "en" })
+	lang!: string;
 
 	@OneToMany(type => Comment, comment => comment.user)
 	comments: Comment[];
@@ -69,7 +71,8 @@ export class User extends BaseEntity {
 			login: this.login,
 			firstName: this.firstName,
 			lastName: this.lastName,
-			imageUrl: this.imageUrl
+			imageUrl: this.imageUrl,
+			lang: this.lang
 		}
 	}
 
