@@ -1,5 +1,6 @@
 import {Request, Response} from 'express';
 import subtitlesServices from '@app/services/subtitles';
+import logger from '@settings/logger';
 
 const OS = require('opensubtitles-api');
 const OpenSubtitles = new OS({
@@ -11,8 +12,6 @@ export default class subtitlesController{
 
     static getSub(req: Request, res: Response){
         let imdb: string = req.query.imdbId;
-        console.log("IMDB******************************************************");
-        console.log(imdb);
 
         OpenSubtitles.search({
             sublanguageid: 'eng, fre, chi',
@@ -24,7 +23,6 @@ export default class subtitlesController{
         })
         .then(async (subtitles: any) => {
             let downSubTab = new Array;
-            console.log(subtitles);
             if (subtitles.en != null){
                 await subtitlesServices.createSubTab(downSubTab, subtitles.en);
             }
@@ -39,8 +37,8 @@ export default class subtitlesController{
 
         })
         .catch((error: any) => {
-            console.log("Error get subtitles");
-            console.log(error);
+            logger.info("Error get subtitles");
+            logger.info(error);
         })
     }
 }
