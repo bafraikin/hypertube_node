@@ -1,5 +1,4 @@
 <template>
-  <v-row justify="center">
     <v-dialog
       attach="#app"
       v-model="dialog"
@@ -21,7 +20,6 @@
         </v-card-text>
       </v-card>
     </v-dialog>
-  </v-row>
 </template>
 
 
