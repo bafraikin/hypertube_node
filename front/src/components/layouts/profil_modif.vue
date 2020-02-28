@@ -115,12 +115,6 @@ export default {
           return this.$t('wrongfile');
         }
     },
-        //  fileRules: [
-        // 	value => !!value || 'A profile pic is required',
-        // 	value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
-        // 	value => !value || value.size >= 0 || 'Your file is empty',
-        // 	value => !value || (value.type == 'image/png' || value.type == 'image/jpeg')|| 'Wrong file type',
-        // ]
     reqNewLogin() {
       axios.put(
         "😂/updateLogin",
