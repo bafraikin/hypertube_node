@@ -197,7 +197,8 @@ export default class userController {
 			picUploadClient.movePicToUserPic(user.email, copyReq);
 			return;
 		}
-		else{			res.status(401).send("false");
+		else{
+			res.status(401).send("false");
 		}
 	}
 
@@ -219,7 +220,7 @@ export default class userController {
 					try{
 						fs.unlinkSync('/back/public/tmpValid/'+ copyReq.session.random);
 					}
-					catch(e){console.log("ok");}
+					catch(e){}
 				}
 
 

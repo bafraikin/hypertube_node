@@ -24,12 +24,8 @@ export default class picUploadClient {
 	}
 
 
-	
-
 	static async validPicture(files: any){
-		let check: any = {};
-		check.size = false;
-		check.type = false;
+		let check: any = {size: false, type:false};
 
 		const {ext, mime} = await FileType.fromFile(files.file_jerome.tempFilePath) || {};
 

@@ -141,6 +141,7 @@ enctype="multipart/form-data"
 
     methods: {
       filesChange($event) {
+      	  if (this.file_pic != null){
 		let formData = new FormData();
 		formData.append('file_jerome', this.file_pic);
 			axios.post( "😱/upload-pic", formData)
@@ -148,11 +149,8 @@ enctype="multipart/form-data"
 		  	  	  if (response.data.status == "sucess"){
 		  	  	  	  this.pic_path = process.env.VUE_APP_backURL + "/tmpValid/" + response.data.expressSig;
 		  	  	  }
-		  	  	  else{
-		  	  	  	  console.log("On affiche les erreur en front")
-		  	  	  	  console.log(response.data);
-		  	  	  }
 		  	  });
+      	  }
 
       },
       validate() {
