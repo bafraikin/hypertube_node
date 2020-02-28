@@ -18,6 +18,8 @@
       </v-toolbar-title>
       <v-spacer class="d-none d-sm-flex"></v-spacer>
 
+
+      <language />
       <v-btn-toggle class="d-none d-sm-flex" v-if="!isConnected"
         shaped
         borderless
@@ -44,7 +46,7 @@
           <v-list-item>
             <router-link :to="{ name: 'userProfile', params: { userId: $store.state.user.id }}" v-slot="{ href, route, navigate}">
               <v-list-item-title>
-                <a :href="href" style="text-decoration: none; color: unset" @click="navigate">profil</a>
+           <a :href="href" style="text-decoration: none; color: unset" @click="navigate">{{ $t('userprofile')  }}</a>
               </v-list-item-title>
             </router-link>
           </v-list-item>
@@ -81,7 +83,7 @@
 
       <template v-slot:append>
         <div class="pa-2">
-          <v-btn block @click.stop="logout">Logout</v-btn>
+          <v-btn block @click.stop="logout">$t('signout')</v-btn>
         </div>
       </template>
     </v-navigation-drawer>
@@ -94,14 +96,14 @@
   import signin from "./modal_signin";
   import profil from "./modal_profil";
   import axios from "@/config/axios_default";
-
+  import language from "./LangButton";
 
   export default {
     data() {
       return {
         showMenu: false,
         showMenuUser: false,
-        arr: [{message: 'logout', method: this.logout}]
+        arr: [{message:  $t('signout'), method: this.logout}]
       }
     },
     methods: {
@@ -120,6 +122,7 @@
     components: {
       "sign-up": signup,
       "sign-in": signin,
+      language,
       "modify-profil": profil
     } 
   };

@@ -1,28 +1,28 @@
 <template>
 	<v-container v-if="onMontre" dark>
-		<h1 style="color:white;">Torrent List</h1>
+		<h1 style="color:white;">{{ $t('torrentlist') }}</h1>
 		<div v-if="torrents[0]">
 			<v-simple-table>
 				<template v-slot:default>
 					<thead>
 						<tr>
-							<th class="text-left">Quality</th>
-							<th class="text-left">Provider</th>
-							<th class="text-left">Torrent link</th>
+							<th class="text-left">{{ $t('quality') }}</th>
+							<th class="text-left">{{ $t('provider') }}</th>
+							<th class="text-left">{{ $t('torrentlink') }}</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr v-for="torrent in torrents">
 							<td>{{ torrent.quality }}</td>
 							<td>{{ torrent.provider }}</td>
-							<td> <i v-on:click="play(torrent.magnetLink)" >Play</i> </td>
+							<td> <i v-on:click="play(torrent.magnetLink)" >{{ $t('play') }}</i> </td>
 						</tr>
 					</tbody>
 				</template>
 			</v-simple-table>
 		</div>
 		<div v-else>
-			<p>No torrent found</p>
+			<p>{{ $t('notorrent') }}</p>
 		</div>
 	</v-container>
 </template>

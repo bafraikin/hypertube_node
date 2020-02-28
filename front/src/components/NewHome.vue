@@ -1,6 +1,6 @@
 <template>
   <v-container >
-    <h1>Research</h1>
+    <h1>{{ $t('researchpage') }}</h1>
     <ResearchBar v-if="showResearchBar" v-on:moviesResearch="researchMovieFun($event)" ></ResearchBar>
     <MovieVignette :movies="moviesToDisplay" v-if="showMovieVignette" v-on:selectMovie="showMovieDetailsFun($event)" ></MovieVignette>
     <pagination v-if="loaderShouldBeDisplayed" v-on:displayNewResults="popStackMovie()"/> 
@@ -41,6 +41,7 @@
       researchMovieFun(research) {
         this.lastResearch = research;
         axios.get('/research', { params: {
+          lang: this.$i18n.locale,
           firstYear: research.firstYear,
           lastYear: research.lastYear,
           minMark: research.firstNote,

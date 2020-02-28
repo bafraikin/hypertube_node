@@ -10,23 +10,23 @@
       findMessage(code) {
         switch(code){
           case "UNSIGNED":
-            return "you need to sign in to perform this action";
+            return this.$t('needsignin');
           case "NOT_ALLOWED":
-            return "you're not allowed to perform this";
+            return this.$t('notallowed');
           case "BAD_INPUT":
-            return "bad input"
+            return this.$t('badinput');
           case "CREATED":
-            return "action granteed";
+            return this.$t('granteed');
           case "NO_TOUCHING":
-            return "No touching the code 🤬";
+            return this.$t('notouch');
           case "YOU_HAVE_TO_YES":
-            return "You have to click yes 🤣";
+            return this.$t('clicky');
           case "WELL_DONE":
-            return "Well done 💪  you can now log";
+            return this.$t('welldone');
           case "OLD_TOKEN":
-            return "Maybe your token is to old ⚰️ or the password is no good 💣";
+            return this.$t('oldtoken');
           default:
-            return "error"
+            return this.$t('error');
         }
       },
       displayAlert(args) {

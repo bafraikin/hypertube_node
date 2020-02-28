@@ -7,12 +7,12 @@
       dark>
       <template v-slot:activator="{ on }">
         <v-list-item v-on="on">
-          modify profil
+          {{ $t('modifyp') }}
         </v-list-item>
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">Profile</span>
+          <span class="headline">{{ $t('userprofile') }}</span>
         </v-card-title>
         <v-card-text>
           <v-container>

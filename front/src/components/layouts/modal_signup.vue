@@ -6,12 +6,12 @@
       dark>
       <template v-slot:activator="{ on }">
         <v-btn v-on="on">
-          sign up
+          {{ $t('signup') }}
         </v-btn>
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">Create an account</span>
+          <span class="headline">{{ $t('createaccount') }}</span>
         </v-card-title>
         <v-card-text>
           <v-container>
