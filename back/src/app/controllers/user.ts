@@ -29,6 +29,7 @@ export default class userController {
 		user.firstName = req.body.firstName;
 		user.lastName = req.body.lastName;
 		user.password = req.body.password;
+		user.lang = req.body.lang;
 		user.imageUrl = "http://pngimg.com/uploads/anaconda/anaconda_PNG11.png"; //req.body.img;
 		user.oauth = false;
 		if (user.isValid() && !(await user.isEmailTaken())) {
@@ -144,9 +145,11 @@ export default class userController {
 			let user: User | undefined = await User.findOne({ id: userid });
 			if (user instanceof User && !user.isEmpty()) {
 				user.lang = req.body.lang;
-				user.save();
-				res.status(200).send(true);
-				return;
+				if (user.isValid()) {
+					user.save();
+					res.status(200).send(true);
+					return;
+				}
 			}
 			res.status(405).send(false);
 			return;

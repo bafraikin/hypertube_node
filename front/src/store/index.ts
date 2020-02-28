@@ -17,6 +17,7 @@ const store = {
 		connectUser(state: any, response: any) {
 			state.connected = true
 			state.user = response.data.user
+			state.lang = response.data.user.lang
 		},
 		disconnectUser(state: any) {
 			state.connected = false

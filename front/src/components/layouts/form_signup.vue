@@ -139,6 +139,7 @@
             lastName: this.lastName,
             password: this.password,
             login: this.login,
+            lang: this.$store.state.lang
           })
           .then((response) => {
             this.$emit("created");
