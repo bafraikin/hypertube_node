@@ -35,5 +35,3 @@ export class Comment extends BaseEntity {
 	}
 
 }
-
-
