@@ -16,7 +16,7 @@
           </router-link>
         </h3>
       </v-toolbar-title>
-      <v-spacer class="d-none d-sm-flex"></v-spacer>
+      <v-spacer></v-spacer>
 
 
       <language />
@@ -36,12 +36,8 @@
         </template>
 
         <v-list data-app="true">
-          <v-list-item
-            v-for="n in arr"
-            :key="n.message"
-            @click="() => {}"
-          >
-            <v-list-item-title @click="n.method">{{ n.message }}</v-list-item-title>
+          <v-list-item>
+            <v-list-item-title @click="logout()">{{ $t('signout') }}</v-list-item-title>
           </v-list-item>
           <v-list-item>
             <router-link :to="{ name: 'userProfile', params: { userId: $store.state.user.id }}" v-slot="{ href, route, navigate}">
@@ -83,7 +79,7 @@
 
       <template v-slot:append>
         <div class="pa-2">
-          <v-btn block @click.stop="logout">$t('signout')</v-btn>
+          <v-btn block @click.stop="logout">{{$t('signout')}}</v-btn>
         </div>
       </template>
     </v-navigation-drawer>
@@ -102,8 +98,7 @@
     data() {
       return {
         showMenu: false,
-        showMenuUser: false,
-        arr: [{message:  $t('signout'), method: this.logout}]
+        showMenuUser: false
       }
     },
     methods: {
