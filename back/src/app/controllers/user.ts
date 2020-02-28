@@ -125,7 +125,7 @@ export default class userController {
 		const userid : number | undefined = User.getId(req.user)
 		let user: User | undefined = await User.findOne({ id: userid });
 		if (user instanceof User && !user.isEmpty()) {
-			user.lang = req.body.lang;
+			['en', 'fr'].includes(req.body.lang) ? user.lang = req.body.lang : 0;
 			if (user.isValid()) {
 				user.save();
 				res.status(200).send(true);
@@ -203,7 +203,7 @@ export default class userController {
 		user.firstName = req.body.firstName;
 		user.lastName = req.body.lastName;
 		user.password = req.body.password;
-		user.lang = req.body.lang;
+		['en', 'fr'].includes(req.body.lang) ? user.lang = req.body.lang : 0;
 		user.imageUrl = copyReq.session.random + user.email;//**********************************
 		user.oauth = false;
 		if (user.isValid() && !(await user.isEmailTaken()) && copyReq['session'].validPic == true) {
