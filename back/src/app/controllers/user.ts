@@ -112,7 +112,8 @@ export default class userController {
 			let user: User | undefined = await User.findOne({ id: userid });
 		let copyReq: any = req;
 		if (user instanceof User && !user.isEmpty() && copyReq.files != null){
-			if ( await picUploadClient.validPicture(copyReq.files)) {
+			let isValidPic: any = await picUploadClient.validPicture(copyReq.files);
+			if (isValidPic == true) {
 				picUploadClient.modifyPicToUserPic(copyReq, user);
 				res.status(200).send(true);
 				return;

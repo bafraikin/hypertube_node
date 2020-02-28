@@ -28,7 +28,10 @@ export default {
 	},
 	methods:{
 		getProfilePic(){
-			return process.env.VUE_APP_backURL + "/userPic/" + this.user.imageUrl;
+			if (RegExp('^http','g').test(this.user.imageUrl))
+				return this.user.imageUrl;
+			else
+				return process.env.VUE_APP_backURL + "/userPic/" + this.user.imageUrl;
 		},
 		getUserProfile(){
 			axios.get('😂/userProfile', { params: { userId: this.userId}

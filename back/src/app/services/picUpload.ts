@@ -14,12 +14,10 @@ export default class picUploadClient {
 		copyReq.files.file_jerome.mv('/back/public/tmpValid/'+ copyReq.session.random);
 	}
 
-
-
 	static modifyPicToUserPic(copyReq: any, user: any){
-				let random:any = Math.floor((Math.random() * 10000) + 1);
+		let random:any = Math.floor((Math.random() * 10000) + 1);
 		user.imageUrl = random + user.email;//**********************************
-			user.save();
+		user.save();
 		copyReq.files.file_jerome.mv('/back/public/userPic/' + user.imageUrl);
 	}
 
@@ -30,7 +28,7 @@ export default class picUploadClient {
 		const {ext, mime} = await FileType.fromFile(files.file_jerome.tempFilePath) || {};
 
 		if ( (files.file_jerome.mimetype == 'image/png' || files.file_jerome.mimetype == 'image/jpeg') && (mime == 'image/png' || mime == 'image/jpeg'))
-				check.type = true;
+			check.type = true;
 		else
 			check.type = false;
 
