@@ -55,6 +55,7 @@
 <script>
 import axios from "@/config/axios_default";
 import language from "./LangButton";
+import bus from "@/config/bus_event";
 
 export default {
   data: () => ({
@@ -177,7 +178,7 @@ export default {
           lang: this.$store.state.lang
         }
       ).then(response => {
-        console.log(response);
+        bus.$emit("alert", { type: "success", code: "DONE" });
       })
       .catch(error => {});
     },

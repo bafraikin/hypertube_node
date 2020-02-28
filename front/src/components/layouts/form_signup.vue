@@ -112,7 +112,6 @@ enctype="multipart/form-data"
       login: '',
       firstName: '',
       lastName: '',
-      qqch: '',
 
       valid: true,
       password: '',
