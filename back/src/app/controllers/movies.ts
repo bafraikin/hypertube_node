@@ -33,7 +33,7 @@ export default class moviesController {
 		try {
 			let OMDBid = req.query.OMDBid;
 			let lang = req.query.lang;
-			lang == "fr" ? lang = "fr" : lang="en-US";
+			lang = (lang == "fr") ? "fr" : "en-US";
 			if (!OMDBid)
 				throw "OMDBid missing";
 			let url = "https://api.themoviedb.org/3/movie/" + OMDBid + "?api_key=" + process.env.OMDB_KEY + "&language=" + lang;
