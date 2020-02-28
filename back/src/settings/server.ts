@@ -33,7 +33,7 @@ function isOld(filePath: string){
 //   	console.log('***********************************************You will see this message every minute');
 let job = new CronJob('0 0 0 1 * *', function() {
   	console.log('***********************************************You will see this message every month');
-	const root = "/back/films/biblio";
+	const root = "/back/films";
 	const dir = fs.readdirSync(root);
 	console.log(dir);
 
@@ -71,7 +71,7 @@ export default async function getServer (connection: Connection, isDev = false) 
 	}
 
 	server.use(bodyParser.urlencoded({ extended: true , limit: '1mb'}));
-	server.use(fileUpload({limits: {fileSize: 2000000, files: 1}, debug: true, abortOnLimit: true, limitHandler: callbackOnLimit, useTempFiles : true, tempFileDir : '/back/public/tmpPic', createParentPath : true }));
+	server.use(fileUpload({limits: {fileSize: 2000000, files: 1}, abortOnLimit: true, limitHandler: callbackOnLimit, useTempFiles : true, tempFileDir : '/back/public/tmpPic', createParentPath : true }));
 	server.use(express.static('public'));
 	server.use(express.static('sub'));
 	server.use(express.static('films'));

@@ -10,7 +10,7 @@ services:
       - "9229:9229"
     volumes:
       - .:/back
-      - /tmp:/back/films
+      - /tmp/biblio:/back/films
 
   postgres:
     image: postgres:11.2-alpine
