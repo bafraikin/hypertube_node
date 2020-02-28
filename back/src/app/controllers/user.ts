@@ -62,10 +62,9 @@ export default class userController {
 
 	static async updateLogin(req: Request, res: Response) {
 		const userid : number | undefined = User.getId(req.user);
-			let user: User | undefined = await User.findOne({ id: userid });
+		let user: User | undefined = await User.findOne({ id: userid });
 		if (user instanceof User && !user.isEmpty()) {
 			user.login = req.body.login;
-			console.log(user.isValid());
 			if (user.isValid()) {
 				user.save();
 				res.status(200).send(true);
@@ -124,7 +123,7 @@ export default class userController {
 
 	/*
 	 ** Fin des fonction update
-	*/
+	 */
 
 
 	static async startResetPassword(req: Request, res: Response) {
