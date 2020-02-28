@@ -43,7 +43,8 @@ export default function setRoute(connection: Connection, app: Express) {
 	userAuthenticated.put('/updateLogin', controller.user.updateLogin);
 	userAuthenticated.put('/updateFirstname', controller.user.updateFirstname);
 	userAuthenticated.put('/updateLastname', controller.user.updateLastname);
-	userAuthenticated.put('/updateImageUrl', controller.user.updateImageUrl);	
+	userAuthenticated.put('/updateImageUrl', controller.user.updateImageUrl);
+	userAuthenticated.put('/updateLang', controller.user.updateLang);
 
 	userAuthenticated.get("/userProfile", controller.user.userProfile);
 	userAuthenticated.get("/user", controller.user.getUser);

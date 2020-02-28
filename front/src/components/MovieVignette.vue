@@ -1,6 +1,5 @@
 <template>
 	<v-container >
-		<h1 >Movie Vignette</h1>
 		<v-layout row wrap>
 			<v-flex xs12 sm6 md4 lg3   v-for="movie in movies" :key="movie.id"  >
 				<v-card dark>

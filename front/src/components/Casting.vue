@@ -1,7 +1,7 @@
 <template>
 	<v-container dark>
 		<div v-if="cast" style="color:white;">
-			<h1 >Casting</h1>
+			<h1 >{{ $t('casting') }}</h1>
 			<v-layout row wrap>
 				<v-flex xs12 sm6 md4 lg3  v-for="character in cast.slice(0, 5)" :key="cast.cast_id"  >
 					<v-card dark v-if="character.profile_path">
@@ -13,7 +13,7 @@
 		</div>
 
 		<div v-if="crew" style="color:white;">
-			<h1 >Executive Producer</h1>
+			<h1 >{{ $t('producer') }}</h1>
 			<v-layout row wrap>
 				<v-flex xs12 sm6 md4 lg3  v-for="cre in crew.slice(0, 5)" :key="cre.id"  >
 					<v-card dark v-if="cre.profile_path" >
