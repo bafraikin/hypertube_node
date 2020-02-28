@@ -3,8 +3,16 @@
     <v-form
       ref="form"
       v-model="valid"
+enctype="multipart/form-data"
       :lazy-validation="lazy"
     >
+
+	<v-flex>
+
+    	<v-col>
+    <v-img :src="pic_path" height="150" contain ></v-img>
+    	</v-col>
+    	<v-col>
 
       <v-text-field
         label="login"
@@ -44,6 +52,16 @@
         required
       ></v-text-field>
 
+		  <v-file-input
+			label="Upload profile pic"
+   			:rules="fileRules"
+   			v-model="file_pic" 
+			@change="filesChange($event)"
+			>
+		  </v-file-input>
+
+
+
       <v-checkbox
         v-model="checkbox"
         :rules="[v => !!v || 'You must agree to continue!']"
@@ -67,6 +85,11 @@
       >
         Reset Form
       </v-btn>
+      	  </v-col>
+
+    		</v-flex>
+
+
     </v-form>
     <oauth> </oauth>
   </div>
@@ -81,6 +104,11 @@
 
   export default {
     data: () => ({
+
+		pic_path: process.env.VUE_APP_frontURL + "/user_default.png",
+		file_pic: null,
+
+
       login: '',
       firstName: '',
       lastName: '',
@@ -100,12 +128,31 @@
       nameRules: [
         v => !!v || 'this field is required',
         v => v.length > 0 && v.length < 251 || 'a name should be inside 1 and 250 charactere'],
+        fileRules: [
+        	value => !!value || 'A profile pic is required',
+        	value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
+        	value => !value || value.size >= 0 || 'Your file is empty',
+        	value => !value || (value.type == 'image/png' || value.type == 'image/jpeg')|| 'Wrong file type',
+        ]
     }),
     components: {
 		"oauth": oauth,
 	},
 
     methods: {
+      filesChange($event) {
+      	  if (this.file_pic != null){
+		let formData = new FormData();
+		formData.append('file_jerome', this.file_pic);
+			axios.post( "😱/upload-pic", formData)
+		  	  .then(response => {
+		  	  	  if (response.data.status == "sucess"){
+		  	  	  	  this.pic_path = process.env.VUE_APP_backURL + "/tmpValid/" + response.data.expressSig;
+		  	  	  }
+		  	  });
+      	  }
+
+      },
       validate() {
         if (this.$refs.form.validate()) {
           this.snackbar = true
@@ -131,5 +178,10 @@
           })
       },
     },
+      mounted(){
+		let formData = new FormData();
+          axios.get('😱/myCookie').then(response => {
+          })
+        }
   }
 </script>
