@@ -44,7 +44,7 @@ export default {
         if (value.length === 0){
           return this.$t('pwdrequired');
         }
-        else if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,255}$/.test(value)){
+        else if (!(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,255}$/.test(value))){
           return this.$t('pwdrules');
         }
         return true;
@@ -53,7 +53,7 @@ export default {
         if (value.length === 0){
           return this.$t('emailrequired');
         }
-        else if (/.+@.+\..+/.test(value)){
+        else if (!(/.+@.+\..+/.test(value))){
           return this.$t('emailvalid');
         }
         return true;
