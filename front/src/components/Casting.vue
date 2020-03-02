@@ -16,7 +16,7 @@
 			<h1 >{{ $t('producer') }}</h1>
 			<v-layout row wrap>
 				<v-flex xs12 sm6 md4 lg3  v-for="cre in crew.slice(0, 5)" :key="cre.id"  >
-					<v-card dark v-if="cre.profile_path" >
+					<v-card dark >
 						<v-img  height="200px" v-if="cre.profile_path" v-bind:src="buildImg(cre.profile_path)" > </v-img>
 						<v-card-subtitle >{{ cre.name }}</v-card-subtitle>
 					</v-card>
