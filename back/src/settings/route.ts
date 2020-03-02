@@ -50,7 +50,7 @@ export default function setRoute(connection: Connection, app: Express) {
 	userAuthenticated.get("/user", controller.user.getUser);
 
 	// /*MOVIE*/
-	app.get('/research', controller.movies.searchForMovies);
+	userAuthenticated.get('/research', controller.movies.searchForMovies);
 	userAuthenticated.get('/movie-detail', controller.movies.getMovieDetail);
 	userAuthenticated.get('/movie-casting', controller.movies.getMovieCasting);
 	// /*PLAYER*/
