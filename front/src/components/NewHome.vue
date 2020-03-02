@@ -1,10 +1,20 @@
 <template>
-  <v-container >
+<div>  
+  <v-container v-if="isConnected">
     <h1>{{ $t('researchpage') }}</h1>
     <ResearchBar v-if="showResearchBar" v-on:moviesResearch="researchMovieFun($event)" ></ResearchBar>
     <MovieVignette :movies="moviesToDisplay" v-if="showMovieVignette" v-on:selectMovie="showMovieDetailsFun($event)" ></MovieVignette>
     <pagination v-if="loaderShouldBeDisplayed" v-on:displayNewResults="popStackMovie()"/> 
   </v-container >
+  <v-card v-else>
+    <h3 class="font-weight-black text-center" style="position: relative; top: 18vw ;font-size:3vw">
+      Hypertubulaire</h3>
+    <p class="font-weight-black text-center" style="position: relative; top: 18vw ;font-size:3vw">
+      {{ $t("headline")}}
+    </p>
+    <img src="img/F&T.gif" width="100%"/>
+  </v-card>
+</div>
 </template>
 
 
@@ -82,7 +92,10 @@
     computed: {
       loaderShouldBeDisplayed() {
         return this.lastResultGivedMaxNumberResult || this.moviesStack.length > 0
-      }
+      },
+    isConnected() {
+      return this.$store.getters.connected;
+    }
     }
   }
 
