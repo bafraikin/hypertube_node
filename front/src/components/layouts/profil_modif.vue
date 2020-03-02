@@ -87,7 +87,7 @@ export default {
         if (value.length === 0){
           return this.$t('emailrequired');
         }
-        else if (/.+@.+\..+/.test(value)){
+        else if (!(/.+@.+\..+/.test(value))){
           return this.$t('emailvalid');
         }
         return true;
