@@ -159,7 +159,7 @@ enctype="multipart/form-data"
         else if (value.size <= 0){
           return this.$t('fileempty');
         }
-        else if (value.type != 'image/png' || value.type != 'image/jpeg'){
+        else if (value.type != 'image/png' && value.type != 'image/jpeg'){
           return this.$t('wrongfile');
         }
       },
