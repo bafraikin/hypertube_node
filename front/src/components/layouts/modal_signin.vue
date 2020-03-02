@@ -1,5 +1,4 @@
 <template>
-  <v-row justify="center">
     <v-dialog
       attach="#app"
       v-model="dialog"
@@ -7,12 +6,12 @@
       dark>
       <template v-slot:activator="{ on }">
         <v-btn v-on="on">
-          sign in
+          {{ $t('signin') }}
         </v-btn>
       </template>
       <v-card>
         <v-card-title>
-          <span class="headline">Sign in to your account</span>
+          <span class="headline">{{ $t('signinaccount') }}</span>
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -21,7 +20,6 @@
         </v-card-text>
       </v-card>
     </v-dialog>
-  </v-row>
 </template>
 
 

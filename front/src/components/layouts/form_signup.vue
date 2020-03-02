@@ -15,23 +15,23 @@ enctype="multipart/form-data"
     	<v-col>
 
       <v-text-field
-        label="login"
+        label="Login"
         v-model="login"
-        :rules="nameRules"
+        :rules="[ nameRules ]"
         required
       ></v-text-field>
 
       <v-text-field
         v-model="email"
-        :rules="emailRules"
+        :rules="[ emailRules ]"
         label="E-mail"
         required
       ></v-text-field>
 
       <v-text-field
         v-model="password"
-        :rules="passwordRules"
-        label="Password"
+        :rules="[ passwordRules ]"
+        :label="$t('password')"
         :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
         :type="showPassword ? 'text' : 'password'"
         @click:append="showPassword = !showPassword"
@@ -39,22 +39,22 @@ enctype="multipart/form-data"
       ></v-text-field>
 
       <v-text-field
-        label="First name"
+        :label="$t('firstname')"
         v-model="firstName"
-        :rules="nameRules"
+        :rules="[ nameRules ]"
         required
       ></v-text-field>
 
       <v-text-field
-        label="Last name"
+        :label="$t('lastname')"
         v-model="lastName"
-        :rules="nameRules"
+        :rules="[ nameRules ]"
         required
       ></v-text-field>
 
 		  <v-file-input
-			label="Upload profile pic"
-   			:rules="fileRules"
+			  :label="$t('uploadfile')"
+   			:rules="[ fileRules ]"
    			v-model="file_pic" 
 			@change="filesChange($event)"
 			>
@@ -64,8 +64,8 @@ enctype="multipart/form-data"
 
       <v-checkbox
         v-model="checkbox"
-        :rules="[v => !!v || 'You must agree to continue!']"
-        label="Do you agree?"
+        :rules="[v => !!v || this.$t('mustagree')]"
+        :label="$t('agree')"
         required
       ></v-checkbox>
 
@@ -75,7 +75,7 @@ enctype="multipart/form-data"
         class="mr-4"
         @click="validate"
       >
-        Validate
+        {{ $t('validate') }}
       </v-btn>
 
       <v-btn
@@ -83,7 +83,7 @@ enctype="multipart/form-data"
         class="mr-4"
         @click="reset"
       >
-        Reset Form
+        {{ $t('resetform') }}
       </v-btn>
       	  </v-col>
 
@@ -119,39 +119,61 @@ enctype="multipart/form-data"
       email: '',
       checkbox: false,
       lazy: false,
-      passwordRules: [
-        v => !!v || 'Password is required',
-        v=> (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,255}$/.test(v)) || 'A Maj. letter and a Min. letter and a number and be more than 8 length'],
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',],
-      nameRules: [
-        v => !!v || 'this field is required',
-        v => v.length > 0 && v.length < 251 || 'a name should be inside 1 and 250 charactere'],
-        fileRules: [
-        	value => !!value || 'A profile pic is required',
-        	value => !value || value.size < 2000000 || 'Avatar size should be less than 2 MB!',
-        	value => !value || value.size >= 0 || 'Your file is empty',
-        	value => !value || (value.type == 'image/png' || value.type == 'image/jpeg')|| 'Wrong file type',
-        ]
     }),
     components: {
 		"oauth": oauth,
 	},
 
     methods: {
+      passwordRules (value) {
+        if (value.length === 0){
+          return this.$t('pwdrequired');
+        }
+        else if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,255}$/.test(value)){
+          return this.$t('pwdrules');
+        }
+        return true;
+      },
+      emailRules (value) {
+        if (value.length === 0){
+          return this.$t('emailrequired');
+        }
+        else if (/.+@.+\..+/.test(value)){
+          return this.$t('emailvalid');
+        }
+        return true;
+      },
+      nameRules (value) {
+        if (value.length === 0){
+          return this.$t('fieldrequired');
+        }
+        return true;
+      },
+      fileRules(value) {
+        if (value == null){
+          return this.$t('picrequired');
+        }
+        else if (value.size > 2000000){
+          return this.$t('sizeover');
+        }
+        else if (value.size <= 0){
+          return this.$t('fileempty');
+        }
+        else if (value.type != 'image/png' || value.type != 'image/jpeg'){
+          return this.$t('wrongfile');
+        }
+      },
       filesChange($event) {
       	  if (this.file_pic != null){
-		let formData = new FormData();
-		formData.append('file_jerome', this.file_pic);
-			axios.post( "😱/upload-pic", formData)
-		  	  .then(response => {
+		        let formData = new FormData();
+		        formData.append('file_jerome', this.file_pic);
+			      axios.post( "😱/upload-pic", formData)
+		  	    .then(response => {
 		  	  	  if (response.data.status == "sucess"){
 		  	  	  	  this.pic_path = process.env.VUE_APP_backURL + "/tmpValid/" + response.data.expressSig;
 		  	  	  }
-		  	  });
+		  	    });
       	  }
-
       },
       validate() {
         if (this.$refs.form.validate()) {
@@ -170,6 +192,7 @@ enctype="multipart/form-data"
             lastName: this.lastName,
             password: this.password,
             login: this.login,
+            lang: this.$store.state.lang
           })
           .then((response) => {
             this.$emit("created");
@@ -178,10 +201,10 @@ enctype="multipart/form-data"
           })
       },
     },
-      mounted(){
-		let formData = new FormData();
-          axios.get('😱/myCookie').then(response => {
-          })
-        }
+    mounted(){
+		  let formData = new FormData();
+        axios.get('😱/myCookie').then(response => {
+        })
+    }
   }
 </script>
