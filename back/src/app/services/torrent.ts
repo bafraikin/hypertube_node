@@ -18,9 +18,11 @@ export default class torrentClient {
 						'magnetLink': torrentClient.buildMagnetLink(torrent.hash, torrent.url),
 						'quality': torrent.quality
 					};
-					if (torrents == undefined)
-						torrents = [];
-					torrents.push(entry);
+					if (entry.quality != "3D"){
+						if (torrents == undefined)
+							torrents = [];
+						torrents.push(entry);
+					}
 				});
 			}
 			return (torrents);

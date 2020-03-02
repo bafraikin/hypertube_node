@@ -1,6 +1,7 @@
 import {Request, Response} from 'express';
 import torrentClient from '@app/services/torrent'
 import { Movie } from '@app/models/movies';
+import logger from '@settings/logger';
 
 export default class playerController {
 
@@ -24,9 +25,9 @@ export default class playerController {
 						? parseInt(parts[1], 10)
 						: fileSize-1
 						const chunksize = (end-start)+1
-						console.log("le start ==>", start);
-						console.log("le end ==>", end);
-						console.log("le file size", fileSize);
+						logger.info("le start ==>"+ start);
+						logger.info("le end ==>"+ end);
+						logger.info("le file size"+ fileSize);
 						const head = {
 							'Content-Range': `bytes ${start}-${end}/${fileSize}`,
 							'Accept-Ranges': 'bytes',
@@ -39,11 +40,6 @@ export default class playerController {
 							res.status(416).send("error in stream");
 						})
 				}
-				else {
-					// console.log("ce n'est pas un film");
-					// console.log(file.name);
-					// file.deselect();
-				}
 			});
 		} catch (err) {
 			console.error(err);
@@ -51,15 +47,3 @@ export default class playerController {
 		}
 	}
 }
-
-
-	// var progress = 0;
-	// stream.on('data', (chunk: any) => {
-	// 	console.log("received " + chunk.length + " bytes of data");
-	// progress += chunk.length;
-	// var pourcentage = Math.round((progress * 100 / file.length));
-	// console.log("Le pourcentage du total ==>", pourcentage  + "%");
-	// })
-	// stream.on('end', () => {
-	// console.log("Download completed");
-	// })
