@@ -37,7 +37,6 @@ let job = new CronJob('0 0 1 * * *', function() {
 	const dir = fs.readdirSync(root);
 	logger.info(dir);
 	for (let file of dir){
-		console.log(file);
 		isOld(root + '/' + file) ;
 	}
 }, null, true, 'America/Los_Angeles');
