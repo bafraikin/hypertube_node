@@ -62,7 +62,8 @@
     >
       <v-app-bar-nav-icon class="d-sm-none" @click.stop="showMenu = !showMenu"></v-app-bar-nav-icon>
       <v-list>
-        <v-list-item v-if="false"
+        <ul v-if="false">
+        <v-list-item 
           v-for="item in items"
           :key="item.title"
           link
@@ -70,16 +71,30 @@
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
-
           <v-list-item-content>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        </ul>
       </v-list>
-
       <template v-slot:append>
-        <div class="pa-2">
+        <div v-if="isConnected == true" class="pa-2">
+           <v-list-item>
+            <router-link :to="{ name: 'userProfile', params: { userId: $store.state.user.id }}" v-slot="{ href, route, navigate}">
+              <v-list-item-title>
+           <a :href="href" style="text-decoration: none; color: unset" @click="navigate">{{ $t('userprofile')  }}</a>
+              </v-list-item-title>
+            </router-link>
+          </v-list-item>
+            <v-list-item>
+            <modify-profil />
+          </v-list-item>
           <v-btn block @click.stop="logout">{{$t('signout')}}</v-btn>
+
+        </div>
+        <div v-else>
+                       <sign-up/>
+        <sign-in/>
         </div>
       </template>
     </v-navigation-drawer>
