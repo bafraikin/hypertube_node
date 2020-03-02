@@ -48,7 +48,6 @@
 			>
 		  </v-file-input>
     </v-form>
-
   </div>
 </template>
 
@@ -88,7 +87,7 @@ export default {
         if (value.length === 0){
           return this.$t('emailrequired');
         }
-        else if (/.+@.+\..+/.test(value)){
+        else if (!(/.+@.+\..+/.test(value))){
           return this.$t('emailvalid');
         }
         return true;
@@ -117,59 +116,64 @@ export default {
         }
     },
     reqNewLogin() {
-      axios.put(
-        "😂/updateLogin",
-        {
+      axios
+        .put("😂/updateLogin", {
           login: this.login
-        }
-          ).then(response => {
-            console.log(response);
-          })
-          .catch(error => {});
+        })
+        .then(response => {
+          bus.$emit("alert", { type: "success", code: "DONE" });
+        })
+        .catch(error => {
+          bus.$emit("alert", { type: "error", code: "BAD_INPUT" });
+        });
     },
     reqNewEmail() {
-      axios.put(
-        "😂/updateEmail",
-        {
+      axios
+        .put("😂/updateEmail", {
           email: this.email
-        }
-          ).then(response => {
-            console.log(response);
-          })
-          .catch(error => {});
+        })
+        .then(response => {
+          bus.$emit("alert", { type: "success", code: "DONE" });
+        })
+        .catch(error => {
+          bus.$emit("alert", { type: "error", code: "BAD_INPUT" });
+        });
     },
     reqNewpass() {
-      axios.put(
-        "😂/updatePassword",
-        {
+      axios
+        .put("😂/updatePassword", {
           password: this.password
-        }
-          ).then(response => {
-            console.log(response);
-          })
-          .catch(error => {});
+        })
+        .then(response => {
+          bus.$emit("alert", { type: "success", code: "DONE" });
+        })
+        .catch(error => {
+          bus.$emit("alert", { type: "error", code: "BAD_INPUT" });
+        });
     },
     reqNewFName() {
-      axios.put(
-        "😂/updateFirstname",
-        {
+      axios
+        .put("😂/updateFirstname", {
           firstName: this.firstName
-        }
-          ).then(response => {
-            console.log(response);
-          })
-          .catch(error => {});
+        })
+        .then(response => {
+          bus.$emit("alert", { type: "success", code: "DONE" });
+        })
+        .catch(error => {
+          bus.$emit("alert", { type: "error", code: "BAD_INPUT" });
+        });
     },
     reqNewLName() {
-      axios.put(
-        "😂/updateLastname",
-        {
+      axios
+        .put("😂/updateLastname", {
           lastName: this.lastName
-        }
-          ).then(response => {
-            console.log(response);
-          })
-          .catch(error => {});
+        })
+        .then(response => {
+          bus.$emit("alert", { type: "success", code: "DONE" });
+        })
+        .catch(error => {
+          bus.$emit("alert", { type: "error", code: "BAD_INPUT" });
+        });
     },
     reqNewLang() {
       axios.put(
