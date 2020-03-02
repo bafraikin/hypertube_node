@@ -96,7 +96,7 @@ export default {
         if (value.length === 0){
           return this.$t('fieldrequired');
         }
-        else if (value.length > 0 && value.length < 251){
+        else if (value.length == 0 && value.length >= 251){
           return this.$t('namerules');
         }
         return true;
