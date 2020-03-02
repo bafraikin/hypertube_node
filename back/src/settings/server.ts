@@ -12,36 +12,34 @@ import fs from 'fs'
 import { CronJob } from 'cron'
 import moment from 'moment'
 const rmdir = require('rimraf');
+import logger from '@settings/logger';
 
 function isOld(filePath: string){
 	// const acessTime = moment(fs.statSync(filePath));
 	const acessTime = moment(fs.statSync(filePath).atime);
 	const diffDay = acessTime.diff(Date.now(), "days");
 	const diffminutes = acessTime.diff(Date.now(), "minutes");
-	console.log("le diff day =>", diffDay);
-	console.log("le diff minute =>", diffminutes);
+	logger.info("le diff day =>", diffDay);
+	logger.info("le diff minute =>", diffminutes);
 	if (diffDay < -30){
-		// console.log(filePath);
-		// if (diffminutes <= -1){
-		console.log("On supprime ", filePath);
+	// if (diffminutes <= -1){
+		logger.info("On supprime", filePath);
 		// fs.unlinkSync(filePath);
 		rmdir(filePath, function(error: any){});
 	}
 }
 
 // let job = new CronJob('0 0-59 * * * *', function() {
-//   	console.log('***********************************************You will see this message every minute');
-let job = new CronJob('0 0 0 1 * *', function() {
-  	console.log('***********************************************You will see this message every month');
+//logger.info("You will see this message every minute");
+let job = new CronJob('0 0 1 * * *', function() {
+	logger.info("You will see this message every day at 1am");
 	const root = "/back/films/biblio";
 	const dir = fs.readdirSync(root);
-	console.log(dir);
-
+	logger.info(dir);
 	for (let file of dir){
 		console.log(file);
 		isOld(root + '/' + file) ;
 	}
-
 }, null, true, 'America/Los_Angeles');
 job.start();
 
