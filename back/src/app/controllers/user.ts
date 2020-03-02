@@ -33,7 +33,7 @@ export default class userController {
 		let user: User | undefined = await User.findOne({ id: userid });
 		if (user instanceof User && !user.isEmpty()) {
 			user.email = req.body.email;
-			if (!(await user.isEmailTaken())) {
+			if (!(await user.isEmailTaken()) && user.isValid()) {
 				user.save();
 				res.status(200).send(true);
 				return;
