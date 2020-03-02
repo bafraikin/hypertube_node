@@ -2,6 +2,10 @@ import {Request, Response} from 'express';
 import torrentClient from '@app/services/torrent'
 import { Movie } from '@app/models/movies';
 import logger from '@settings/logger';
+import path from "path";
+
+const extensionsThatWeWantToStore = [".mp4", ".webm"];
+const extensionsThatWeDontWantToStore = [".avi", ".divx", ".flv", ".mkv", ".mpg", ".mp2", ".mpeg", ".mpe", ".mpv", ".mov", ".ogg", ".swf", ".qt", ".wmv"];
 
 export default class playerController {
 
@@ -14,32 +18,15 @@ export default class playerController {
 			const parts = range.replace(/bytes=/, "").split("-");
 			const start = parseInt(parts[0], 10);
 			let engine: any = await torrentClient.downloadMovie(start, magnetLink);
-			engine.files.forEach( (file: any) => {
-				let regex = /mp4/;
-				let isMovie = regex.test(file.name);
-				if (isMovie){
-					let opt = { start: start, end: file.length };
-					let stream = file.createReadStream(opt);
-					const fileSize = file.length;
-					const end = parts[1]
-						? parseInt(parts[1], 10)
-						: fileSize-1
-						const chunksize = (end-start)+1
-						logger.info("le start ==>"+ start);
-						logger.info("le end ==>"+ end);
-						logger.info("le file size"+ fileSize);
-						const head = {
-							'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-							'Accept-Ranges': 'bytes',
-							'Content-Length': chunksize,
-							'Content-Type': 'video/mp4',
-						}
-						res.writeHead(206, head);
-						stream.pipe(res);
-						stream.on('error', function (err: any) {
-							res.status(416).send("error in stream");
-						})
-				}
+			engine.files.forEach((file: any) => {
+				const extension = path.extname(file.name);
+				const opt = { start: start, end: file.length };
+				if (extensionsThatWeWantToStore.includes(extension))
+					torrentClient.streamFile(file, res, extension, opt);
+				else if (extensionsThatWeDontWantToStore.includes(extension))
+					torrentClient.convertAndStreamFile(file, res, opt);
+				else
+					file.deselect();
 			});
 		} catch (err) {
 			console.error(err);

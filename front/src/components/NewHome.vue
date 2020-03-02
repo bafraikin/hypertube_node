@@ -50,7 +50,7 @@
       },
       researchMovieFun(research) {
         this.lastResearch = research;
-        axios.get('/research', { params: {
+        axios.get('/😂/research', { params: {
           lang: this.$i18n.locale,
           firstYear: research.firstYear,
           lastYear: research.lastYear,

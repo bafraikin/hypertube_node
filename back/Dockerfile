@@ -1,7 +1,7 @@
 FROM node:12-alpine
 EXPOSE 3000 9229
 
-RUN apk add zsh curl git python3 g++ gcc make
+RUN apk add zsh curl git python3 g++ gcc make ffmpeg x264
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 WORKDIR /back

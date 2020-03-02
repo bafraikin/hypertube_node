@@ -1,4 +1,6 @@
 import axios from "axios"
+import {Response} from "express";
+import ffmpeg, {FfprobeStream} from 'fluent-ffmpeg'; 
 let torrentStream = require('torrent-stream');
 
 export default class torrentClient {
@@ -129,9 +131,45 @@ export default class torrentClient {
 		return new Promise((resolve, reject) => {
 			let engine = torrentStream(magnetLink, {path: '/back/films'});
 			engine.on('ready', () => {
-    			return resolve(engine);
+				return resolve(engine);
 			});
 		}) ;
 	}
 
+	static async streamFile(file: any, res: Response, extension: string, opt: any) {
+		const ext = extension.split(".")[1];
+		res.writeHead(206, {
+			'Content-Type': 'video/mp4',
+			'Content-Range': `bytes ${opt.start}-${opt.end}/${file.length}`,
+			'Content-Length': file.length,
+			'Accept-Ranges': 'bytes'
+		});
+		let stream = file.createReadStream(opt);
+		try {
+			let proc: any =  ffmpeg(stream)
+			.withVideoCodec('libx264')
+			.withAspect('16:9')
+			.audioCodec('aac')
+			.on('start', function(commandLine) {
+				console.log('Spawned Ffmpeg with command: ' + commandLine);
+			}).on('codecData', function(data) {
+				console.log('Input is ' + data.audio + ' audio ' +
+										'with ' + data.video + ' video');
+			}).on('error', function(err, stdout, stderr) {
+				console.log('Cannot process video: ' + err.message);
+			})
+			.on("data", function(err,ddd) {
+				console.log("😊", err,ddd);
+			});
+			proc.pipe(res, {end: true});
+		}
+		catch (err) {
+			console.error(err);
+		}
+	}
+	static async convertAndStreamFile(file: any, res: Response, opt: any) {
+		let stream = file.createReadStream(opt);
+		res.set('Content-Type', 'video/webm');
+
+	}
 }
