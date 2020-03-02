@@ -19,11 +19,11 @@ function isOld(filePath: string){
 	const acessTime = moment(fs.statSync(filePath).atime);
 	const diffDay = acessTime.diff(Date.now(), "days");
 	const diffminutes = acessTime.diff(Date.now(), "minutes");
-	logger.info("le diff day =>", diffDay);
-	logger.info("le diff minute =>", diffminutes);
+	logger.info("le diff day =>" + diffDay);
+	logger.info("le diff minute =>" + diffminutes);
 	if (diffDay < -30){
 	// if (diffminutes <= -1){
-		logger.info("On supprime", filePath);
+		logger.info("On supprime" + filePath);
 		// fs.unlinkSync(filePath);
 		rmdir(filePath, function(error: any){});
 	}
