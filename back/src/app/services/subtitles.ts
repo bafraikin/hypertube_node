@@ -80,7 +80,6 @@ export default class subtitlesServices {
             let response: any = await axios.get(url, {responseType: 'blob'});
             if (response.status == 200){
                 fs.writeFile(path, response.data, () => {
-                    console.log('The file has been saved!');
                     if (isSrt != null){
                         fs.createReadStream(path)
                         .pipe(srt2vtt())

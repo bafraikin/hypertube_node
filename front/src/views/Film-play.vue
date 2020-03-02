@@ -2,7 +2,7 @@
 	<div id="lala">
 
 		<div v-if="showFilm">
-			<video  ref="myVid"  id="videoPlayer" controls  crossorigin="use-credentials" >
+			<video  ref="myVid" style="width: 100%;"  id="videoPlayer" controls  crossorigin="use-credentials" >
 				<source v-bind:src="filmPath" type="video/mp4"   >
 			</video>
 		</div>
@@ -60,6 +60,8 @@ export default {
 		addTrack(lang, label, srclang, code){
 			let video = document.getElementById("videoPlayer");
 			let track = document.createElement('track');
+			if (this.$i18n.locale == srclang)
+				track.default = true;
 			track.setAttribute("label", label);
 			track.setAttribute("kind", "subtitles");
 			track.setAttribute("srclang", srclang);

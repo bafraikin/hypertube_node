@@ -1,6 +1,6 @@
 <template>
   <div id="toPaginate">
-    <img src="img/loader.gif"/>
+    <img :src="'img/' + randomLoader()"/>
   </div>
 </template>
 
@@ -9,6 +9,7 @@
   export default {
     data() {
       return {
+        loaders: ["loader.gif", "loader_purple.gif", "loader_blue.gif", "loader_black.gif"],
         notOngoingTimeout: true,
         timeoutToWait: 1500
       }
@@ -32,6 +33,9 @@
           (top + height) <= (window.pageYOffset + window.innerHeight) &&
           (left + width) <= (window.pageXOffset + window.innerWidth)
         );
+      },
+      randomLoader() {
+        return this.loaders[Math.floor(Math.random() * this.loaders.length)]
       }
     },
     mounted() {
