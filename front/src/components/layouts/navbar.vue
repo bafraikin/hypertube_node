@@ -57,7 +57,7 @@
       v-model="showMenu"
       width="100%"
     >
-      <v-app-bar-nav-icon class="d-sm-none" @click.stop="showMenu = !showMenu"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon  @click.stop="showMenu = !showMenu"></v-app-bar-nav-icon>
       <v-list>
         <ul v-if="false">
           <v-list-item v-for="item in items" :key="item.title" link>
