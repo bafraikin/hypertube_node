@@ -95,7 +95,7 @@ export default {
           return false;
         });
       if (response !== false) {
-        bus.$emit('alert', {type: 'success', msg: "Check your mail ✉️👀"});
+        bus.$emit('alert', {type: 'success', code: "CHECK_MAIL"});
         this.$emit("close");
       }
     }
