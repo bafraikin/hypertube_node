@@ -2,7 +2,7 @@
   <v-card black id="comment" class="">
     <v-list two-line>
       <template v-for="(comment, index) in comments">
-        <v-subheader v-if="index == 0"> Comments </v-subheader>
+        <v-subheader v-if="index == 0">{{ $t('com') }}</v-subheader>
         <v-divider v-if="index != 0" :inset="true"></v-divider>
         <v-list-item :key="comment.content" @click="displayUserProfile(comment.user.id)" shaped>
           <v-list-item-content>
@@ -15,9 +15,9 @@
     <v-form>
       <v-textarea
         v-model="textarea"
-        label="Please enter your comment"
+        :label="$t('entercom')"
       ></v-textarea>
-      <v-btn @click="submit">submit</v-btn>
+      <v-btn @click="submit">{{ $t('submit') }}</v-btn>
     </v-form>
   </v-card>
 </template>

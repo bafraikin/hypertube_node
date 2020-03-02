@@ -1,4 +1,3 @@
-
 import axios from "axios"
 
 interface Filter {
@@ -19,7 +18,7 @@ class TMDBClient {
 	}
 
 	defaultGetQuery() {
-		return  (this.baseUrl + this.service + "?api_key=" + this.apiKey + "&include_adult=false" + "&include_video=true" + "&language=en-US");
+		return  (this.baseUrl + this.service + "?api_key=" + this.apiKey + "&include_adult=false" + "&include_video=true");
 	}
 }
 
@@ -27,11 +26,10 @@ class TMDBClientDiscover extends TMDBClient {
 	service: string = "discover/movie";
 	baseQuery: string;
 
-	constructor(movieFilter: Filter) {
+	constructor(movieFilter: Filter, lang: string) {
 		super();
 		this.filter = movieFilter;
-		this.baseQuery = this.defaultGetQuery() + "&primary_release_date.gte=" + this.filter.firstYear + "-01-01"  + "&primary_release_date.lte=" + this.filter.lastYear + "-01-01" + "&vote_average.gte=" + this.filter.minMark + "&vote_average.lte=" + this.filter.maxMark + "&sort_by=popularity.desc" +  this.withGenres();
-		console.log(this.baseQuery)
+		this.baseQuery = this.defaultGetQuery() + "&language=" + lang + "&primary_release_date.gte=" + this.filter.firstYear + "-01-01"  + "&primary_release_date.lte=" + this.filter.lastYear + "-01-01" + "&vote_average.gte=" + this.filter.minMark + "&vote_average.lte=" + this.filter.maxMark + "&sort_by=popularity.desc" +  this.withGenres();
 	}
 
 	withGenres(): string {
@@ -51,9 +49,9 @@ class TMDBClientSearch extends TMDBClient {
 	service: string = "search/movie";
 	baseQuery: string;
 
-	constructor(query: string) {
+	constructor(query: string, lang: string) {
 		super();
-		this.baseQuery = this.defaultGetQuery() + "&query=" + encodeURI(query);
+		this.baseQuery = this.defaultGetQuery() + "&language=" + lang + "&query=" + encodeURI(query);
 	}
 
 	async getPage(page: number = 1) {

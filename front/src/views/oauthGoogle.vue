@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Please wait</h1> 
+    <h1>{{ $t('wait') }}</h1> 
   </div>
 </template>
 

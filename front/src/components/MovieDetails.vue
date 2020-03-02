@@ -10,7 +10,7 @@
 			<template v-slot:default>
 				<thead>
 					<tr>
-						<th class="text-left">Release Date</th>
+						<th class="text-left">{{ $t('releasedate') }}</th>
 						<th class="text-left">Note</th>
 					</tr>
 				</thead>
@@ -63,7 +63,7 @@ export default {
 			return "https://image.tmdb.org/t/p/w500/"+ movie.poster_path;
 		},
 		getMovieDetails(){
-			axios.get('😂/movie-detail', { params: { OMDBid: this.OMDBid } })
+			axios.get('😂/movie-detail', { params: { OMDBid: this.OMDBid, lang: this.$i18n.locale } })
 				.then(response => {
 					this.movie = response.data;
 					console.log(this.movie);
