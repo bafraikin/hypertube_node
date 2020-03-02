@@ -25,9 +25,9 @@ export default class playerController {
 						? parseInt(parts[1], 10)
 						: fileSize-1
 						const chunksize = (end-start)+1
-						logger.info("le start ==>" +  start);
-						logger.info("le end ==>" +  end);
-						logger.info("le file size" + fileSize);
+						logger.info("le start ==>"+ start);
+						logger.info("le end ==>"+ end);
+						logger.info("le file size"+ fileSize);
 						const head = {
 							'Content-Range': `bytes ${start}-${end}/${fileSize}`,
 							'Accept-Ranges': 'bytes',

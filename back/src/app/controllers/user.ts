@@ -29,25 +29,23 @@ export default class userController {
 
 
 	static async updateEmail(req: Request, res: Response) {
-		const userid : number | undefined = User.getId(req.user)
-			if (userid) {
-				let user: User | undefined = await User.findOne({ id: userid });
-				if (user instanceof User && !user.isEmpty()) {
-					user.email = req.body.email;
-					if (await user.isEmailTaken()) {
-						user.save();
-						res.status(200).send(true);
-						return;
-					}
-				}
+		const userid : number | undefined = User.getId(req.user);
+		let user: User | undefined = await User.findOne({ id: userid });
+		if (user instanceof User && !user.isEmpty()) {
+			user.email = req.body.email;
+			if (!(await user.isEmailTaken()) && user.isValid()) {
+				user.save();
+				res.status(200).send(true);
+				return;
 			}
+		}
 		res.status(405).send(false);
 		return;
 	}
 
 	static async updatePassword(req: Request, res: Response) {
-		const userid : number | undefined = User.getId(req.user)
-			let user: User | undefined = await User.findOne({ id: userid });
+		const userid : number | undefined = User.getId(req.user);
+		let user: User | undefined = await User.findOne({ id: userid });
 		if (user instanceof User && !user.isEmpty()) {
 			user.password = req.body.password;
 			if (user.checkPassIsComplex()) {
@@ -62,8 +60,8 @@ export default class userController {
 	}
 
 	static async updateLogin(req: Request, res: Response) {
-		const userid : number | undefined = User.getId(req.user)
-			let user: User | undefined = await User.findOne({ id: userid });
+		const userid : number | undefined = User.getId(req.user);
+		let user: User | undefined = await User.findOne({ id: userid });
 		if (user instanceof User && !user.isEmpty()) {
 			user.login = req.body.login;
 			if (user.isValid()) {
@@ -77,10 +75,10 @@ export default class userController {
 
 
 	static async updateLastname(req: Request, res: Response) {
-		const userid : number | undefined = User.getId(req.user)
-			let user: User | undefined = await User.findOne({ id: userid });
+		const userid : number | undefined = User.getId(req.user);
+		let user: User | undefined = await User.findOne({ id: userid });
 		if (user instanceof User && !user.isEmpty()) {
-			user.lastName = req.body.lastname;
+			user.lastName = req.body.lastName;
 			if (user.isValid()) {
 				user.save();
 				res.status(200).send(true);
@@ -92,10 +90,10 @@ export default class userController {
 	}
 
 	static async updateFirstname(req: Request, res: Response) {
-		const userid : number | undefined = User.getId(req.user)
-			let user: User | undefined = await User.findOne({ id: userid });
+		const userid : number | undefined = User.getId(req.user);
+		let user: User | undefined = await User.findOne({ id: userid });
 		if (user instanceof User && !user.isEmpty()) {
-			user.firstName = req.body.firstname;
+			user.firstName = req.body.firstName;
 			if (user.isValid()) {
 				user.save();
 				res.status(200).send(true);
@@ -107,8 +105,8 @@ export default class userController {
 	}
 
 	static async updateImageUrl(req: Request, res: Response) {
-		const userid : number | undefined = User.getId(req.user)
-			let user: User | undefined = await User.findOne({ id: userid });
+		const userid : number | undefined = User.getId(req.user);
+		let user: User | undefined = await User.findOne({ id: userid });
 		let copyReq: any = req;
 		if (user instanceof User && !user.isEmpty() && copyReq.files != null){
 			let isValidPic: any = await picUploadClient.validPicture(copyReq.files);
@@ -138,16 +136,7 @@ export default class userController {
 
 
 	/*
-	 ** il manque update pictures
-	 */
-
-
-	/*
-	 ** Fin des fonction
-	 */
-
-	/*
-	 ** il manque update pictures
+	 ** Fin des fonction update
 	 */
 
 

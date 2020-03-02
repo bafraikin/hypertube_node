@@ -18,14 +18,14 @@ export default async function setupPassport(server: Express) {
 	callbackURL: "http://127.0.0.1:8080/oauth42/callback",
 	profileFields: {
         'id': function (obj: any) { return String(obj.id); },
-        'username': 'login',
+        'login': 'login',
         'displayName': 'displayname',
-        'name.familyName': 'last_name',
-        'name.givenName': 'first_name',
+        'lastName': 'last_name',
+        'firstName': 'first_name',
         'profileUrl': 'url',
         'emails.0.value': 'email',
         'phoneNumbers.0.value': 'phone',
-        'photos.0.value': 'image_url'
+        'imageURL': 'image_url'
       }
 	}, authenticateController.oAuthStrategy));
 	passport.use(new GoogleStrategy({

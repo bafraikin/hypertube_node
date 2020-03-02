@@ -25,6 +25,10 @@
             return this.$t('welldone');
           case "OLD_TOKEN":
             return this.$t('oldtoken');
+          case "CHECK_MAIL":
+          	return this.$t('checkmail');
+          case "DONE" :
+          	return this.$t('done');
           default:
             return this.$t('error');
         }

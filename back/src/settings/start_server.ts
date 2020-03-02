@@ -1,4 +1,3 @@
-import { Request, Response } from 'express'
 import getServer from './server'
 import {Connection} from 'typeorm'
 import {connectWithPg} from './connect_pg'
