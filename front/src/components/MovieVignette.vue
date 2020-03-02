@@ -55,7 +55,6 @@ export default {
 		}
 	},
 	mounted(){
-		console.log(this.movies);
 		this.getWatchList();
 	}
 }

@@ -3,7 +3,6 @@
     <v-card>
       <v-card flat color="transparent">
 
-
         <v-card-text>
           <v-text-field
             :disabled="researchByFilmGenre"
