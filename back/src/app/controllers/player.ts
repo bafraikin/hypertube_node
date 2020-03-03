@@ -24,11 +24,11 @@ export default class playerController {
 				console.log("Extension  ==>", extension);
 
 				if (extensionsThatWeWantToStore.includes(extension)){
-					torrentClient.streamFile_seconde(file, res, extension, range);
+					//torrentClient.streamFile_seconde(file, res, extension, range);
 					// res.on('close', () => {
                 		// engine.destroy(() => {})
               		// })
-					// let converter = torrentClient.convertAndStreamFile_seconde(file, res, range);
+					let converter = torrentClient.convertAndStreamFile_seconde(file, res, range);
 					//res.on('close', () => {
                 		//converter.kill();
 						//console.log("On ferme ***********************************");

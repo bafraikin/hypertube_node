@@ -187,15 +187,62 @@ static async convertAndStreamFile_seconde(file: any, res: Response, range: any) 
 	console.log("On stream avec consvertion");
 	console.log(pathToFfmpeg);
 
-	const stream = file.createReadStream();
-	stream.on('error', (err: any) => {
-		logger.info("erreur dans le stream ==>"+ err);
-	});
 
-  	res.writeHead(206, {
-    	'Content-Type': 'video/webm',
-    	Connection: 'keep-alive'
-  	})
+
+		const parts = range.replace(/bytes=/, "").split("-");
+		const start = parseInt(parts[0], 10);
+		let opt = { start: start, end: file.length };
+		//let stream = file.createReadStream(opt);
+
+		console.log("Le fichier" + file.path);
+		let stream = fs.createReadStream("/back/films/" + file.path);
+		console.log(stream);
+
+
+		const fileSize = file.length;
+		const end = parts[1]
+			? parseInt(parts[1], 10)
+			: fileSize-1
+			const chunksize = (end-start)+1
+			logger.info("le start ==>"+ start);
+			logger.info("le end ==>"+ end);
+			logger.info("le file size"+ fileSize);
+			const head = {
+				'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+				'Accept-Ranges': 'bytes',
+				'Content-Length': chunksize,
+				'Content-Type': 'video/mp4',
+				Connection: 'keep-alive'
+			}
+			res.writeHead(206, head);
+
+
+
+
+
+
+	// const stream = file.createReadStream();
+
+	console.log("Le fichier" + file.path);
+	// let stream = fs.createReadStream("/back/films/" + file.path);
+	// console.log(stream);
+
+
+	// stream.on('data', (chunk: any) => {
+  		// console.log(`Received ${chunk.length} bytes of data.`);
+	// });
+
+
+
+
+	// stream.on('error', (err: any) => {
+		// logger.info("erreur dans le stream ==>"+ err);
+	// });
+
+  	// res.writeHead(206, {
+    	// 'Content-Type': 'video/webm',
+    	// Connection: 'keep-alive'
+  	// })
 
 	const converter = ffmpeg()
     .input(stream)
@@ -207,6 +254,13 @@ static async convertAndStreamFile_seconde(file: any, res: Response, range: any) 
     .output(res)
     .outputFormat('webm')
 
+
+  converter.on('progress', function(progress) {
+    console.log('Processing: ' + progress.percent + '% done');
+  })
+
+
+
 	converter.on('error', (err: any) => {
 		logger.info("erreur de ffmpeg ==>"+ err);
 	});
@@ -214,8 +268,6 @@ static async convertAndStreamFile_seconde(file: any, res: Response, range: any) 
 	converter.run()
 
 	return converter;
-
-
 }
 
 
