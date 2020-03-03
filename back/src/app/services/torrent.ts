@@ -158,16 +158,17 @@ export default class torrentClient {
 			engine.on('download', (piece: any) => {
 				setPieces.add(piece);
 				if (!weAlreadyReleaseTheKraken && fs.existsSync('/back/films/' + file.path)) {
+					let pourcentageDownloaded = (engine.swarm.downloaded / file.length) * 100;
 					let numberPiecesToGetTotal = (file.length * setPieces.size) / engine.swarm.downloaded;
 					let numberPiecesToGetToStart = numberPiecesToGetTotal * 0.08;
-					if (weHaveTheLeastNumberOfPieces(numberPiecesToGetToStart)) {
+					console.log(pourcentageDownloaded, "%");
+					if (weHaveTheLeastNumberOfPieces(numberPiecesToGetToStart) || pourcentageDownloaded > 35) {
 						weAlreadyReleaseTheKraken = true;
 						resolve(true);
 					}
 				}	
 			})
 			engine.on('idle', () => {
-				console.log("it's precoce time");
 				resolve(true);
 			})
 		});
