@@ -16,17 +16,17 @@ export default class torrentClient {
 			let list = this.getTorrentList(response);
 			if (list != undefined) {
 				list.forEach((torrent: any) => {
-					let entry = {
+						let entry = {
 						'provider': 'YTS',
 						'magnetLink': torrentClient.buildMagnetLink(torrent.hash, torrent.url),
 						'quality': torrent.quality
-					};
-					if (entry.quality != "3D"){
+						};
+						if (entry.quality != "3D"){
 						if (torrents == undefined)
-							torrents = [];
+						torrents = [];
 						torrents.push(entry);
-					}
-				});
+						}
+						});
 			}
 			return (torrents);
 		} catch (err) {
@@ -130,58 +130,71 @@ export default class torrentClient {
 
 	static async downloadMovie(start: any, magnetLink: any) {
 		return new Promise((resolve, reject) => {
-			let engine = torrentStream(magnetLink, {path: '/back/films'});
-			engine.on('ready', () => {
-				return resolve(engine);
-			});
-		});
+				let engine = torrentStream(magnetLink, {path: '/back/films'});
+				engine.on('ready', () => {
+						return resolve(engine);
+						});
+				});
 	}
 
 	static async waitForMovieToBeReady(engine: any, file: any) {
 		let setPieces = new Set();
-		engine.on('download', (piece: any) => {
-			setPieces.add(piece);
-			if (fs.existsSync('/back/films/' + file.path))
-				{
-					let size = fs.statSync('/back/films/' + file.path).size;
-					console.log(size);
+		let weWaitedEnough = false;
+		let weDontStartedToWait = true;
+		let sleep = (async (ms: number) => {return new Promise(resolve => setTimeout(resolve, ms))});
+		let letsWait = (async (callback: any) => { 
+				if (weDontStartedToWait) {
+				console.log("we started to wait");
+				weDontStartedToWait = false;  
+				await sleep(15000); weWaitedEnough = true
 				}
-				else
-					console.log(setPieces);
-		})
+				if (callback) 
+				{
+				console.log(callback);
+				callback(true);
+				}
+				});
+		let filePath = '/back/films/' + file.path;
+		let currentFileSize = (() => fs.statSync(filePath).size);
+		return new Promise((resolve, reject) =>  {
+				engine.on('download', (piece: any) => {
+						setPieces.add(piece);
+						letsWait(false);
+						if (weWaitedEnough && fs.existsSync('/back/films/' + file.path)) {
+						let pourcentage = (currentFileSize() / file.length) * 100;
+						if (pourcentage > 8) {
+						if (pourcentage > 50) {
+						weWaitedEnough = false;
+						letsWait(resolve);
+						}
+						else
+						resolve(true);
+						}
+						}
+						})
+				engine.on('idle', () => {
+						resolve(true);
+						})
+				});
 	}
 
 	static async streamFile(file: any, res: Response, extension: string, opt: any) {
 		const ext = extension.split(".")[1];
 		res.writeHead(206, {
-			'Content-Type': 'video/mp4',
-			'Content-Range': `bytes ${opt.start}-${opt.end}/${file.length}`,
-			'Content-Length': file.length,
-			'Accept-Ranges': 'bytes'
-		});
-		torrentClient.waitForMovieToBeReady(opt.engine, file);
-		/*
-			 try {
-			 let proc: any =  ffmpeg(file.path)
-			 .withVideoCodec('libx264')
-			 .withAspect('16:9')
-			 .on('start', function(commandLine) {
-			 console.log('Spawned Ffmpeg  with command: ' + commandLine);
-			 }).on('codecData', function(data) {
-			 console.log('Input is ' + data.audio + ' audio ' +
-			 'with ' + data.video + ' video');
-			 }).on('error', function(err, stdout, stderr) {
-			 console.log('Cannot process video: ' + err.message);
-			 })
-			 .on("data", function(err,ddd) {
-			 console.log("😊", err,ddd);
-			 });
-			 proc.pipe(res, {end: true});
-			 }
-			 catch (err) {
-			 console.error(err);
-			 }
-		 */
+				'Content-Type': 'video/mp4',
+				'Content-Range': `bytes ${opt.start}-${opt.end}/${file.length}`,
+				'Content-Length': file.length,
+				'Accept-Ranges': 'bytes'
+				});
+		let toStream = await torrentClient.waitForMovieToBeReady(opt.engine, file);
+	   	try {
+	   	let stream = fs.createReadStream("/back/films/" + file.path, {start: opt.start});
+	   	stream.pipe(res);
+	   	return;
+	   	}
+	   	catch (err) {
+	   		console.error(err);
+	   	}
 	}
 	static async convertAndStreamFile(file: any, res: Response, opt: any) {
 		let stream = file.createReadStream(opt);
