@@ -14,7 +14,7 @@ export default class subtitlesController{
         let imdb: string = req.query.imdbId;
 
         OpenSubtitles.search({
-            sublanguageid: 'eng, fre, chi',
+            sublanguageid: 'eng, fre',
 
             extensions: ['srt', 'vtt'],
             limit: 2,
@@ -28,9 +28,6 @@ export default class subtitlesController{
             }
             if (subtitles.fr != null){
                 await subtitlesServices.createSubTab(downSubTab, subtitles.fr);
-            }
-            if (subtitles.zh != null){
-                await subtitlesServices.createSubTab(downSubTab, subtitles.zh);
             }
             let whichSub: Array<string> | undefined = await subtitlesServices.downSub(downSubTab, imdb);
             res.send(whichSub);

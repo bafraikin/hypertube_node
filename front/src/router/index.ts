@@ -16,7 +16,7 @@ const router = new VueRouter({
 				meta: {layout: "layout"}
 		},
 		{
-			path: '/player/:idOMDB/:magnetLink',
+			path: '/player/:idOMDB/:magnetLink/:imdbCode',
 			name: 'player-film',
 			component: () => import('../views/Film-play.vue'),
 				meta: {layout: "layout"}

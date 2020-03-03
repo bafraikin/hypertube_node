@@ -48,17 +48,6 @@ export default class subtitlesServices {
                             countTab[1]++;
                         }
                         break;
-                    case 'zh':
-                        if (isValid === true && countTab[2] == 0){
-                            if (isVtt != null){
-                                path = "sub/" + fileId + "-chi.vtt";
-                            }
-                            else{
-                                path = "sub/" + fileId + "-chi.srt";
-                            }
-                            countTab[2]++;
-                        }
-                        break;
                 }
                 if (path != null) {
                     let isSave: string = await subtitlesServices.getFile(url, path);
@@ -86,7 +75,7 @@ export default class subtitlesServices {
                         .pipe(fs.createWriteStream(vttPath))
                     } 
                 });
-                pattern = /eng|fre|chi/;
+                pattern = /eng|fre/;
                 let lang: Array<string> | null = path.match(pattern);
                 if (lang != null){
                     return lang[0];
