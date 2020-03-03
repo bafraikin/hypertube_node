@@ -5,7 +5,11 @@ import {Response} from "express";
 import ffmpeg from 'fluent-ffmpeg'
 let torrentStream = require('torrent-stream');
 
-ffmpeg.setFfmpegPath(require('ffmpeg-static').path);
+
+const pathToFfmpeg = require('ffmpeg-static');
+
+
+//ffmpeg.setFfmpegPath(require('ffmpeg-static').path);
 
 export default class torrentClient {
 
@@ -161,6 +165,7 @@ export default class torrentClient {
 				'Accept-Ranges': 'bytes',
 				'Content-Length': chunksize,
 				'Content-Type': 'video/mp4',
+				Connection: 'keep-alive'
 			}
 			res.writeHead(206, head);
 			stream.pipe(res);
@@ -173,6 +178,37 @@ export default class torrentClient {
 
 static async convertAndStreamFile_seconde(file: any, res: Response, range: any) {
 	console.log("On stream avec consvertion");
+	console.log(pathToFfmpeg);
+
+	const stream = file.createReadStream();
+	stream.on('error', (err: any) => {
+		logger.info("erreur dans le stream ==>"+ err);
+	});
+
+  	res.writeHead(206, {
+    	'Content-Type': 'video/webm',
+    	Connection: 'keep-alive'
+  	})
+
+	const converter = ffmpeg()
+    .input(stream)
+    .videoCodec('libvpx')
+    .audioCodec('libvorbis')
+    .audioBitrate(128)
+    .videoBitrate(1024)
+    .duration(120 * 60)
+    .output(res)
+    .outputFormat('webm')
+
+	converter.on('error', (err: any) => {
+		logger.info("erreur de ffmpeg ==>"+ err);
+	});
+
+	converter.run()
+
+	return converter;
+
+
 }
 
 

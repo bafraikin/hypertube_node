@@ -24,15 +24,28 @@ export default class playerController {
 				console.log("Extension  ==>", extension);
 
 				if (extensionsThatWeWantToStore.includes(extension)){
-					torrentClient.streamFile_seconde(file, res, extension, range);
+					//torrentClient.streamFile_seconde(file, res, extension, range);
+					// res.on('close', () => {
+                		// engine.destroy(() => {})
+              		// })
+					let converter = torrentClient.convertAndStreamFile_seconde(file, res, range);
+					//res.on('close', () => {
+                		//converter.kill();
+						console.log("On ferme ***********************************");
+                		//engine.destroy(() => {})
+              			//})
 				}
-					else if (extensionsThatWeDontWantToStore.includes(extension)){
-						torrentClient.convertAndStreamFile_seconde(file, res, range);
-					}
-					else{
-						console.log("On supprime");
-						file.deselect();
-					}
+				else if (extensionsThatWeDontWantToStore.includes(extension)){
+					let converter = torrentClient.convertAndStreamFile_seconde(file, res, range);
+					//res.on('close', () => {
+                		//converter.kill();
+                	//engine.destroy(() => {})
+              		//})
+				}
+				else{
+					console.log("On supprime");
+					file.deselect();
+				}
 			});
 		} catch (err) {
 			console.error(err);
