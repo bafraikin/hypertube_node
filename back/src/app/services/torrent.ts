@@ -1,7 +1,11 @@
 import axios from "axios"
+import logger from '@settings/logger';
 import {Response} from "express";
-import ffmpeg, {FfprobeStream} from 'fluent-ffmpeg'; 
+//import ffmpeg, {FfprobeStream} from 'fluent-ffmpeg'; 
+import ffmpeg from 'fluent-ffmpeg'
 let torrentStream = require('torrent-stream');
+
+ffmpeg.setFfmpegPath(require('ffmpeg-static').path);
 
 export default class torrentClient {
 
@@ -136,40 +140,83 @@ export default class torrentClient {
 		}) ;
 	}
 
-	static async streamFile(file: any, res: Response, extension: string, opt: any) {
-		const ext = extension.split(".")[1];
-		res.writeHead(206, {
-			'Content-Type': 'video/mp4',
-			'Content-Range': `bytes ${opt.start}-${opt.end}/${file.length}`,
-			'Content-Length': file.length,
-			'Accept-Ranges': 'bytes'
-		});
-		let stream = file.createReadStream(opt);
-		try {
-			let proc: any =  ffmpeg(stream)
-			.withVideoCodec('libx264')
-			.withAspect('16:9')
-			.audioCodec('aac')
-			.on('start', function(commandLine) {
-				console.log('Spawned Ffmpeg with command: ' + commandLine);
-			}).on('codecData', function(data) {
-				console.log('Input is ' + data.audio + ' audio ' +
-										'with ' + data.video + ' video');
-			}).on('error', function(err, stdout, stderr) {
-				console.log('Cannot process video: ' + err.message);
-			})
-			.on("data", function(err,ddd) {
-				console.log("😊", err,ddd);
-			});
-			proc.pipe(res, {end: true});
-		}
-		catch (err) {
-			console.error(err);
-		}
-	}
-	static async convertAndStreamFile(file: any, res: Response, opt: any) {
-		let stream = file.createReadStream(opt);
-		res.set('Content-Type', 'video/webm');
 
+	static streamFile_seconde(file: any, res: Response, extension: string, range: any) {
+		console.log("On stream sans consvertion");
+
+		const parts = range.replace(/bytes=/, "").split("-");
+		const start = parseInt(parts[0], 10);
+		let opt = { start: start, end: file.length };
+		let stream = file.createReadStream(opt);
+		const fileSize = file.length;
+		const end = parts[1]
+			? parseInt(parts[1], 10)
+			: fileSize-1
+			const chunksize = (end-start)+1
+			logger.info("le start ==>"+ start);
+			logger.info("le end ==>"+ end);
+			logger.info("le file size"+ fileSize);
+			const head = {
+				'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+				'Accept-Ranges': 'bytes',
+				'Content-Length': chunksize,
+				'Content-Type': 'video/mp4',
+			}
+			res.writeHead(206, head);
+			stream.pipe(res);
+			stream.on('error', function (err: any) {
+				console.log("erre in stream ==>" + err);
+				res.status(416).send("error in stream");
+			})
+}
+
+
+static async convertAndStreamFile_seconde(file: any, res: Response, range: any) {
+	console.log("On stream avec consvertion");
+}
+
+
+static async streamFile(file: any, res: Response, extension: string, opt: any) {
+	const ext = extension.split(".")[1];
+	res.writeHead(206, {
+		'Content-Type': 'video/mp4',
+		'Content-Range': `bytes ${opt.start}-${opt.end}/${file.length}`,
+		'Content-Length': file.length,
+		'Accept-Ranges': 'bytes'
+	});
+	let stream = file.createReadStream(opt);
+	try {
+		let proc: any =  ffmpeg(stream)
+		.withVideoCodec('libx264')
+		.withAspect('16:9')
+		.audioCodec('aac')
+		.on('start', function(commandLine) {
+			console.log('Spawned Ffmpeg with command: ' + commandLine);
+		}).on('codecData', function(data) {
+			console.log('Input is ' + data.audio + ' audio ' +
+						'with ' + data.video + ' video');
+		}).on('error', function(err, stdout, stderr) {
+			console.log('Cannot process video: ' + err.message);
+		})
+		.on("data", function(err,ddd) {
+			console.log("😊", err,ddd);
+		});
+		proc.pipe(res, {end: true});
 	}
+	catch (err) {
+		console.error(err);
+	}
+}
+
+static async convertAndStreamFile(file: any, res: Response, opt: any) {
+	let stream = file.createReadStream(opt);
+	res.set('Content-Type', 'video/webm');
+
+}
+
+
+
+
+
+
 }

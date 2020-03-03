@@ -15,18 +15,24 @@ export default class playerController {
 			const range = req.headers.range;
 			if (magnetLink == undefined || range == undefined)
 				throw "error in stream parameter";
+
 			const parts = range.replace(/bytes=/, "").split("-");
 			const start = parseInt(parts[0], 10);
 			let engine: any = await torrentClient.downloadMovie(start, magnetLink);
 			engine.files.forEach((file: any) => {
 				const extension = path.extname(file.name);
-				const opt = { start: start, end: file.length };
-				if (extensionsThatWeWantToStore.includes(extension))
-					torrentClient.streamFile(file, res, extension, opt);
-				else if (extensionsThatWeDontWantToStore.includes(extension))
-					torrentClient.convertAndStreamFile(file, res, opt);
-				else
-					file.deselect();
+				console.log("Extension  ==>", extension);
+
+				if (extensionsThatWeWantToStore.includes(extension)){
+					torrentClient.streamFile_seconde(file, res, extension, range);
+				}
+					else if (extensionsThatWeDontWantToStore.includes(extension)){
+						torrentClient.convertAndStreamFile_seconde(file, res, range);
+					}
+					else{
+						console.log("On supprime");
+						file.deselect();
+					}
 			});
 		} catch (err) {
 			console.error(err);
