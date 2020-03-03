@@ -147,8 +147,8 @@ export default class torrentClient {
 					i++;
 				else
 					{
-					console.log("number of pieces we have", i, "number of piece we need", min);
-					return (false)
+						console.log("number of pieces we have", i, "number of piece we need", min);
+						return (false)
 					}
 			}
 			return (true)
@@ -162,11 +162,12 @@ export default class torrentClient {
 					let numberPiecesToGetToStart = numberPiecesToGetTotal * 0.08;
 					if (weHaveTheLeastNumberOfPieces(numberPiecesToGetToStart)) {
 						weAlreadyReleaseTheKraken = true;
-							resolve(true);
+						resolve(true);
 					}
 				}	
 			})
 			engine.on('idle', () => {
+				console.log("it's precoce time");
 				resolve(true);
 			})
 		});

@@ -2,7 +2,7 @@
 	<div id="lala">
 		<div v-if="showFilm">
 			<video  ref="myVid" style="width: 100%;"  id="videoPlayer" controls  crossorigin="use-credentials">
-				<source v-bind:src="filmPath" type="video/mp4">
+				<source v-bind:src="filmPath" type="video/mp4" crossorigin="use-credentials">
 			</video>
 		</div>
 	</div>
@@ -26,7 +26,7 @@ export default {
 		},
 		downloadMovies(magnetLink){
 			magnetLink = encodeURIComponent(magnetLink);
-			this.filmPath = baseURL +  "/😂/player/" + magnetLink;
+			this.filmPath = baseURL +  "/player/" + magnetLink;
 			this.showFilm = true;
 		},
 		getSubtitles(code){
