@@ -1,4 +1,5 @@
 import axios from "axios"
+var fs = require('fs');
 import logger from '@settings/logger';
 import {Response} from "express";
 //import ffmpeg, {FfprobeStream} from 'fluent-ffmpeg'; 
@@ -151,7 +152,13 @@ export default class torrentClient {
 		const parts = range.replace(/bytes=/, "").split("-");
 		const start = parseInt(parts[0], 10);
 		let opt = { start: start, end: file.length };
-		let stream = file.createReadStream(opt);
+		//let stream = file.createReadStream(opt);
+
+		console.log("Le fichier" + file.path);
+		let stream = fs.createReadStream("/back/films/" + file.path);
+		console.log(stream);
+
+
 		const fileSize = file.length;
 		const end = parts[1]
 			? parseInt(parts[1], 10)
