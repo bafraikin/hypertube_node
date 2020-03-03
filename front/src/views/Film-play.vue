@@ -54,7 +54,6 @@ export default {
 			})
 			.catch(error => {
 				console.log("Error subtitles");
-				console.log(error);
 			})
 		},
 		addTrack(lang, label, srclang, code){

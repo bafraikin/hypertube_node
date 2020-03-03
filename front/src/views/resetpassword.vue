@@ -44,7 +44,6 @@ export default {
         	setTimeout(function(){ window.location= process.env.VUE_APP_frontURL ;}, 1000);
         })
         .catch(err => {
-            console.log(err.response);
             bus.$emit('alert', {type: 'error', code: "OLD_TOKEN"});
           });
     }

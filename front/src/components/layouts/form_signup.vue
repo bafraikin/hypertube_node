@@ -129,7 +129,7 @@ enctype="multipart/form-data"
         if (value.length === 0){
           return this.$t('pwdrequired');
         }
-        else if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,255}$/.test(value)){
+        else if (!(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*.{8,255}$/.test(value))){
           return this.$t('pwdrules');
         }
         return true;
@@ -138,7 +138,7 @@ enctype="multipart/form-data"
         if (value.length === 0){
           return this.$t('emailrequired');
         }
-        else if (/.+@.+\..+/.test(value)){
+        else if (!(/.+@.+\..+/.test(value))){
           return this.$t('emailvalid');
         }
         return true;
@@ -159,7 +159,7 @@ enctype="multipart/form-data"
         else if (value.size <= 0){
           return this.$t('fileempty');
         }
-        else if (value.type != 'image/png' || value.type != 'image/jpeg'){
+        else if (value.type != 'image/png' && value.type != 'image/jpeg'){
           return this.$t('wrongfile');
         }
       },

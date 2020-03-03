@@ -96,7 +96,7 @@ export default {
         if (value.length === 0){
           return this.$t('fieldrequired');
         }
-        else if (value.length > 0 && value.length < 251){
+        else if (value.length == 0 && value.length >= 251){
           return this.$t('namerules');
         }
         return true;
@@ -111,7 +111,7 @@ export default {
         else if (value.size <= 0){
           return this.$t('fileempty');
         }
-        else if (value.type != 'image/png' || value.type != 'image/jpeg'){
+        else if (value.type != 'image/png' && value.type != 'image/jpeg'){
           return this.$t('wrongfile');
         }
     },

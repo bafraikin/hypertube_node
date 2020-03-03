@@ -67,7 +67,7 @@ export default {
 				.then(response => {
 					this.movie = response.data;
 					console.log(this.movie);
-				})
+        }).catch(err => { console.log("error on movie detail request")})
 		}
 	},
 	mounted(){
