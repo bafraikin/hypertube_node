@@ -1,8 +1,10 @@
 import axios from "axios"
 import fs from 'fs';
 import {Response} from "express";
-import ffmpeg, {FfprobeStream} from 'fluent-ffmpeg'; 
+import ffmpeg from 'fluent-ffmpeg'; 
 let torrentStream = require('torrent-stream');
+const pathToFfmpeg = require('ffmpeg-static');
+import logger from '@settings/logger';
 
 export default class torrentClient {
 
@@ -139,66 +141,98 @@ export default class torrentClient {
 
 	static async waitForMovieToBeReady(engine: any, file: any) {
 		let setPieces = new Set();
+
 		let weWaitedEnough = false;
 		let weDontStartedToWait = true;
 		let sleep = (async (ms: number) => {return new Promise(resolve => setTimeout(resolve, ms))});
 		let letsWait = (async (callback: any) => { 
-				if (weDontStartedToWait) {
+			if (weDontStartedToWait) {
 				console.log("we started to wait");
 				weDontStartedToWait = false;  
 				await sleep(15000); weWaitedEnough = true
-				}
-				if (callback) 
+			}
+			if (callback) 
 				{
-				console.log(callback);
-				callback(true);
+					console.log(callback);
+					callback(true);
 				}
-				});
+		});
 		let filePath = '/back/films/' + file.path;
 		let currentFileSize = (() => fs.statSync(filePath).size);
 		return new Promise((resolve, reject) =>  {
-				engine.on('download', (piece: any) => {
-						setPieces.add(piece);
-						letsWait(false);
-						if (weWaitedEnough && fs.existsSync('/back/films/' + file.path)) {
-						let pourcentage = (currentFileSize() / file.length) * 100;
-						if (pourcentage > 8) {
+			engine.on('download', (piece: any) => {
+				setPieces.add(piece);
+				letsWait(false);
+				if (weWaitedEnough && fs.existsSync('/back/films/' + file.path)) {
+					let pourcentage = (currentFileSize() / file.length) * 100;
+					console.log(pourcentage);
+					if (pourcentage > 8) {
 						if (pourcentage > 50) {
-						weWaitedEnough = false;
-						letsWait(resolve);
+							weWaitedEnough = false;
+							letsWait(resolve);
 						}
 						else
-						resolve(true);
-						}
-						}
-						})
-				engine.on('idle', () => {
-						resolve(true);
-						})
-				});
+							resolve(true);
+					}
+				}
+			})
+			engine.on('idle', () => {
+				resolve(true);
+			})
+		});
 	}
 
 	static async streamFile(file: any, res: Response, extension: string, opt: any) {
 		const ext = extension.split(".")[1];
 		res.writeHead(206, {
-				'Content-Type': 'video/mp4',
-				'Content-Range': `bytes ${opt.start}-${opt.end}/${file.length}`,
-				'Content-Length': file.length,
-				'Accept-Ranges': 'bytes'
-				});
+			'Content-Type': 'video/mp4',
+			'Content-Range': `bytes ${opt.start}-${opt.end}/${file.length}`,
+			'Content-Length': file.length,
+			'Accept-Ranges': 'bytes'
+		});
 		let toStream = await torrentClient.waitForMovieToBeReady(opt.engine, file);
 	   	try {
-	   	let stream = fs.createReadStream("/back/films/" + file.path, {start: opt.start});
-	   	stream.pipe(res);
-	   	return;
+	   		let stream = fs.createReadStream("/back/films/" + file.path, {start: opt.start});
+	   		stream.pipe(res);
+	   		return;
 	   	}
 	   	catch (err) {
 	   		console.error(err);
 	   	}
 	}
-	static async convertAndStreamFile(file: any, res: Response, opt: any) {
-		let stream = file.createReadStream(opt);
-		res.set('Content-Type', 'video/webm');
 
+
+	static async convertAndStreamFile(file: any, res: Response, opt: any) {
+
+
+		let toStream = await torrentClient.waitForMovieToBeReady(opt.engine, file);
+		let stream = fs.createReadStream("/back/films/" + file.path, {start: opt.start});
+
+		res.writeHead(206, {
+			'Content-Type': 'video/webm',
+			Connection: 'keep-alive'
+		})
+
+		const converter = ffmpeg()
+		.setFfmpegPath(pathToFfmpeg);
+		.input(stream)
+		.videoCodec('libvpx')
+		.audioCodec('libvorbis')
+		.audioBitrate(128)
+		.videoBitrate(1024)
+		.duration(120 * 60)
+		.output(res)
+		.outputFormat('webm')
+
+
+		converter.on('progress', function(progress) {
+			console.log('Processing: ' + progress.percent + '% done');
+		})
+		converter.on('error', (err: any) => {
+			logger.info("erreur de ffmpeg ==>"+ err);
+		});
+		converter.run()
+
+		//return converter;
 	}
 }

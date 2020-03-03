@@ -27,6 +27,7 @@ export default class playerController {
 				} 
 				else if (extensionsThatWeDontWantToStore.includes(extension)) {
 					file.select();
+					console.log("On va convertire !!!!!!!!!!!!!!!!!!!!1");
 					torrentClient.convertAndStreamFile(file, res, opt);
 				} 
 				else
