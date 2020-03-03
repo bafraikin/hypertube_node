@@ -20,11 +20,15 @@ export default class playerController {
 			let engine: any = await torrentClient.downloadMovie(start, magnetLink);
 			engine.files.forEach((file: any) => {
 				const extension = path.extname(file.name);
-				const opt = { start: start, end: file.length };
-				if (extensionsThatWeWantToStore.includes(extension))
+				const opt = { start: start, end: file.length, engine};
+				if (extensionsThatWeWantToStore.includes(extension)) {
+					file.select();
 					torrentClient.streamFile(file, res, extension, opt);
-				else if (extensionsThatWeDontWantToStore.includes(extension))
+				} 
+				else if (extensionsThatWeDontWantToStore.includes(extension)) {
+					file.select();
 					torrentClient.convertAndStreamFile(file, res, opt);
+				} 
 				else
 					file.deselect();
 			});

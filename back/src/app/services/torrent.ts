@@ -1,4 +1,5 @@
 import axios from "axios"
+import fs from 'fs';
 import {Response} from "express";
 import ffmpeg, {FfprobeStream} from 'fluent-ffmpeg'; 
 let torrentStream = require('torrent-stream');
@@ -69,7 +70,7 @@ export default class torrentClient {
 		}
 	}
 
-	static getTorrentList(response: any){
+	static getTorrentList(response: any) {
 		if (response == undefined)
 			return undefined;
 		if (response.data == undefined)
@@ -127,13 +128,27 @@ export default class torrentClient {
 		}
 	}
 
-	static async downloadMovie(start: any, magnetLink: any){
+	static async downloadMovie(start: any, magnetLink: any) {
 		return new Promise((resolve, reject) => {
 			let engine = torrentStream(magnetLink, {path: '/back/films'});
 			engine.on('ready', () => {
 				return resolve(engine);
 			});
-		}) ;
+		});
+	}
+
+	static async waitForMovieToBeReady(engine: any, file: any) {
+		let setPieces = new Set();
+		engine.on('download', (piece: any) => {
+			setPieces.add(piece);
+			if (fs.existsSync('/back/films/' + file.path))
+				{
+					let size = fs.statSync('/back/films/' + file.path).size;
+					console.log(size);
+				}
+				else
+					console.log(setPieces);
+		})
 	}
 
 	static async streamFile(file: any, res: Response, extension: string, opt: any) {
@@ -144,28 +159,29 @@ export default class torrentClient {
 			'Content-Length': file.length,
 			'Accept-Ranges': 'bytes'
 		});
-		let stream = file.createReadStream(opt);
-		try {
-			let proc: any =  ffmpeg(stream)
-			.withVideoCodec('libx264')
-			.withAspect('16:9')
-			.audioCodec('aac')
-			.on('start', function(commandLine) {
-				console.log('Spawned Ffmpeg with command: ' + commandLine);
-			}).on('codecData', function(data) {
-				console.log('Input is ' + data.audio + ' audio ' +
-										'with ' + data.video + ' video');
-			}).on('error', function(err, stdout, stderr) {
-				console.log('Cannot process video: ' + err.message);
-			})
-			.on("data", function(err,ddd) {
-				console.log("😊", err,ddd);
-			});
-			proc.pipe(res, {end: true});
-		}
-		catch (err) {
-			console.error(err);
-		}
+		torrentClient.waitForMovieToBeReady(opt.engine, file);
+		/*
+			 try {
+			 let proc: any =  ffmpeg(file.path)
+			 .withVideoCodec('libx264')
+			 .withAspect('16:9')
+			 .on('start', function(commandLine) {
+			 console.log('Spawned Ffmpeg  with command: ' + commandLine);
+			 }).on('codecData', function(data) {
+			 console.log('Input is ' + data.audio + ' audio ' +
+			 'with ' + data.video + ' video');
+			 }).on('error', function(err, stdout, stderr) {
+			 console.log('Cannot process video: ' + err.message);
+			 })
+			 .on("data", function(err,ddd) {
+			 console.log("😊", err,ddd);
+			 });
+			 proc.pipe(res, {end: true});
+			 }
+			 catch (err) {
+			 console.error(err);
+			 }
+		 */
 	}
 	static async convertAndStreamFile(file: any, res: Response, opt: any) {
 		let stream = file.createReadStream(opt);
