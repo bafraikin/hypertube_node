@@ -16,17 +16,17 @@ export default class torrentClient {
 			let list = this.getTorrentList(response);
 			if (list != undefined) {
 				list.forEach((torrent: any) => {
-						let entry = {
+					let entry = {
 						'provider': 'YTS',
 						'magnetLink': torrentClient.buildMagnetLink(torrent.hash, torrent.url),
 						'quality': torrent.quality
-						};
-						if (entry.quality != "3D"){
+					};
+					if (entry.quality != "3D"){
 						if (torrents == undefined)
-						torrents = [];
+							torrents = [];
 						torrents.push(entry);
-						}
-						});
+					}
+				});
 			}
 			return (torrents);
 		} catch (err) {
@@ -130,75 +130,72 @@ export default class torrentClient {
 
 	static async downloadMovie(start: any, magnetLink: any) {
 		return new Promise((resolve, reject) => {
-				let engine = torrentStream(magnetLink, {path: '/back/films'});
-				engine.on('ready', () => {
-						return resolve(engine);
-						});
-				});
+			let engine = torrentStream(magnetLink, {path: '/back/films'});
+			engine.on('ready', () => {
+				return resolve(engine);
+			});
+		});
 	}
 
 	static async waitForMovieToBeReady(engine: any, file: any) {
 		let setPieces = new Set();
-		let weWaitedEnough = false;
-		let weDontStartedToWait = true;
-		let sleep = (async (ms: number) => {return new Promise(resolve => setTimeout(resolve, ms))});
-		let letsWait = (async (callback: any) => { 
-				if (weDontStartedToWait) {
-				console.log("we started to wait");
-				weDontStartedToWait = false;  
-				await sleep(15000); weWaitedEnough = true
-				}
-				if (callback) 
-				{
-				console.log(callback);
-				callback(true);
-				}
-				});
+		let weAlreadyReleaseTheKraken = false;
+		const weHaveTheLeastNumberOfPieces = (min: number)  => {
+			let i = 0;
+			while (i < min) {
+				if (setPieces.has(i))
+					i++;
+				else
+					{
+					console.log("number of pieces we have", i, "number of piece we need", min);
+					return (false)
+					}
+			}
+			return (true)
+		}
 		let filePath = '/back/films/' + file.path;
-		let currentFileSize = (() => fs.statSync(filePath).size);
 		return new Promise((resolve, reject) =>  {
-				engine.on('download', (piece: any) => {
-						setPieces.add(piece);
-						letsWait(false);
-						if (weWaitedEnough && fs.existsSync('/back/films/' + file.path)) {
-						let pourcentage = (currentFileSize() / file.length) * 100;
-						if (pourcentage > 8) {
-						if (pourcentage > 50) {
-						weWaitedEnough = false;
-						letsWait(resolve);
-						}
-						else
-						resolve(true);
-						}
-						}
-						})
-				engine.on('idle', () => {
-						resolve(true);
-						})
-				});
+			engine.on('download', (piece: any) => {
+				setPieces.add(piece);
+				if (!weAlreadyReleaseTheKraken && fs.existsSync('/back/films/' + file.path)) {
+					let numberPiecesToGetTotal = (file.length * setPieces.size) / engine.swarm.downloaded;
+					let numberPiecesToGetToStart = numberPiecesToGetTotal * 0.08;
+					if (weHaveTheLeastNumberOfPieces(numberPiecesToGetToStart)) {
+						weAlreadyReleaseTheKraken = true;
+							resolve(true);
+					}
+				}	
+			})
+			engine.on('idle', () => {
+				resolve(true);
+			})
+		});
 	}
 
 	static async streamFile(file: any, res: Response, extension: string, opt: any) {
-		const ext = extension.split(".")[1];
 		res.writeHead(206, {
-				'Content-Type': 'video/mp4',
-				'Content-Range': `bytes ${opt.start}-${opt.end}/${file.length}`,
-				'Content-Length': file.length,
-				'Accept-Ranges': 'bytes'
-				});
+			'Content-Type': 'video/mp4',
+			'Content-Range': `bytes ${opt.start}-${opt.end}/${file.length}`,
+			'Content-Length': file.length,
+			'Accept-Ranges': 'bytes'
+		});
 		let toStream = await torrentClient.waitForMovieToBeReady(opt.engine, file);
-	   	try {
-	   	let stream = fs.createReadStream("/back/films/" + file.path, {start: opt.start});
-	   	stream.pipe(res);
-	   	return;
-	   	}
-	   	catch (err) {
-	   		console.error(err);
-	   	}
+		try {
+			let stream = fs.createReadStream("/back/films/" + file.path, {start: opt.start});
+			stream.pipe(res);
+			return;
+		}
+		catch (err) {
+			console.error(err);
+		}
 	}
 	static async convertAndStreamFile(file: any, res: Response, opt: any) {
-		let stream = file.createReadStream(opt);
-		res.set('Content-Type', 'video/webm');
-
+		res.writeHead(206, {
+			'Content-Type': 'video/mp4',
+			'Content-Range': `bytes ${opt.start}-${opt.end}/${file.length}`,
+			'Content-Length': file.length,
+			'Accept-Ranges': 'bytes'
+		});
+		let toStream = await torrentClient.waitForMovieToBeReady(opt.engine, file);
 	}
 }

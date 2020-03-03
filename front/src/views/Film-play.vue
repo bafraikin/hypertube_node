@@ -1,9 +1,8 @@
 <template>
 	<div id="lala">
-
 		<div v-if="showFilm">
-			<video  ref="myVid" style="width: 100%;"  id="videoPlayer" controls  crossorigin="use-credentials" >
-				<source v-bind:src="filmPath" type="video/mp4"   >
+			<video  ref="myVid" style="width: 100%;"  id="videoPlayer" controls  crossorigin="use-credentials">
+				<source v-bind:src="filmPath" type="video/mp4">
 			</video>
 		</div>
 	</div>

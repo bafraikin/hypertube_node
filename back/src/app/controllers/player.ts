@@ -4,8 +4,8 @@ import { Movie } from '@app/models/movies';
 import logger from '@settings/logger';
 import path from "path";
 
-const extensionsThatWeWantToStore = [".mp4", ".webm"];
-const extensionsThatWeDontWantToStore = [".avi", ".divx", ".flv", ".mkv", ".mpg", ".mp2", ".mpeg", ".mpe", ".mpv", ".mov", ".ogg", ".swf", ".qt", ".wmv"];
+const extensionsThatWeWantToStore = [".mp4"];
+const extensionsThatWeDontWantToStore = [".webm", ".avi", ".divx", ".flv", ".mkv", ".mpg", ".mp2", ".mpeg", ".mpe", ".mpv", ".mov", ".ogg", ".swf", ".qt", ".wmv"];
 
 export default class playerController {
 
@@ -20,8 +20,9 @@ export default class playerController {
 			let engine: any = await torrentClient.downloadMovie(start, magnetLink);
 			engine.files.forEach((file: any) => {
 				const extension = path.extname(file.name);
-				const opt = { start: start, end: file.length, engine};
+				const opt = {start: start, end: file.length, engine};
 				if (extensionsThatWeWantToStore.includes(extension)) {
+					console.log(file.name);
 					file.select();
 					torrentClient.streamFile(file, res, extension, opt);
 				} 
@@ -33,8 +34,7 @@ export default class playerController {
 					file.deselect();
 			});
 		} catch (err) {
-			console.error(err);
-			res.status(416).send("error");
+			res.status(418).send("I'm now a teapot");
 		}
 	}
 }
