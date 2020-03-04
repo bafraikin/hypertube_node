@@ -3,6 +3,7 @@ import torrentClient from '@app/services/torrent'
 import { Movie } from '@app/models/movies';
 import logger from '@settings/logger';
 import path from "path";
+import fs from "fs";
 
 const extensionsThatWeWantToStore = [".mp4"];
 const extensionsThatWeDontWantToStore = [".webm", ".avi", ".divx", ".flv", ".mkv", ".mpg", ".mp2", ".mpeg", ".mpe", ".mpv", ".mov", ".ogg", ".swf", ".qt", ".wmv"];
@@ -20,18 +21,26 @@ export default class playerController {
 			let engine: any = await torrentClient.downloadMovie(start, magnetLink);
 			engine.files.forEach((file: any) => {
 				const extension = path.extname(file.name);
-				const opt = {start: start, end: file.length, engine};
-				if (extensionsThatWeWantToStore.includes(extension)) {
-					console.log(file.name);
-					file.select();
-					torrentClient.streamFile(file, res, extension, opt);
-				} 
-				else if (extensionsThatWeDontWantToStore.includes(extension)) {
-					file.select();
-					torrentClient.convertAndStreamFile(file, res, opt);
-				} 
-				else
-					file.deselect();
+				const opt = {start: start, end: file.length, engine, wait: true};
+				const pathFile = "/back/films/" + file.path;
+				if (fs.existsSync(pathFile))
+					{
+						file.deselect();
+						opt.wait = false;
+						if (extensionsThatWeWantToStore.includes(extension))
+							torrentClient.streamFile(file, res,  opt); 
+						else
+							torrentClient.convertAndStreamFile(file, res, opt);
+					}
+					else if ([...extensionsThatWeDontWantToStore, ...extensionsThatWeWantToStore].includes(extension)) {
+						file.select();
+						if (extensionsThatWeWantToStore.includes(extension))
+							torrentClient.streamFile(file, res,  opt); 
+						else
+							torrentClient.convertAndStreamFile(file, res, opt);
+					} 
+					else
+						file.deselect();
 			});
 		} catch (err) {
 			res.status(418).send("I'm now a teapot");

@@ -132,8 +132,19 @@ export default class torrentClient {
 		return new Promise((resolve, reject) => {
 			let engine = torrentStream(magnetLink, {path: '/back/films'});
 			engine.on('ready', () => {
-				return resolve(engine);
+				console.log("ready event");
+				resolve(engine);
 			});
+			engine.on('upload', (pieceIndex, offset, length) => {
+				console.log("i'm seeding", {pieceIndex, offset, length});
+			});
+			engine.on('torrent', () => {
+				console.log("torrent event");
+			});
+			engine.on('idle', () => {
+				console.log("idle event");
+			});
+
 		});
 	}
 
@@ -174,14 +185,15 @@ export default class torrentClient {
 		});
 	}
 
-	static async streamFile(file: any, res: Response, extension: string, opt: any) {
+	static async streamFile(file: any, res: Response, opt: any) {
 		res.writeHead(206, {
 			'Content-Type': 'video/mp4',
 			'Content-Range': `bytes ${opt.start}-${opt.end}/${file.length}`,
 			'Content-Length': file.length,
 			'Accept-Ranges': 'bytes'
 		});
-		let toStream = await torrentClient.waitForMovieToBeReady(opt.engine, file);
+		if (opt.wait)
+			await torrentClient.waitForMovieToBeReady(opt.engine, file);
 		try {
 			let stream = fs.createReadStream("/back/films/" + file.path, {start: opt.start});
 			stream.pipe(res);
