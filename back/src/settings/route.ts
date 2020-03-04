@@ -54,7 +54,7 @@ export default function setRoute(connection: Connection, app: Express) {
 	userAuthenticated.get('/movie-detail', controller.movies.getMovieDetail);
 	userAuthenticated.get('/movie-casting', controller.movies.getMovieCasting);
 	// /*PLAYER*/
-	app.get('/player/:magnetLink', controller.player.stream);
+	userAuthenticated.get('/player/:magnetLink', controller.player.stream);
 	// /*WATCH*/
 	userAuthenticated.get('/watch', controller.watch.getWatch);
 	userAuthenticated.post('/watch', controller.watch.postWatch);

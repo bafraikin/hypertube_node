@@ -135,7 +135,7 @@ export default class torrentClient {
 				console.log("ready event");
 				resolve(engine);
 			});
-			engine.on('upload', (pieceIndex, offset, length) => {
+			engine.on('upload', (pieceIndex: any, offset: any, length: any) => {
 				console.log("i'm seeding", {pieceIndex, offset, length});
 			});
 			engine.on('torrent', () => {
@@ -164,7 +164,6 @@ export default class torrentClient {
 			}
 			return (true)
 		}
-		let filePath = '/back/films/' + file.path;
 		return new Promise((resolve, reject) =>  {
 			engine.on('download', (piece: any) => {
 				setPieces.add(piece);
@@ -186,23 +185,26 @@ export default class torrentClient {
 	}
 
 	static async streamFile(file: any, res: Response, opt: any) {
-		res.writeHead(206, {
-			'Content-Type': 'video/mp4',
-			'Content-Range': `bytes ${opt.start}-${opt.end}/${file.length}`,
-			'Content-Length': file.length,
-			'Accept-Ranges': 'bytes'
-		});
 		if (opt.wait)
 			await torrentClient.waitForMovieToBeReady(opt.engine, file);
+		let filePath = "/back/films/" + file.path;
 		try {
-			let stream = fs.createReadStream("/back/films/" + file.path, {start: opt.start});
-			stream.pipe(res);
+			console.log("coucou on va stream");
+			res.writeHead(206, {
+				'Content-Type': 'video/mp4',
+				'Content-Range': `bytes ${opt.start}-${opt.end}/${file.length}`,
+				'Content-Length': file.length,
+				'Accept-Ranges': 'bytes'
+			});
+			let movieStream = fs.createReadStream(filePath, {start: opt.start});
+			movieStream.pipe(res);
 			return;
 		}
 		catch (err) {
 			console.error(err);
 		}
 	}
+
 	static async convertAndStreamFile(file: any, res: Response, opt: any) {
 		res.writeHead(206, {
 			'Content-Type': 'video/mp4',

@@ -13,17 +13,14 @@ export default class playerController {
 	static async stream(req: Request, res: Response) {
 		try {
 			let magnetLink = req.params.magnetLink;
-			const range = req.headers.range;
-			if (magnetLink == undefined || range == undefined)
+			if (magnetLink == undefined)
 				throw "error in stream parameter";
-			const parts = range.replace(/bytes=/, "").split("-");
-			const start = parseInt(parts[0], 10);
-			let engine: any = await torrentClient.downloadMovie(start, magnetLink);
+			let engine: any = await torrentClient.downloadMovie(0, magnetLink);
 			engine.files.forEach((file: any) => {
 				const extension = path.extname(file.name);
-				const opt = {start: start, end: file.length, engine, wait: true};
-				const pathFile = "/back/films/" + file.path;
-				if (fs.existsSync(pathFile))
+				const opt = {start: 0, end: file.length, engine, wait: true};
+				const pathFile = "/back/films/"  + file.path;
+				if (fs.existsSync(pathFile) && [...extensionsThatWeDontWantToStore, ...extensionsThatWeWantToStore].includes(extension))
 					{
 						file.deselect();
 						opt.wait = false;
