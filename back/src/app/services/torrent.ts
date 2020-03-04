@@ -1,8 +1,11 @@
 import axios from "axios"
 import fs from 'fs';
 import {Response} from "express";
-import ffmpeg, {FfprobeStream} from 'fluent-ffmpeg'; 
+import ffmpeg, {FfprobeStream} from 'fluent-ffmpeg';
+const pathToFfmpeg = require('ffmpeg-static');
 let torrentStream = require('torrent-stream');
+ffmpeg.setFfmpegPath(pathToFfmpeg);
+
 
 export default class torrentClient {
 
@@ -135,7 +138,7 @@ export default class torrentClient {
 				console.log("ready event");
 				resolve(engine);
 			});
-			engine.on('upload', (pieceIndex, offset, length) => {
+			engine.on('upload', (pieceIndex: number , offset: number , length: number) => {
 				console.log("i'm seeding", {pieceIndex, offset, length});
 			});
 			engine.on('torrent', () => {
@@ -164,7 +167,6 @@ export default class torrentClient {
 			}
 			return (true)
 		}
-		let filePath = '/back/films/' + file.path;
 		return new Promise((resolve, reject) =>  {
 			engine.on('download', (piece: any) => {
 				setPieces.add(piece);
@@ -210,6 +212,23 @@ export default class torrentClient {
 			'Content-Length': file.length,
 			'Accept-Ranges': 'bytes'
 		});
-		let toStream = await torrentClient.waitForMovieToBeReady(opt.engine, file);
+		let toStream: any = await torrentClient.waitForMovieToBeReady(opt.engine, file);
+		const converter = ffmpeg()
+		.input(fs.createReadStream("/back/films/" + file.path))
+		.videoCodec('libvpx')
+		.audioCodec('libvorbis')
+		.audioBitrate(128)
+		.videoBitrate(1024)
+		.duration(120 * 60)
+		.output(res)
+		.outputFormat('webm')
+
+		converter.on('progress', function(progress) {
+			console.log('Processing: ' + progress.percent + '% done');
+		})
+		converter.on('error', (err: any) => {
+			console.log("erreur de ffmpeg ==>"+ err);
+		});
+		converter.run();
 	}
 }
