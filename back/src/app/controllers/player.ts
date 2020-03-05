@@ -1,7 +1,10 @@
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
 import torrentClient from '@app/services/torrent'
-import { Movie } from '@app/models/movies';
-import logger from '@settings/logger';
+import fs from 'fs';
+import path from "path";
+
+const extensionsThatWeWantToStore = [".webm"];
+const extensionsThatWeDontWantToStore = [".mp4", ".avi", ".divx", ".flv", ".mkv", ".mpg", ".mp2", ".mpeg", ".mpe", ".mpv", ".mov", ".ogg", ".swf", ".qt", ".wmv"];
 
 export default class playerController {
 
@@ -14,36 +17,34 @@ export default class playerController {
 			const parts = range.replace(/bytes=/, "").split("-");
 			const start = parseInt(parts[0], 10);
 			let engine: any = await torrentClient.downloadMovie(start, magnetLink);
-			engine.files.forEach( (file: any) => {
-				let regex = /mp4/;
-				let isMovie = regex.test(file.name);
-				if (isMovie){
-					let opt = { start: start, end: file.length };
-					let stream = file.createReadStream(opt);
-					const fileSize = file.length;
-					const end = parts[1]
-						? parseInt(parts[1], 10)
-						: fileSize-1
-						const chunksize = (end-start)+1
-						logger.info("le start ==>"+ start);
-						logger.info("le end ==>"+ end);
-						logger.info("le file size"+ fileSize);
-						const head = {
-							'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-							'Accept-Ranges': 'bytes',
-							'Content-Length': chunksize,
-							'Content-Type': 'video/mp4',
-						}
-						res.writeHead(206, head);
-						stream.pipe(res);
-						stream.on('error', function (err: any) {
-							res.status(416).send("error in stream");
-						})
+			engine.files.forEach((file: any) => {
+				const opt = { start: start, end: file.length, engine, wait: true };
+				const pathFile: string= "/back/films/" + file.path;
+				const pathFileParsed: any = path.parse(pathFile);
+				const webmFile: string  = pathFileParsed.dir  + "/"+ pathFileParsed.name + ".webm";
+				if (fs.existsSync(pathFile) && extensionsThatWeWantToStore.includes(pathFileParsed.ext)) {
+					file.deselect();
+					opt.wait = false;
+					torrentClient.streamFile(file, res, opt, parts, start, webmFile);
 				}
+				else if (extensionsThatWeDontWantToStore.includes(pathFileParsed.ext)) {
+					if (fs.existsSync(pathFile))
+						opt.wait = false
+					else
+						file.select();
+					torrentClient.convertAndStreamFile(file, res, opt, webmFile);
+				}
+				else if (extensionsThatWeWantToStore.includes(pathFileParsed.ext)) {
+					file.select();
+					torrentClient.streamFile(file, res, opt, parts, start, webmFile);
+				}
+				else
+					file.deselect();
 			});
 		} catch (err) {
-			console.error(err);
-			res.status(416).send("error");
+			res.status(418).send("I'm now a teapot");
 		}
 	}
 }
+
+
