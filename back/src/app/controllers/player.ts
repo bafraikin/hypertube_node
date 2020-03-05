@@ -3,8 +3,8 @@ import torrentClient from '@app/services/torrent'
 import fs from 'fs';
 import path from "path";
 
-const extensionsThatWeWantToStore = [".mp4"];
-const extensionsThatWeDontWantToStore = [".webm", ".avi", ".divx", ".flv", ".mkv", ".mpg", ".mp2", ".mpeg", ".mpe", ".mpv", ".mov", ".ogg", ".swf", ".qt", ".wmv"];
+const extensionsThatWeWantToStore = [".webm"];
+const extensionsThatWeDontWantToStore = [".mp4", ".avi", ".divx", ".flv", ".mkv", ".mpg", ".mp2", ".mpeg", ".mpe", ".mpv", ".mov", ".ogg", ".swf", ".qt", ".wmv"];
 
 export default class playerController {
 
@@ -18,22 +18,24 @@ export default class playerController {
 			const start = parseInt(parts[0], 10);
 			let engine: any = await torrentClient.downloadMovie(start, magnetLink);
 			engine.files.forEach((file: any) => {
-				const extension = path.extname(file.name);
 				const opt = { start: start, end: file.length, engine, wait: true };
-				const pathFile = "/back/films/" + file.path;
-				if (fs.existsSync(pathFile) && [...extensionsThatWeDontWantToStore, ...extensionsThatWeWantToStore].includes(extension)) {
+				const pathFile: string= "/back/films/" + file.path;
+				const pathFileParsed: any = path.parse(pathFile);
+				const webmFile: string  = pathFileParsed.dir  + "/"+ pathFileParsed.name + ".webm";
+				if (fs.existsSync(webmFile)) {
 					file.deselect();
 					opt.wait = false;
-					if (extensionsThatWeWantToStore.includes(extension))
-						torrentClient.streamFile(file, res, opt, parts, start);
-					else
-						torrentClient.convertAndStreamFile(file, res, opt);
+					torrentClient.streamFile(file, res, opt, parts, start, webmFile);
 				}
-				else if ([...extensionsThatWeDontWantToStore, ...extensionsThatWeWantToStore].includes(extension)) {
-					if (extensionsThatWeWantToStore.includes(extension))
-						torrentClient.streamFile(file, res, opt, parts, start);
-					else
-						torrentClient.convertAndStreamFile(file, res, opt);
+				else if (extensionsThatWeDontWantToStore.includes(pathFileParsed.ext)) {
+					console.log("on passe ici");
+					file.select();
+						torrentClient.convertAndStreamFile(file, res, opt, webmFile);
+					}
+				else if (extensionsThatWeWantToStore.includes(pathFileParsed.ext)) {
+					console.log("on passe la");
+					file.select();
+					torrentClient.streamFile(file, res, opt, parts, start, webmFile);
 				}
 				else
 					file.deselect();
