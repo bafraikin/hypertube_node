@@ -174,10 +174,10 @@ export default class torrentClient {
 	}
 
 
-	static async streamFile(file: any, res: Response, opt: any, parts: any, start: any, webmFile: string) {
+	static async streamFile(file: any, res: Response, opt: any, parts: any, start: any) {
+		let stream = file.createReadStream({start: opt.start, end: opt.end});
 		if (opt.wait)
 			await torrentClient.waitForMovieToBeReady(opt.engine, file);
-		let stream = fs.createReadStream(webmFile, {start: opt.start, end: opt.end});
 		const fileSize = file.length;
 		const end = parts[1]
 			? parseInt(parts[1], 10)
@@ -199,7 +199,8 @@ export default class torrentClient {
 			})
 	}
 
-	static async convertAndStreamFile(file: any, res: Response, opt: any, webmFile: string) {
+	static async convertAndStreamFile(file: any, res: Response, opt: any) {
+		file.select();
 		res.writeHead(206, {
 			'Content-Type': 'video/webm',
 			'Content-Range': `bytes ${opt.start}-${opt.end}/${file.length}`,
@@ -218,7 +219,7 @@ export default class torrentClient {
 		.audioCodec('libvorbis')
 		.audioBitrate(128)
 		.videoBitrate(1024)
-		.duration(180 * 60)
+		.duration(148 * 60)
 		.outputFormat('webm')
 		.output(res);
 		res.on('close', () => {
@@ -226,7 +227,7 @@ export default class torrentClient {
 			converter.kill('SIGSTOP');
 		})
 		converter.run();
-		} catch (err) { 
+		} catch (err) {
 		console.log("ffmpeg stopped successfully");
 		}
 	}

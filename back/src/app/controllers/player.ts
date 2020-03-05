@@ -3,8 +3,8 @@ import torrentClient from '@app/services/torrent'
 import fs from 'fs';
 import path from "path";
 
-const extensionsThatWeWantToStore = [".webm"];
-const extensionsThatWeDontWantToStore = [".mp4", ".avi", ".divx", ".flv", ".mkv", ".mpg", ".mp2", ".mpeg", ".mpe", ".mpv", ".mov", ".ogg", ".swf", ".qt", ".wmv"];
+const extensionsThatWeWantToStore = [".mp4"];
+const extensionsThatWeDontWantToStore = [".webm", ".avi", ".divx", ".flv", ".mkv", ".mpg", ".mp2", ".mpeg", ".mpe", ".mpv", ".mov", ".ogg", ".swf", ".qt", ".wmv"];
 
 export default class playerController {
 
@@ -21,22 +21,17 @@ export default class playerController {
 				const opt = { start: start, end: file.length, engine, wait: true };
 				const pathFile: string= "/back/films/" + file.path;
 				const pathFileParsed: any = path.parse(pathFile);
-				const webmFile: string  = pathFileParsed.dir  + "/"+ pathFileParsed.name + ".webm";
 				if (fs.existsSync(pathFile) && extensionsThatWeWantToStore.includes(pathFileParsed.ext)) {
-					file.deselect();
 					opt.wait = false;
-					torrentClient.streamFile(file, res, opt, parts, start, webmFile);
+					torrentClient.streamFile(file, res, opt, parts, start);
 				}
 				else if (extensionsThatWeDontWantToStore.includes(pathFileParsed.ext)) {
 					if (fs.existsSync(pathFile))
 						opt.wait = false
-					else
-						file.select();
-					torrentClient.convertAndStreamFile(file, res, opt, webmFile);
+					torrentClient.convertAndStreamFile(file, res, opt);
 				}
 				else if (extensionsThatWeWantToStore.includes(pathFileParsed.ext)) {
-					file.select();
-					torrentClient.streamFile(file, res, opt, parts, start, webmFile);
+					torrentClient.streamFile(file, res, opt, parts, start);
 				}
 				else
 					file.deselect();
