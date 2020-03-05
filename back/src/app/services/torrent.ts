@@ -140,26 +140,7 @@ export default class torrentClient {
 		});
 	}
 
-	static async convertAndStreamFile(file: any, res: Response, opt: any) {
-		res.writeHead(206, {
-			'Content-Type': 'video/mp4',
-			'Content-Range': `bytes ${opt.start}-${opt.end}/${file.length}`,
-			'Content-Length': file.length,
-			'Accept-Ranges': 'bytes'
-		});
-		let toStream: any = await torrentClient.waitForMovieToBeReady(opt.engine, file);
-		const converter = ffmpeg()
-			.input(fs.createReadStream("/back/films/" + file.path))
-			.videoCodec('libvpx')
-			.audioCodec('libvorbis')
-			.audioBitrate(128)
-			.videoBitrate(1024)
-			.duration(120 * 60)
-			.output(res)
-			.outputFormat('webm');
 
-		converter.run();
-	}
 	static async waitForMovieToBeReady(engine: any, file: any) {
 		let setPieces = new Set();
 		let weAlreadyReleaseTheKraken = false;
@@ -189,34 +170,54 @@ export default class torrentClient {
 					}
 				}
 			})
-			engine.on('idle', () => {
-				resolve(true);
-			})
 		});
 	}
 
 
-	static streamFile(file: any, res: Response, opt: any, parts: any, start: any) {
-		let stream = file.createReadStream(opt);
+	static async streamFile(file: any, res: Response, opt: any, parts: any, start: any) {
+		let stream = file.createReadStream({start: opt.start, end: opt.end});
+		if (opt.wait)
+			await torrentClient.waitForMovieToBeReady(opt.engine, file);
 		const fileSize = file.length;
 		const end = parts[1]
 			? parseInt(parts[1], 10)
 			: fileSize - 1
-		const chunksize = (end - start) + 1
-		logger.info("le start ==>" + start);
-		logger.info("le end ==>" + end);
-		logger.info("le file size" + fileSize);
-		const head = {
-			'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-			'Accept-Ranges': 'bytes',
-			'Content-Length': chunksize,
-			'Content-Type': 'video/mp4',
-		}
-		res.writeHead(206, head);
-		stream.pipe(res);
-		stream.on('error', function (err: any) {
-			res.status(416).send("error in stream");
-		})
+			const chunksize = (end - start) + 1
+			logger.info("le start ==>" + start);
+			logger.info("le end ==>" + end);
+			logger.info("le file size" + fileSize);
+			const head = {
+				'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+				'Accept-Ranges': 'bytes',
+				'Content-Length': chunksize,
+				'Content-Type': 'video/mp4',
+			}
+			res.writeHead(206, head);
+			stream.pipe(res);
+			stream.on('error', function (err: any) {
+				res.status(416).send("error in stream");
+			})
 	}
 
+	static async convertAndStreamFile(file: any, res: Response, opt: any) {
+		let stream = file.createReadStream({start: opt.start, end: opt.end});
+		res.writeHead(206, {
+			'Content-Type': 'video/mp4',
+			'Content-Range': `bytes ${opt.start}-${opt.end}/${file.length}`,
+			'Content-Length': file.length,
+			'Accept-Ranges': 'bytes'
+		});
+		if (opt.wait)
+			await torrentClient.waitForMovieToBeReady(opt.engine, file);
+		const converter = ffmpeg()
+		.input(fs.createReadStream("/back/films/" + file.path))
+		.videoCodec('libvpx')
+		.audioCodec('libvorbis')
+		.audioBitrate(128)
+		.videoBitrate(1024)
+		.duration(120 * 60)
+		.output(res)
+		.outputFormat('webm');
+		converter.run();
+	}
 }
