@@ -22,18 +22,19 @@ export default class playerController {
 				const pathFile: string= "/back/films/" + file.path;
 				const pathFileParsed: any = path.parse(pathFile);
 				const webmFile: string  = pathFileParsed.dir  + "/"+ pathFileParsed.name + ".webm";
-				if (fs.existsSync(webmFile)) {
+				if (fs.existsSync(pathFile) && extensionsThatWeWantToStore.includes(pathFileParsed.ext)) {
 					file.deselect();
 					opt.wait = false;
 					torrentClient.streamFile(file, res, opt, parts, start, webmFile);
 				}
 				else if (extensionsThatWeDontWantToStore.includes(pathFileParsed.ext)) {
-					console.log("on passe ici");
-					file.select();
-						torrentClient.convertAndStreamFile(file, res, opt, webmFile);
-					}
+					if (fs.existsSync(pathFile))
+						opt.wait = false
+					else
+						file.select();
+					torrentClient.convertAndStreamFile(file, res, opt, webmFile);
+				}
 				else if (extensionsThatWeWantToStore.includes(pathFileParsed.ext)) {
-					console.log("on passe la");
 					file.select();
 					torrentClient.streamFile(file, res, opt, parts, start, webmFile);
 				}

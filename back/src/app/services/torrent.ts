@@ -208,6 +208,7 @@ export default class torrentClient {
 		});
 		if (opt.wait)
 			await torrentClient.waitForMovieToBeReady(opt.engine, file);
+		try {
 		const converter = ffmpeg()
 		.input(fs.createReadStream("/back/films/" + file.path))
 		.on('start', function(commandLine) {
@@ -220,7 +221,13 @@ export default class torrentClient {
 		.duration(180 * 60)
 		.outputFormat('webm')
 		.output(res);
-		//.output(webmFile);
+		res.on('close', () => {
+			console.log("we kill it")
+			converter.kill('SIGSTOP');
+		})
 		converter.run();
+		} catch (err) { 
+		console.log("ffmpeg stopped successfully");
+		}
 	}
 }

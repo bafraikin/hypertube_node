@@ -27,7 +27,7 @@ export default {
 		},
 		downloadMovies(magnetLink){
 			magnetLink = encodeURIComponent(magnetLink);
-			this.filmPath = baseURL +  "/😂/player/" + magnetLink;
+			this.filmPath = baseURL +  "/player/" + magnetLink;
 			this.showFilm = true;
 		},
 		getSubtitles(code){
