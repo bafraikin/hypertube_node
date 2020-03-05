@@ -21,7 +21,7 @@ export default class playerController {
 				const extension = path.extname(file.name);
 				const opt = { start: start, end: file.length, engine, wait: true };
 				const pathFile = "/back/films/" + file.path;
-				if (fs.existsSync(pathFile)) {
+				if (fs.existsSync(pathFile) && [...extensionsThatWeDontWantToStore, ...extensionsThatWeWantToStore].includes(extension)) {
 					file.deselect();
 					opt.wait = false;
 					if (extensionsThatWeWantToStore.includes(extension))
@@ -30,7 +30,6 @@ export default class playerController {
 						torrentClient.convertAndStreamFile(file, res, opt);
 				}
 				else if ([...extensionsThatWeDontWantToStore, ...extensionsThatWeWantToStore].includes(extension)) {
-					file.select();
 					if (extensionsThatWeWantToStore.includes(extension))
 						torrentClient.streamFile(file, res, opt, parts, start);
 					else

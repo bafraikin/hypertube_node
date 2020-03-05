@@ -156,7 +156,7 @@ export default class torrentClient {
 			.videoBitrate(1024)
 			.duration(120 * 60)
 			.output(res)
-			.outputFormat('mp4');
+			.outputFormat('webm');
 
 		converter.run();
 	}
