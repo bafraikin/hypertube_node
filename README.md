@@ -5,6 +5,7 @@
 
 ### Launch it just after installing Docker through MSC
 
+# those instruction are for 42 school only
 ```
 setup_docker () {
 	#delete every old setting of docker that take too much space
@@ -52,7 +53,3 @@ puis venez voir adejbakh et je vous aide.
 
 
 ![alt text](https://i.pinimg.com/originals/a4/db/17/a4db1751b10fff03d2eaf915a9cd2de9.gif  "YEAAAH")
-
-![alt text](https://upload.wikimedia.org/wikipedia/en/thumb/f/f7/Aigle_Azur_logo.svg/250px-Aigle_Azur_logo.svg.png "....")
-![alt text](https://i.pinimg.com/originals/ff/b2/d2/ffb2d2f77c47563c30f95b4732403851.jpg "api bleu")
-![alt text](https://images4.alphacoders.com/799/79924.jpg "Stop les image")
