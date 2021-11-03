@@ -48,7 +48,7 @@
 		"torrent-stream": "^1.2.0",
 		"typeorm": "^0.2.22",
 		"typescript": "^3.7.4",
-		"validator": "^12.2.0"
+		"validator": "^13.7.0"
 	},
 	"devDependencies": {
 		"@types/cookie-parser": "^1.4.2",
